@@ -38,6 +38,7 @@ const HeroSection = () => {
   }>>([]);
   const [screenSize, setScreenSize] = useState({ width: 1920, height: 1080 }); // Default desktop size
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   
   const heroRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(0);
@@ -54,8 +55,8 @@ const HeroSection = () => {
   }, [isMobile, isTablet]);
   
   const particleCountMultiplier = useMemo(() => {
-    if (isMobile) return 0.3;
-    if (isTablet) return 0.6;
+    if (isMobile) return 0.5; // Increased from 0.3 to 0.5 for more visible effects
+    if (isTablet) return 0.75; // Increased from 0.6 to 0.75
     return 1;
   }, [isMobile, isTablet]);
   
@@ -116,9 +117,9 @@ const HeroSection = () => {
     const relativeIndex = (imageIndex - currentIndex + totalImages) % totalImages;
     const angle = (relativeIndex / totalImages) * Math.PI * 2;
     
-    // Responsive circle parameters
-    const radiusX = isMobile ? 120 : isTablet ? 160 : 200;
-    const radiusZ = isMobile ? 80 : isTablet ? 120 : 150;
+    // Responsive circle parameters - optimized for mobile display
+    const radiusX = isMobile ? 80 : isTablet ? 160 : 200;
+    const radiusZ = isMobile ? 60 : isTablet ? 120 : 150;
     const baseScale = isMobile ? 0.7 : isTablet ? 0.8 : 0.85;
     
     // Calculate position on circle
@@ -146,7 +147,7 @@ const HeroSection = () => {
   // Auto-rotation with intelligent pause/resume
   useEffect(() => {
     const interval = setInterval(() => {
-      if (!isPaused) {
+      if (!isPaused && heroImages.length > 0) {
         setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
       }
     }, 4000);
@@ -164,8 +165,10 @@ const HeroSection = () => {
   }, [isPaused, lastInteraction]);
   
   // Manual navigation functions
-  const goToImage = (index: number) => {
-    setCurrentImageIndex(index);
+  const goToImage = useCallback((index: number) => {
+    if (heroImages.length === 0) return;
+    const safeIndex = ((index % heroImages.length) + heroImages.length) % heroImages.length;
+    setCurrentImageIndex(safeIndex);
     setIsPaused(true);
     setLastInteraction(Date.now());
     
@@ -173,7 +176,7 @@ const HeroSection = () => {
     if (navigator.vibrate) {
       navigator.vibrate(15);
     }
-  };
+  }, [heroImages.length]);
   
   // Touch feedback handlers
   const handleImageTouchStart = (index: number) => {
@@ -187,12 +190,12 @@ const HeroSection = () => {
   const goToPrevious = useCallback(() => {
     const newIndex = currentImageIndex === 0 ? heroImages.length - 1 : currentImageIndex - 1;
     goToImage(newIndex);
-  }, [currentImageIndex, heroImages.length]);
+  }, [currentImageIndex, heroImages.length, goToImage]);
   
   const goToNext = useCallback(() => {
     const newIndex = (currentImageIndex + 1) % heroImages.length;
     goToImage(newIndex);
-  }, [currentImageIndex, heroImages.length]);
+  }, [currentImageIndex, heroImages.length, goToImage]);
   
   // Touch/swipe gesture handling
   const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -241,25 +244,26 @@ const HeroSection = () => {
   }, [touchStart, touchEnd, goToNext, goToPrevious]);
 
   useEffect(() => {
-    const baseParticleCount = prefersReducedMotion ? 20 : 50;
+    // Increased base particle counts for better mobile visibility
+    const baseParticleCount = prefersReducedMotion ? 30 : 60;
     const particleCount = Math.floor(baseParticleCount * particleCountMultiplier);
     const particleData = [...Array(particleCount)].map(() => ({
       background: `hsl(${Math.random() * 360}, 70%, 60%)`,
-      left: `${Math.random() * 100}%`,
-      top: `${Math.random() * 100}%`,
+      left: `${Math.random() * 90 + 5}%`, // Keep within 5-95% of viewport
+      top: `${Math.random() * 90 + 5}%`, // Keep within 5-95% of viewport
       duration: 3 + Math.random() * 2,
       delay: Math.random() * 2,
     }));
     setParticles(particleData);
   }, [particleCountMultiplier, prefersReducedMotion]);
 
-  // Initialize geometric shapes with performance optimization
+  // Initialize geometric shapes with performance optimization and viewport constraints
   useEffect(() => {
-    const shapeCount = isMobile ? 4 : isTablet ? 6 : 8;
+    const shapeCount = isMobile ? 6 : isTablet ? 8 : 10; // More shapes for visual richness
     const shapes = [...Array(shapeCount)].map((_, i) => ({
       id: i,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
+      x: Math.random() * 90 + 5, // Keep within 5-95% of viewport
+      y: Math.random() * 90 + 5, // Keep within 5-95% of viewport
       size: isMobile ? 15 + Math.random() * 25 : 20 + Math.random() * 40,
       rotation: Math.random() * 360,
       color: `hsl(${Math.random() * 360}, 70%, 60%)`,
@@ -289,11 +293,18 @@ const HeroSection = () => {
 
   // Generate particles when active image changes (optimized for performance)
   useEffect(() => {
-    if (prefersReducedMotion) return; // Skip particle generation if reduced motion is preferred
+    // Generate particles even with reduced motion, but fewer and with simpler animations
+    // This ensures mobile users still see beautiful effects
     
-    const currentImage = heroImages[currentImageIndex];
-    const currentImagePosition = calculateImagePosition(currentImageIndex, heroImages.length, currentImageIndex);
-    const baseParticleCount = isMobile ? 6 : 12;
+    // Ensure currentImageIndex is within bounds of heroImages array
+    const safeIndex = currentImageIndex % heroImages.length;
+    const currentImage = heroImages[safeIndex];
+    
+    // Safety check in case heroImages is empty or undefined
+    if (!currentImage || !currentImage.colors) return;
+    
+    const currentImagePosition = calculateImagePosition(safeIndex, heroImages.length, safeIndex);
+    const baseParticleCount = isMobile ? 10 : 15; // Increased for better visibility
     const particleCount = Math.floor(baseParticleCount * particleCountMultiplier);
     const newParticles: Array<{
       id: string;
@@ -309,11 +320,25 @@ const HeroSection = () => {
     for (let i = 0; i < particleCount; i++) {
       const color = currentImage.colors[Math.floor(Math.random() * currentImage.colors.length)];
       
+      // Constrain particles within viewport bounds with better mobile constraints
+      const maxX = typeof window !== 'undefined' ? window.innerWidth - 40 : 1900;
+      const maxY = typeof window !== 'undefined' ? window.innerHeight - 40 : 1060;
+      const centerX = (typeof window !== 'undefined' ? window.innerWidth : 1920) / 2;
+      const centerY = (typeof window !== 'undefined' ? window.innerHeight : 1080) / 2;
+      
+      // More restrictive bounds for mobile
+      const minBound = 40;
+      const maxBoundX = maxX - 40;
+      const maxBoundY = maxY - 40;
+      
+      const particleX = Math.max(minBound, Math.min(maxBoundX, centerX + currentImagePosition.x * 0.8));
+      const particleY = Math.max(minBound, Math.min(maxBoundY, centerY + currentImagePosition.y * 0.8));
+      
       newParticles.push({
         id: `${Date.now()}-${i}`,
-        imageIndex: currentImageIndex,
-        x: (typeof window !== 'undefined' ? window.innerWidth : 1920) / 2 + currentImagePosition.x,
-        y: (typeof window !== 'undefined' ? window.innerHeight : 1080) / 2 + currentImagePosition.y,
+        imageIndex: safeIndex,
+        x: particleX,
+        y: particleY,
         color,
         size: isMobile ? 1.5 + Math.random() * 1.5 : 2 + Math.random() * 2,
         opacity: 1,
@@ -338,6 +363,8 @@ const HeroSection = () => {
 
   // Track screen size and reduced motion preference
   useEffect(() => {
+    setIsMounted(true);
+    
     const handleResize = () => {
       setScreenSize({ width: window.innerWidth, height: window.innerHeight });
     };
@@ -372,14 +399,32 @@ const HeroSection = () => {
     }
   }, [mouseX, mouseY, screenSize]);
 
+  // Apply background images after mount to avoid hydration issues
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const imageElements = document.querySelectorAll('[data-bg-image]');
+      imageElements.forEach((element) => {
+        const bgImage = element.getAttribute('data-bg-image');
+        if (bgImage && element instanceof HTMLElement) {
+          element.style.backgroundImage = `url(${bgImage})`;
+          element.style.backgroundSize = 'cover';
+          element.style.backgroundPosition = 'center';
+        }
+      });
+    }
+  }, [heroImages]);
+
   return (
-    <div ref={heroRef} className="relative w-full min-h-screen hero-mobile-optimized flex items-center justify-center overflow-hidden py-4 sm:py-8 md:py-12">
+    <div ref={heroRef} className="relative w-full min-h-[calc(100vh-3rem)] sm:min-h-screen hero-mobile-optimized flex items-center justify-center overflow-hidden py-2 sm:py-8 md:py-12">
+      {/* Gradient Overlay Background */}
+      <div className="absolute inset-0 bg-gradient-to-r from-violet-600/10 via-purple-600/10 to-pink-600/10 animate-pulse" />
+      
       {/* Morphing Blob Background */}
       <motion.div 
         className="absolute inset-0 bg-gradient-to-br from-purple-600/20 via-pink-500/20 to-cyan-500/20"
         style={{
-          x: backgroundX,
-          y: backgroundY,
+          x: isMobile ? 0 : backgroundX,
+          y: isMobile ? 0 : backgroundY,
         }}
       />
       
@@ -394,8 +439,8 @@ const HeroSection = () => {
               top: `${shape.y}%`,
               width: shape.size,
               height: shape.size,
-              x: shapeX,
-              y: shapeY,
+              x: isMobile ? 0 : shapeX,
+              y: isMobile ? 0 : shapeY,
             }}
             animate={prefersReducedMotion ? {
               opacity: [0.2, 0.3, 0.2],
@@ -481,10 +526,10 @@ const HeroSection = () => {
       
       {/* Enhanced Floating Color Particles */}
       <motion.div 
-        className="absolute inset-0"
+        className="absolute inset-0 overflow-hidden"
         style={{
-          x: particleX,
-          y: particleY,
+          x: isMobile ? 0 : particleX,
+          y: isMobile ? 0 : particleY,
         }}
       >
         {particles.map((particle, i) => (
@@ -588,6 +633,9 @@ const HeroSection = () => {
           style={{
             perspective: '1000px',
             perspectiveOrigin: '50% 50%',
+            overflow: 'hidden',
+            maxWidth: '100vw',
+            contain: 'layout',
           }}
         >
           {/* Navigation Arrows */}
@@ -622,12 +670,15 @@ const HeroSection = () => {
             className="relative w-full h-full gallery-3d"
             style={{
               transformStyle: 'preserve-3d',
-              x: prefersReducedMotion ? 0 : galleryX,
-              y: prefersReducedMotion ? 0 : galleryY,
-              rotateX: prefersReducedMotion ? 0 : rotateX,
-              rotateY: prefersReducedMotion ? 0 : rotateY,
+              x: prefersReducedMotion ? 0 : (isMobile ? 0 : galleryX),
+              y: prefersReducedMotion ? 0 : (isMobile ? 0 : galleryY),
+              rotateX: prefersReducedMotion ? 0 : (isMobile ? 0 : rotateX),
+              rotateY: prefersReducedMotion ? 0 : (isMobile ? 0 : rotateY),
               touchAction: 'none', // Prevent default touch behaviors
               userSelect: 'none', // Prevent text selection
+              overflow: 'visible',
+              maxWidth: '100%',
+              position: 'relative',
             }}
             transition={{
               type: "spring",
@@ -645,12 +696,10 @@ const HeroSection = () => {
                 <motion.div
                   key={index}
                   className="absolute w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 rounded-2xl overflow-hidden shadow-2xl gallery-3d-item cursor-pointer"
+                  data-bg-image={image.src}
                   style={{
                     left: '50%',
                     top: '50%',
-                    backgroundImage: `url(${image.src})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
                     willChange: 'transform',
                     backfaceVisibility: 'hidden',
                     transformStyle: 'preserve-3d',
@@ -659,8 +708,7 @@ const HeroSection = () => {
                     margin: '-8px',
                     // Note: Depth-based responsiveness handled in animate props instead of transforms
                   }}
-                  initial={{ 
-                    ...(() => {
+                  initial={ isMounted ? (() => {
                       const pos = calculateImagePosition(index, heroImages.length, 0); // Start from position 0
                       return {
                         opacity: 0,
@@ -670,10 +718,16 @@ const HeroSection = () => {
                         rotateY: pos.rotateY,
                         scale: pos.scale
                       };
-                    })()
-                  }}
-                  animate={{ 
-                    ...(() => {
+                    })() : {
+                      opacity: 0,
+                      x: 0,
+                      y: 0,
+                      translateZ: 0,
+                      rotateY: 0,
+                      scale: 1
+                    }
+                  }
+                  animate={ isMounted ? (() => {
                       const pos = calculateImagePosition(index, heroImages.length, currentImageIndex);
                       return {
                         opacity: touchingImage === index ? pos.opacity * 0.8 : pos.opacity,
@@ -685,8 +739,17 @@ const HeroSection = () => {
                         rotateZ: prefersReducedMotion ? 0 : [0, 2, -2, 0],
                         scale: touchingImage === index ? pos.scale * 0.9 : (index === currentImageIndex ? pos.scale * 1.1 : pos.scale)
                       };
-                    })()
-                  }}
+                    })() : {
+                      opacity: index === currentImageIndex ? 1 : 0.7,
+                      filter: index === currentImageIndex ? 'brightness(1.2)' : 'brightness(0.8)',
+                      x: 0,
+                      y: 0,
+                      translateZ: 0,
+                      rotateY: 0,
+                      rotateZ: 0,
+                      scale: index === currentImageIndex ? 1.1 : 1
+                    }
+                  }
                   transition={{ 
                     opacity: { duration: 1, delay: staggerDelay },
                     filter: { duration: 1, delay: staggerDelay },
@@ -732,13 +795,20 @@ const HeroSection = () => {
                       duration: 1.5
                     }
                   }}
-                  whileHover={{
+                  whileHover={isMounted ? {
                     scale: calculateImagePosition(index, heroImages.length, currentImageIndex).scale * 1.1,
                     filter: 'brightness(1.3)',
                     transition: { duration: 0.3 }
+                  } : {
+                    scale: 1.1,
+                    filter: 'brightness(1.3)',
+                    transition: { duration: 0.3 }
                   }}
-                  whileTap={{
+                  whileTap={isMounted ? {
                     scale: calculateImagePosition(index, heroImages.length, currentImageIndex).scale * 0.95,
+                    transition: { duration: 0.1 }
+                  } : {
+                    scale: 0.95,
                     transition: { duration: 0.1 }
                   }}
                   onClick={() => goToImage(index)}
@@ -757,7 +827,7 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 1 }}
-          className="flex justify-center items-center"
+          className="flex justify-center items-center mb-2 sm:mb-4"
         >
           {/* Magnetic Book Appointment Button */}
           <motion.div
@@ -885,7 +955,7 @@ const HeroSection = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 1.5 }}
-          className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 hidden sm:block"
+          className="absolute bottom-2 sm:bottom-8 left-1/2 transform -translate-x-1/2 hidden sm:block"
         >
           <motion.div
             animate={{ y: [0, 10, 0] }}

@@ -24,15 +24,14 @@ export default async function Home({
   
   const t = await getTranslations('mainPage');
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-purple-50 to-cyan-50">
+    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-purple-50 to-cyan-50 overflow-x-hidden">
       {/* Language Switcher */}
       <div className="fixed top-4 right-4 z-50">
         <LanguageSwitcher />
       </div>
 
       {/* Revolutionary Hero Section with AI Try-On */}
-      <section className="relative min-h-[85vh] sm:min-h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-violet-600/10 via-purple-600/10 to-pink-600/10 animate-pulse" />
+      <section className="relative">
         <HeroSection />
       </section>
 

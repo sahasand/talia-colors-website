@@ -25,22 +25,98 @@
   }
 }
 
+/* Critical: Prevent horizontal overflow on ALL elements */
+* {
+  box-sizing: border-box;
+}
+
+/* Mobile: Force all elements to stay within viewport */
+@media (max-width: 640px) {
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+    width: 100vw !important;
+  }
+  
+  /* Force main container classes to respect mobile viewport */
+  .container,
+  .max-w-6xl,
+  .max-w-5xl,
+  .max-w-4xl,
+  .max-w-3xl,
+  .max-w-2xl,
+  .max-w-xl {
+    max-width: calc(100vw - 2rem) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+}
+
 /* Ensure better mobile scroll behavior */
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  overflow-x: hidden !important;
+  position: relative;
 }
 
 body {
-  overflow-x: hidden;
+  overflow-x: hidden !important;
+  position: relative;
+  margin: 0;
+  padding: 0;
 }
 
 /* Mobile-specific optimizations */
 @media (max-width: 640px) {
   .hero-mobile-optimized {
-    min-height: calc(100vh - 2rem);
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+    min-height: calc(100vh - 3rem);
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    overflow-x: hidden !important;
+    position: relative;
+    margin: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  
+  /* Ensure proper mobile layout without breaking 3D transforms */
+  .hero-mobile-optimized .max-w-6xl {
+    max-width: calc(100vw - 2rem) !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+  
+  /* Mobile gallery fixes */
+  .hero-mobile-optimized .gallery-3d {
+    max-width: calc(100vw - 2rem);
+    margin: 0 auto;
+  }
+}
+
+/* Ultra-small mobile devices */
+@media (max-width: 375px) {
+  .hero-mobile-optimized {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+  
+  .gallery-3d {
+    perspective: 500px;
+  }
+  
+  .gallery-3d-item {
+    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 320px) {
+  .hero-mobile-optimized {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
   }
 }
 
@@ -324,6 +400,71 @@ html {
   /* Prevent horizontal scroll */
   html, body {
     overflow-x: hidden;
+    max-width: 100vw;
+  }
+  
+  /* Ensure all containers respect viewport width */
+  *, *::before, *::after {
+    box-sizing: border-box !important;
+  }
+  
+  /* Root container fixes */
+  #__next {
+    overflow-x: hidden !important;
+  }
+  
+  /* App container fixes */
+  .app-container {
+    overflow-x: hidden !important;
+  }
+  
+  /* Prevent any absolute positioned elements from causing overflow */
+  .absolute {
+    max-width: 100vw;
+    contain: layout style;
+    transform: translate3d(0, 0, 0); /* Force GPU acceleration and contain layers */
+  }
+  
+  /* Specific fixes for gallery 3D items */
+  .gallery-3d-item {
+    transform-origin: center center !important;
+    contain: layout style;
+  }
+  
+  /* Constrain the gallery container */
+  .gallery-3d {
+    max-width: calc(100vw - 2rem);
+    margin: 0 auto;
+    contain: layout size;
+    overflow: hidden;
+  }
+  
+  /* Better containment for floating elements */
+  .hero-mobile-optimized .motion-div {
+    contain: layout style;
+  }
+  
+  /* Prevent body horizontal scroll */
+  body {
+    overflow-x: hidden !important;
+  }
+  
+  /* Ensure root containers don't cause overflow */
+  .hero-mobile-optimized {
+    max-width: 100vw;
+    width: 100vw;
+  }
+  
+  /* Critical: Prevent any wide elements from breaking layout */
+  .hero-mobile-optimized > * {
+    max-width: 100vw;
+  }
+  
+  /* Force any overflowing elements to stay within bounds */
+  .hero-mobile-optimized .absolute {
+    max-width: 100vw;
+    left: 0;
+    right: 0;
   }
   
   /* Mobile-optimized shadows */
@@ -331,12 +472,12 @@ html {
     box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   }
   
-  /* Reduce motion for better mobile performance */
+  /* Reduce motion for better mobile performance - but keep some visual appeal */
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
-      animation-duration: 0.01ms !important;
+      animation-duration: 0.5s !important;
       animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
+      transition-duration: 0.3s !important;
     }
   }
 }
@@ -357,14 +498,15 @@ html {
     font-size: 1rem;
   }
   
-  /* Remove hover states that don't work on touch */
-  .hover\:scale-105:hover {
-    transform: none;
+  /* Keep some hover effects for visual feedback on tap */
+  .hover\:scale-105:active {
+    transform: scale(1.05);
   }
   
   /* Make interactive elements more obvious */
   button, [role="button"], a {
     cursor: pointer;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
   }
 }
 
@@ -382,12 +524,13 @@ html {
   transform: translate3d(0, 0, 0); /* Force GPU acceleration */
 }
 
-/* Reduced motion support for 3D effects */
+/* Reduced motion support for 3D effects - keep some motion for visual appeal */
 @media (prefers-reduced-motion: reduce) {
   .gallery-3d,
   .gallery-3d-item {
-    transform: none !important;
-    animation: none !important;
+    /* Keep transforms but reduce animation complexity */
+    animation-duration: 2s !important;
+    animation-iteration-count: 1 !important;
   }
 }
 
@@ -414,4 +557,28 @@ html {
   background: linear-gradient(90deg, transparent 20%, currentColor 50%, transparent 80%);
   filter: blur(0.5px);
   transform: translate3d(0, 0, 0);
+}
+
+/* Enhanced mobile particle visibility */
+@media (max-width: 640px) {
+  .hair-particle {
+    filter: blur(0.3px); /* Less blur for better visibility */
+    opacity: 0.9; /* Slightly more opaque on mobile */
+  }
+  
+  /* Ensure floating particles are visible */
+  .particle-trail {
+    min-width: 3px;
+    min-height: 3px;
+  }
+  
+  /* Prevent any element from causing horizontal overflow */
+  .relative, .absolute, .fixed {
+    contain: layout style;
+  }
+  
+  /* Ensure motion elements stay within bounds */
+  [style*="transform"] {
+    contain: layout style;
+  }
 }
