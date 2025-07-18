@@ -845,7 +845,12 @@ const HeroSection = () => {
                   rotateX: 5,
                   boxShadow: "0 20px 40px rgba(139, 69, 19, 0.4)"
                 },
-                tap: { scale: 0.95 }
+                tap: { 
+                  scale: 1.05,
+                  rotateY: 15,
+                  rotateX: 8,
+                  boxShadow: "0 25px 50px rgba(139, 69, 19, 0.5)"
+                }
               }}
               transition={{
                 type: "spring",
@@ -861,6 +866,11 @@ const HeroSection = () => {
                     opacity: 1,
                     scale: 1.2,
                     rotate: 180
+                  },
+                  tap: { 
+                    opacity: 1,
+                    scale: 1.3,
+                    rotate: 270
                   }
                 }}
                 transition={{ duration: 0.6 }}
@@ -873,6 +883,10 @@ const HeroSection = () => {
                   hover: { 
                     scale: [0, 1.5],
                     opacity: [0.3, 0]
+                  },
+                  tap: { 
+                    scale: [0, 2],
+                    opacity: [0.5, 0]
                   }
                 }}
                 transition={{ duration: 0.6 }}
@@ -885,6 +899,10 @@ const HeroSection = () => {
                   hover: { 
                     y: -2,
                     letterSpacing: "0.05em"
+                  },
+                  tap: { 
+                    y: -4,
+                    letterSpacing: "0.08em"
                   }
                 }}
               >
@@ -899,6 +917,10 @@ const HeroSection = () => {
                     hover: { 
                       rotate: 360,
                       scale: 1.2
+                    },
+                    tap: { 
+                      rotate: 540,
+                      scale: 1.4
                     }
                   }}
                   transition={{ duration: 0.8 }}
@@ -918,6 +940,9 @@ const HeroSection = () => {
                 variants={{
                   hover: {
                     opacity: 1
+                  },
+                  tap: {
+                    opacity: 1
                   }
                 }}
                 initial={{ opacity: 0 }}
@@ -936,6 +961,12 @@ const HeroSection = () => {
                         y: [0, (Math.sin(i * 60 * Math.PI / 180) * 40)],
                         opacity: [0, 1, 0],
                         scale: [0, 1, 0],
+                      },
+                      tap: {
+                        x: [0, (Math.cos(i * 60 * Math.PI / 180) * 60)],
+                        y: [0, (Math.sin(i * 60 * Math.PI / 180) * 60)],
+                        opacity: [0, 1, 0],
+                        scale: [0, 1.5, 0],
                       }
                     }}
                     transition={{

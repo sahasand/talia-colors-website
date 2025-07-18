@@ -279,7 +279,8 @@ body {
   transition: transform 0.2s ease-out;
 }
 
-.btn-magnetic:hover {
+.btn-magnetic:hover,
+.btn-magnetic:active {
   transform: translateY(-2px);
 }
 
@@ -300,7 +301,8 @@ body {
   transition: all 0.6s ease;
 }
 
-.btn-burst:hover::before {
+.btn-burst:hover::before,
+.btn-burst:active::before {
   width: 300px;
   height: 300px;
 }
@@ -467,9 +469,15 @@ html {
     right: 0;
   }
   
-  /* Mobile-optimized shadows */
+  /* Enhanced mobile shadows - restore visual appeal */
   .shadow-2xl {
-    box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Enable glow effects on mobile */
+  .animate-glow-pulse,
+  .hover\:shadow-2xl:active {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 30px rgba(139, 69, 19, 0.4);
   }
   
   /* Reduce motion for better mobile performance - but keep some visual appeal */
@@ -498,9 +506,29 @@ html {
     font-size: 1rem;
   }
   
-  /* Keep some hover effects for visual feedback on tap */
+  /* Enable hover effects for visual feedback on tap */
   .hover\:scale-105:active {
     transform: scale(1.05);
+  }
+  
+  /* Preserve button effects on touch */
+  .btn-magnetic:active {
+    transform: translateY(-2px);
+  }
+  
+  .btn-burst:active::before {
+    width: 300px;
+    height: 300px;
+  }
+  
+  /* Enable shimmer effects on touch */
+  .animate-shimmer:active {
+    animation: shimmer 0.6s ease-in-out;
+  }
+  
+  /* Enable glow effects on touch */
+  .animate-glow-pulse:active {
+    animation: glow-pulse 0.8s ease-in-out;
   }
   
   /* Make interactive elements more obvious */
@@ -537,11 +565,18 @@ html {
 /* 3D Performance optimizations for mobile */
 @media (max-width: 640px) {
   .gallery-3d {
-    perspective: 600px; /* Reduced perspective for mobile */
+    perspective: 800px; /* Increased perspective for better 3D effect */
   }
   
   .gallery-3d-item {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); /* Lighter shadows on mobile */
+    box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1); /* Enhanced shadows on mobile */
+  }
+  
+  /* Enable hover effects as active states for mobile */
+  .gallery-3d-item:active {
+    transform: scale(1.05) rotateY(5deg) rotateX(5deg);
+    box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
   }
 }
 

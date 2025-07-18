@@ -34,6 +34,17 @@ const SmartGalleryGrid = () => {
     }
   };
 
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (containerRef.current && e.touches.length > 0) {
+      const rect = containerRef.current.getBoundingClientRect();
+      const x = e.touches[0].clientX - rect.left;
+      const y = e.touches[0].clientY - rect.top;
+      setMousePosition({ x, y });
+      mouseX.set(x);
+      mouseY.set(y);
+    }
+  };
+
   // Simplified portfolio data using local images with curated styling
   const transformations: Transformation[] = [
     {
@@ -91,7 +102,13 @@ const SmartGalleryGrid = () => {
       ref={containerRef}
       className="max-w-7xl mx-auto relative"
       onMouseMove={handleMouseMove}
+      onTouchMove={handleTouchMove}
       onMouseLeave={() => {
+        setMousePosition({ x: 0, y: 0 });
+        mouseX.set(0);
+        mouseY.set(0);
+      }}
+      onTouchEnd={() => {
         setMousePosition({ x: 0, y: 0 });
         mouseX.set(0);
         mouseY.set(0);
@@ -191,14 +208,23 @@ const SmartGalleryGrid = () => {
               <motion.div
                 className="relative"
                 whileHover="hover"
+                whileTap="tap"
                 onMouseEnter={() => setHoveredId(transformation.id)}
                 onMouseLeave={() => setHoveredId(null)}
+                onTouchStart={() => setHoveredId(transformation.id)}
+                onTouchEnd={() => setHoveredId(null)}
                 variants={{
                   hover: {
                     rotateY: 8,
                     rotateX: 5,
                     scale: 1.05,
                     z: 100
+                  },
+                  tap: {
+                    rotateY: 10,
+                    rotateX: 6,
+                    scale: 1.08,
+                    z: 120
                   }
                 }}
                 transition={{
@@ -228,6 +254,10 @@ const SmartGalleryGrid = () => {
                       hover: { 
                         opacity: 0.25,
                         scale: 1.1
+                      },
+                      tap: { 
+                        opacity: 0.35,
+                        scale: 1.15
                       }
                     }}
                     initial={{ opacity: 0 }}
@@ -241,6 +271,10 @@ const SmartGalleryGrid = () => {
                       hover: {
                         borderColor: "rgba(255,255,255,0.6)",
                         boxShadow: `0 0 30px ${transformation.accentColor.includes('purple') ? 'rgba(147, 51, 234, 0.5)' : transformation.accentColor.includes('pink') ? 'rgba(219, 39, 119, 0.5)' : transformation.accentColor.includes('blue') ? 'rgba(59, 130, 246, 0.5)' : transformation.accentColor.includes('yellow') ? 'rgba(245, 158, 11, 0.5)' : transformation.accentColor.includes('red') ? 'rgba(239, 68, 68, 0.5)' : 'rgba(139, 69, 19, 0.5)'}`
+                      },
+                      tap: {
+                        borderColor: "rgba(255,255,255,0.8)",
+                        boxShadow: `0 0 40px ${transformation.accentColor.includes('purple') ? 'rgba(147, 51, 234, 0.7)' : transformation.accentColor.includes('pink') ? 'rgba(219, 39, 119, 0.7)' : transformation.accentColor.includes('blue') ? 'rgba(59, 130, 246, 0.7)' : transformation.accentColor.includes('yellow') ? 'rgba(245, 158, 11, 0.7)' : transformation.accentColor.includes('red') ? 'rgba(239, 68, 68, 0.7)' : 'rgba(139, 69, 19, 0.7)'}`
                       }
                     }}
                     transition={{ duration: 0.4 }}
@@ -250,14 +284,16 @@ const SmartGalleryGrid = () => {
                   <motion.div
                     className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent flex items-end p-4 sm:p-6"
                     variants={{
-                      hover: { opacity: 1 }
+                      hover: { opacity: 1 },
+                      tap: { opacity: 1 }
                     }}
                     initial={{ opacity: 0 }}
                     transition={{ duration: 0.4 }}
                   >
                     <motion.div
                       variants={{
-                        hover: { y: 0, opacity: 1 }
+                        hover: { y: 0, opacity: 1 },
+                        tap: { y: 0, opacity: 1 }
                       }}
                       initial={{ y: 20, opacity: 0 }}
                       transition={{ duration: 0.4, delay: 0.1 }}
@@ -268,7 +304,8 @@ const SmartGalleryGrid = () => {
                       <motion.div
                         className={`w-12 h-1 bg-gradient-to-r ${transformation.accentColor} rounded-full`}
                         variants={{
-                          hover: { width: "80px", opacity: 1 }
+                          hover: { width: "80px", opacity: 1 },
+                          tap: { width: "90px", opacity: 1 }
                         }}
                         transition={{ duration: 0.3, delay: 0.2 }}
                       />
@@ -279,7 +316,8 @@ const SmartGalleryGrid = () => {
                   <motion.div
                     className="absolute inset-0 pointer-events-none"
                     variants={{
-                      hover: { opacity: 1 }
+                      hover: { opacity: 1 },
+                      tap: { opacity: 1 }
                     }}
                     initial={{ opacity: 0 }}
                   >
@@ -296,6 +334,11 @@ const SmartGalleryGrid = () => {
                             scale: [0, 1.5, 0],
                             opacity: [0, 1, 0],
                             y: [0, -20]
+                          },
+                          tap: {
+                            scale: [0, 2, 0],
+                            opacity: [0, 1, 0],
+                            y: [0, -30]
                           }
                         }}
                         transition={{
@@ -322,6 +365,16 @@ const SmartGalleryGrid = () => {
                               transformation.textColor.includes('red') ? "#dc2626" :
                               "#be185d",
                         textShadow: "0 4px 8px rgba(0,0,0,0.1)"
+                      },
+                      tap: { 
+                        x: 12,
+                        color: transformation.textColor.includes('blue') ? "#1d4ed8" : 
+                              transformation.textColor.includes('purple') ? "#7c3aed" :
+                              transformation.textColor.includes('yellow') ? "#d97706" :
+                              transformation.textColor.includes('gray') ? "#374151" :
+                              transformation.textColor.includes('red') ? "#dc2626" :
+                              "#be185d",
+                        textShadow: "0 6px 12px rgba(0,0,0,0.15)"
                       }
                     }}
                     transition={{ duration: 0.3 }}
@@ -336,6 +389,10 @@ const SmartGalleryGrid = () => {
                       hover: { 
                         width: "100px",
                         height: "3px"
+                      },
+                      tap: { 
+                        width: "120px",
+                        height: "4px"
                       }
                     }}
                     initial={{ width: 0 }}
