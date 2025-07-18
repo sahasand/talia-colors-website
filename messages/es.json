@@ -1,0 +1,412 @@
+{
+  "metadata": {
+    "title": "Talia Colors - Donde el Arte Encuentra Cabello Hermoso",
+    "description": "Color de cabello personalizado por Talia—expertamente elaborado, creativo y únicamente hecho para ti. Recomendaciones de color con IA y servicios profesionales de coloración."
+  },
+  "mainPage": {
+    "sections": {
+      "inspiration": {
+        "title": "Inspiración",
+        "description": "Inspírate con estas hermosas transformaciones de color"
+      },
+      "footer": {
+        "brandName": "Talia Colors",
+        "tagline": "Donde el Arte Encuentra Cabello Hermoso",
+        "whatsappButton": "💬 WhatsApp",
+        "instagramButton": "📸 Instagram"
+      },
+      "contact": {
+        "whatsappNumber": "554899169053",
+        "whatsappUrl": "https://wa.me/554899169053",
+        "instagramHandle": "taliacolors",
+        "instagramUrl": "https://instagram.com/taliacolors"
+      }
+    }
+  },
+  "heroSection": {
+    "title": "Talia Colors",
+    "tagline": "Donde el Arte Encuentra Cabello Hermoso",
+    "description": "Color de cabello personalizado por Talia—expertamente elaborado, creativo y únicamente hecho para ti.",
+    "cta": {
+      "bookAppointmentFull": "Reservar Cita",
+      "bookAppointmentShort": "Reservar"
+    },
+    "imageAltTexts": [
+      "Transformación capilar 1",
+      "Transformación capilar 2",
+      "Transformación capilar 3"
+    ]
+  },
+  "gallery": {
+    "title": "Transformaciones",
+    "transformations": [
+      {
+        "title": "Balayage Miel",
+        "service": "Balayage"
+      },
+      {
+        "title": "Rubio Natural",
+        "service": "Reflejos"
+      },
+      {
+        "title": "Bob Rubio Ceniza",
+        "service": "Color y Corte"
+      },
+      {
+        "title": "Chocolate Caramelo",
+        "service": "Balayage"
+      },
+      {
+        "title": "Castaño Clásico",
+        "service": "Color Masculino"
+      },
+      {
+        "title": "Fantasía Arcoíris",
+        "service": "Color Creativo"
+      }
+    ]
+  },
+  "aiColorPicker": {
+    "intro": {
+      "title": "Consulta Personal de Colores",
+      "description": "Análisis experto de colores de Talia potenciado por tecnología IA avanzada para entender tus características únicas, estilo de vida y preferencias de estilo para recomendaciones perfectamente personalizadas.",
+      "ctaButton": "Descubre Tus Colores Perfectos"
+    },
+    "workflow": {
+      "title": "Análisis de Colores",
+      "description": "Deja que Talia analice tus características y recomiende colores perfectos",
+      "steps": [
+        {
+          "title": "Subir Foto",
+          "icon": "📸"
+        },
+        {
+          "title": "Quiz de Estilo",
+          "icon": "🎨"
+        },
+        {
+          "title": "Análisis de Colores",
+          "icon": "🎨"
+        },
+        {
+          "title": "Tus Colores",
+          "icon": "✨"
+        }
+      ]
+    }
+  },
+  "photoUpload": {
+    "title": "Sube Tu Foto",
+    "description": "Toma una foto o sube una para el análisis de color con IA más preciso",
+    "dragDrop": {
+      "default": "Arrastra y suelta tu foto aquí",
+      "active": "¡Suelta tu foto aquí!",
+      "subtitle": "o haz clic abajo para tomar/subir una foto"
+    },
+    "processing": "Procesando tu foto...",
+    "buttons": {
+      "uploadFull": "Subir Foto",
+      "uploadShort": "Subir",
+      "backToMain": "← Volver a la Página Principal"
+    },
+    "tips": {
+      "title": "💡 Para Mejores Resultados:",
+      "items": [
+        "• Buena iluminación (preferible luz natural)",
+        "• Vista clara de tu cara y cabello",
+        "• Sin filtros o edición pesada",
+        "• Mira directamente a la cámara"
+      ]
+    },
+    "validation": {
+      "invalidType": "Por favor sube un archivo de imagen válido (JPEG, PNG o WebP)",
+      "tooLarge": "El tamaño del archivo debe ser menor a 10MB"
+    }
+  },
+  "questionnaire": {
+    "title": "Quiz de Estilo",
+    "progressLabel": "Pregunta {current} de {total}",
+    "progressText": "Progreso",
+    "questions": [
+      {
+        "title": "¿Qué describe mejor tu tono de piel?",
+        "description": "Esto nos ayuda a recomendar colores que complementen tu tez",
+        "options": [
+          {
+            "label": "Claro",
+            "description": "Tono claro con subtonos rosa o neutros",
+            "emoji": "🌸"
+          },
+          {
+            "label": "Medio",
+            "description": "Tonos oliva o beige cálido",
+            "emoji": "🌻"
+          },
+          {
+            "label": "Oliva",
+            "description": "Subtonos verdes o amarillentos",
+            "emoji": "🫒"
+          },
+          {
+            "label": "Oscuro",
+            "description": "Subtonos ricos cálidos o fríos",
+            "emoji": "✨"
+          }
+        ]
+      },
+      {
+        "title": "¿Cómo describirías tu estilo de vida?",
+        "description": "Tu rutina diaria afecta el mantenimiento y la idoneidad del color",
+        "options": [
+          {
+            "label": "Profesional",
+            "description": "Ambiente corporativo, estilo clásico",
+            "emoji": "💼"
+          },
+          {
+            "label": "Creativo",
+            "description": "Campo artístico, la expresión es clave",
+            "emoji": "🎨"
+          },
+          {
+            "label": "Casual",
+            "description": "Enfoque relajado y cómodo",
+            "emoji": "👟"
+          },
+          {
+            "label": "Glamoroso",
+            "description": "Me encanta destacar y brillar",
+            "emoji": "💎"
+          }
+        ]
+      },
+      {
+        "title": "¿Cuánto mantenimiento del cabello prefieres?",
+        "description": "Diferentes colores requieren diferentes niveles de cuidado",
+        "options": [
+          {
+            "label": "Bajo Mantenimiento",
+            "description": "Retoques cada 3-4 meses",
+            "emoji": "🌿"
+          },
+          {
+            "label": "Mantenimiento Medio",
+            "description": "Visitas al salón cada 6-8 semanas",
+            "emoji": "⚡"
+          },
+          {
+            "label": "Alto Mantenimiento",
+            "description": "Retoques y tratamientos regulares",
+            "emoji": "💅"
+          }
+        ]
+      },
+      {
+        "title": "¿Cuál es tu color de cabello actual?",
+        "description": "El punto de partida afecta el proceso de coloración y las opciones",
+        "options": [
+          {
+            "label": "Rubio",
+            "description": "Rubio natural claro o teñido",
+            "emoji": "👱‍♀️"
+          },
+          {
+            "label": "Castaño",
+            "description": "Tonos castaños de claro a oscuro",
+            "emoji": "👩‍🦱"
+          },
+          {
+            "label": "Negro",
+            "description": "Cabello negro natural o teñido",
+            "emoji": "👩‍🦲"
+          },
+          {
+            "label": "Pelirrojo",
+            "description": "Tonos pelirrojos naturales o teñidos",
+            "emoji": "👩‍🦰"
+          },
+          {
+            "label": "Otro",
+            "description": "Gris, blanco o colores fantasía",
+            "emoji": "🌈"
+          }
+        ]
+      },
+      {
+        "title": "¿Qué vibra estás buscando?",
+        "description": "El sentimiento general que quieres que exprese tu nuevo color",
+        "options": [
+          {
+            "label": "Natural",
+            "description": "Realzar lo que tienes",
+            "emoji": "🍃"
+          },
+          {
+            "label": "Audaz",
+            "description": "Hacer una declaración",
+            "emoji": "🔥"
+          },
+          {
+            "label": "Sutil",
+            "description": "Realce suave",
+            "emoji": "🌙"
+          },
+          {
+            "label": "Dramático",
+            "description": "Transformación completa",
+            "emoji": "⚡"
+          }
+        ]
+      },
+      {
+        "title": "¿Cuánta experiencia tienes con la coloración del cabello?",
+        "description": "Esto nos ayuda a recomendar cambios de color apropiados",
+        "options": [
+          {
+            "label": "Primera Vez",
+            "description": "Nuevo en la coloración del cabello",
+            "emoji": "🌱"
+          },
+          {
+            "label": "Ocasional",
+            "description": "Coloreo de vez en cuando",
+            "emoji": "🌸"
+          },
+          {
+            "label": "Regular",
+            "description": "Coloreo frecuentemente",
+            "emoji": "🎯"
+          },
+          {
+            "label": "Experto",
+            "description": "Muy experimentado con color",
+            "emoji": "👑"
+          }
+        ]
+      }
+    ],
+    "navigation": {
+      "previous": "Anterior",
+      "next": "Siguiente",
+      "backToUpload": "Volver a Subir",
+      "analyzeColors": "Analizar Colores"
+    }
+  },
+  "aiProcessing": {
+    "title": "Analizando Tus Colores Perfectos",
+    "description": "Talia está analizando tus características y preferencias...",
+    "steps": [
+      {
+        "message": "Detectando características faciales y tono de piel..."
+      },
+      {
+        "message": "Analizando tu paleta de colores natural..."
+      },
+      {
+        "message": "Combinando colores con tus preferencias de estilo de vida..."
+      },
+      {
+        "message": "Calculando puntuaciones de compatibilidad de colores..."
+      },
+      {
+        "message": "Generando recomendaciones personalizadas..."
+      },
+      {
+        "message": "¡Análisis completo! Preparando tus resultados..."
+      }
+    ],
+    "analysisProfile": {
+      "title": "🧬 Tu Perfil de Análisis:",
+      "fields": {
+        "skinTone": "Tono de Piel:",
+        "lifestyle": "Estilo de Vida:",
+        "maintenance": "Mantenimiento:",
+        "currentColor": "Color Actual:",
+        "desiredVibe": "Vibra Deseada:",
+        "experience": "Experiencia:"
+      }
+    },
+    "completionMessage": "¡Análisis Completo!",
+    "recommendations": {
+      "caramelHighlights": {
+        "name": "Reflejos Caramelo",
+        "description": "Reflejos cálidos color miel que añaden dimensión y brillo",
+        "process": "Balayage pintado a mano con revelador 20 vol, seguido de gloss color miel para mezcla perfecta",
+        "estimatedTime": "3-4 horas",
+        "price": "R$ 180-250"
+      },
+      "chocolateBrown": {
+        "name": "Castaño Chocolate Rico",
+        "description": "Castaño profundo y lujoso con subtonos cálidos sutiles",
+        "process": "Aplicación de base profunda con color semi-permanente, más lowlights estratégicos para dimensión",
+        "estimatedTime": "2-3 horas",
+        "price": "R$ 120-180"
+      },
+      "ashBlonde": {
+        "name": "Rubio Ceniza",
+        "description": "Rubio de tono frío que neutraliza tonos naranjas",
+        "process": "Decoloración multi-etapa con matizador morado para neutralizar calor y lograr subtonos fríos",
+        "estimatedTime": "4-5 horas",
+        "price": "R$ 250-350"
+      },
+      "strawberryBlonde": {
+        "name": "Rubio Fresa",
+        "description": "Rubio cálido con subtonos rojos suaves",
+        "process": "Reflejos seccionales con papel aluminio con base cobre cálida, mezclados con gloss fresa",
+        "estimatedTime": "3-4 horas",
+        "price": "R$ 200-280"
+      },
+      "burgundyOmbre": {
+        "name": "Ombré Borgoña",
+        "description": "Rojo vino profundo que se desvanece desde raíces oscuras hasta puntas vibrantes",
+        "process": "Técnica de decoloración gradual con fusión creativa de color desde base natural hasta puntas borgoña vibrantes",
+        "estimatedTime": "4-6 horas",
+        "price": "R$ 280-400"
+      },
+      "copperRed": {
+        "name": "Rojo Cobrizo",
+        "description": "Cobre vibrante con reflejos dorados",
+        "process": "Pre-decoloración con protección de enlaces, seguida de aplicación de cobre vívido y acentos de reflejos dorados",
+        "estimatedTime": "4-5 horas",
+        "price": "R$ 220-320"
+      }
+    }
+  },
+  "colorRecommendations": {
+    "title": "¡Este Es TU Color! 🎉",
+    "description": "Después de analizar tus características únicas, tono de piel y preferencias de estilo, nuestra IA encontró el color perfecto que te hará verte absolutamente deslumbrante.",
+    "cta": {
+      "bookNowFull": "Reserva Tu Color Perfecto Ahora",
+      "bookNowShort": "Reservar",
+      "tryAgainFull": "Intentar de Nuevo",
+      "tryAgainShort": "Reintentar"
+    },
+    "whatsappMessage": "¡Hola! ¡Quiero reservar una cita para mi color perfecto: {colorName}! El selector de IA lo recomendó específicamente para mí.",
+    "processTitle": "🔬 Cómo Vamos a Crear Este Look",
+    "fields": {
+      "maintenance": "Mantenimiento",
+      "time": "Tiempo",
+      "category": "Categoría",
+      "match": "Combinación"
+    },
+    "placeholders": {
+      "yourPhoto": "Tu Foto",
+      "failedToLoad": "Error al cargar"
+    }
+  },
+  "whatsapp": {
+    "appointmentBooking": "¡Hola! ¡Quiero reservar una cita para mi color perfecto: {colorName}! El selector de IA lo recomendó específicamente para mí.",
+    "generalBooking": "¡Hola! Me gustaría reservar una cita con Talia para servicios de coloración capilar."
+  },
+  "altTexts": {
+    "userPhoto": "Tu foto",
+    "transformations": [
+      "Transformación balayage miel",
+      "Reflejos rubio natural",
+      "Corte y color rubio ceniza bob",
+      "Balayage chocolate caramelo",
+      "Color castaño clásico masculino",
+      "Color creativo fantasía arcoíris"
+    ]
+  }
+}

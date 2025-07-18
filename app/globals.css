@@ -3,6 +3,61 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  
+  /* Hair Colorist Brand Colors */
+  --primary-gradient: linear-gradient(135deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+  --blonde-warm: #f4e4bc;
+  --brunette-rich: #8b4513;
+  --accent-coral: #ff7675;
+  --background-cream: #fdfcfa;
+  
+  /* Revolutionary Color System */
+  --color-purple-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --color-pink-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --color-cyan-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  --color-rainbow-gradient: linear-gradient(45deg, #ff0080, #ff8c00, #40e0d0, #ff00ff);
+}
+
+/* Mobile viewport height optimization */
+@supports (height: 100dvh) {
+  .min-h-screen {
+    min-height: 100dvh;
+  }
+}
+
+/* Ensure better mobile scroll behavior */
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* Mobile-specific optimizations */
+@media (max-width: 640px) {
+  .hero-mobile-optimized {
+    min-height: calc(100vh - 2rem);
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+}
+
+/* Touch-optimized 3D carousel */
+.gallery-3d {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.gallery-3d-item {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 @theme inline {
@@ -22,5 +77,341 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  line-height: 1.6;
+}
+
+/* Revolutionary Animations */
+@keyframes gradient-x {
+  0%, 100% {
+    transform: translateX(0%);
+  }
+  50% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse-color {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+@keyframes magnetic {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(var(--magnetic-x, 0), var(--magnetic-y, 0));
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(139, 69, 19, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(139, 69, 19, 0.6), 0 0 60px rgba(139, 69, 19, 0.4);
+  }
+}
+
+/* Utility Classes */
+.animate-gradient-x {
+  animation: gradient-x 15s ease infinite;
+  background-size: 200% 200%;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+
+.animate-pulse-color {
+  animation: pulse-color 3s ease infinite;
+  background-size: 200% 200%;
+}
+
+.animate-ripple {
+  animation: ripple 0.6s ease-out;
+}
+
+.animate-magnetic {
+  animation: magnetic 0.3s ease-out;
+}
+
+.animate-shimmer {
+  animation: shimmer 2s ease-in-out infinite;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  background-size: 1000px 100%;
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+/* Advanced Button Effects */
+.btn-magnetic {
+  transition: transform 0.2s ease-out;
+}
+
+.btn-magnetic:hover {
+  transform: translateY(-2px);
+}
+
+.btn-burst {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-burst::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  transition: all 0.6s ease;
+}
+
+.btn-burst:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* Hair Color Effects */
+.hair-strand {
+  background: linear-gradient(45deg, transparent 48%, #8b4513 49%, #8b4513 51%, transparent 52%);
+  animation: float 2s ease-in-out infinite;
+}
+
+/* Glass Morphism Effects */
+.glass-morphism {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+/* Text Effects */
+.text-gradient-purple {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-rainbow {
+  background: linear-gradient(45deg, #ff0080, #ff8c00, #40e0d0, #ff00ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: pulse-color 3s ease infinite;
+  background-size: 200% 200%;
+}
+
+/* Scroll Behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+@media (min-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+/* Line Clamp Utility */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Mobile-First Responsive Utilities */
+@media (max-width: 640px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  /* Mobile-optimized typography */
+  h1, h2, h3, h4, h5, h6 {
+    line-height: 1.2;
+  }
+  
+  /* Touch-friendly minimum sizes */
+  button, 
+  .btn,
+  [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Improved tap targets */
+  a, button, input, textarea, select {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Prevent horizontal scroll */
+  html, body {
+    overflow-x: hidden;
+  }
+  
+  /* Mobile-optimized shadows */
+  .shadow-2xl {
+    box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+  
+  /* Reduce motion for better mobile performance */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* Tablet optimizations */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  /* Increase button sizes for touch */
+  button, .btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+  
+  /* Remove hover states that don't work on touch */
+  .hover\:scale-105:hover {
+    transform: none;
+  }
+  
+  /* Make interactive elements more obvious */
+  button, [role="button"], a {
+    cursor: pointer;
+  }
+}
+
+/* 3D Gallery Performance Optimizations */
+.gallery-3d {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.gallery-3d-item {
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translate3d(0, 0, 0); /* Force GPU acceleration */
+}
+
+/* Reduced motion support for 3D effects */
+@media (prefers-reduced-motion: reduce) {
+  .gallery-3d,
+  .gallery-3d-item {
+    transform: none !important;
+    animation: none !important;
+  }
+}
+
+/* 3D Performance optimizations for mobile */
+@media (max-width: 640px) {
+  .gallery-3d {
+    perspective: 600px; /* Reduced perspective for mobile */
+  }
+  
+  .gallery-3d-item {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); /* Lighter shadows on mobile */
+  }
+}
+
+/* Particle optimization */
+.particle-trail {
+  will-change: transform, opacity;
+  pointer-events: none;
+  contain: layout style paint;
+}
+
+/* Hair strand effect */
+.hair-particle {
+  background: linear-gradient(90deg, transparent 20%, currentColor 50%, transparent 80%);
+  filter: blur(0.5px);
+  transform: translate3d(0, 0, 0);
 }

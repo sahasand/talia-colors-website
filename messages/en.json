@@ -1,0 +1,412 @@
+{
+  "metadata": {
+    "title": "Talia Colors - Where Artistry Meets Beautiful Hair",
+    "description": "Personalized hair color by Talia—expertly crafted, creative, and uniquely tailored to you. AI-powered color recommendations and professional hair styling services."
+  },
+  "mainPage": {
+    "sections": {
+      "inspiration": {
+        "title": "Inspiration",
+        "description": "Get inspired by these gorgeous hair color transformations"
+      },
+      "footer": {
+        "brandName": "Talia Colors",
+        "tagline": "Where Artistry Meets Beautiful Hair",
+        "whatsappButton": "💬 WhatsApp",
+        "instagramButton": "📸 Instagram"
+      },
+      "contact": {
+        "whatsappNumber": "554899169053",
+        "whatsappUrl": "https://wa.me/554899169053",
+        "instagramHandle": "taliacolors",
+        "instagramUrl": "https://instagram.com/taliacolors"
+      }
+    }
+  },
+  "heroSection": {
+    "title": "Talia Colors",
+    "tagline": "Where Artistry Meets Beautiful Hair",
+    "description": "Personalized hair color by Talia—expertly crafted, creative, and uniquely tailored to you.",
+    "cta": {
+      "bookAppointmentFull": "Book Appointment",
+      "bookAppointmentShort": "Book Now"
+    },
+    "imageAltTexts": [
+      "Hair transformation 1",
+      "Hair transformation 2",
+      "Hair transformation 3"
+    ]
+  },
+  "gallery": {
+    "title": "Transformations",
+    "transformations": [
+      {
+        "title": "Honey Balayage",
+        "service": "Balayage"
+      },
+      {
+        "title": "Natural Blonde",
+        "service": "Highlights"
+      },
+      {
+        "title": "Ash Blonde Bob",
+        "service": "Color & Cut"
+      },
+      {
+        "title": "Chocolate Caramel",
+        "service": "Balayage"
+      },
+      {
+        "title": "Classic Brown",
+        "service": "Men's Color"
+      },
+      {
+        "title": "Rainbow Fantasy",
+        "service": "Creative Color"
+      }
+    ]
+  },
+  "aiColorPicker": {
+    "intro": {
+      "title": "Personal Color Consultation",
+      "description": "Talia's expert color analysis enhanced by advanced AI technology to understand your unique features, lifestyle, and style preferences for perfectly tailored recommendations.",
+      "ctaButton": "Discover Your Perfect Colors"
+    },
+    "workflow": {
+      "title": "Color Analysis",
+      "description": "Let Talia analyze your features and recommend perfect colors",
+      "steps": [
+        {
+          "title": "Upload Photo",
+          "icon": "📸"
+        },
+        {
+          "title": "Style Quiz",
+          "icon": "🎨"
+        },
+        {
+          "title": "Color Analysis",
+          "icon": "🎨"
+        },
+        {
+          "title": "Your Colors",
+          "icon": "✨"
+        }
+      ]
+    }
+  },
+  "photoUpload": {
+    "title": "Upload Your Photo",
+    "description": "Take a photo or upload one for the most accurate AI color analysis",
+    "dragDrop": {
+      "default": "Drag & drop your photo here",
+      "active": "Drop your photo here!",
+      "subtitle": "or click below to take/upload a photo"
+    },
+    "processing": "Processing your photo...",
+    "buttons": {
+      "uploadFull": "Upload Photo",
+      "uploadShort": "Upload",
+      "backToMain": "← Back to Main Page"
+    },
+    "tips": {
+      "title": "💡 For Best Results:",
+      "items": [
+        "• Good lighting (natural light preferred)",
+        "• Clear view of your face and hair",
+        "• No filters or heavy editing",
+        "• Face the camera directly"
+      ]
+    },
+    "validation": {
+      "invalidType": "Please upload a valid image file (JPEG, PNG, or WebP)",
+      "tooLarge": "File size must be less than 10MB"
+    }
+  },
+  "questionnaire": {
+    "title": "Style Quiz",
+    "progressLabel": "Question {current} of {total}",
+    "progressText": "Progress",
+    "questions": [
+      {
+        "title": "What best describes your skin tone?",
+        "description": "This helps us recommend colors that complement your complexion",
+        "options": [
+          {
+            "label": "Fair",
+            "description": "Light with pink or neutral undertones",
+            "emoji": "🌸"
+          },
+          {
+            "label": "Medium",
+            "description": "Olive or warm beige tones",
+            "emoji": "🌻"
+          },
+          {
+            "label": "Olive",
+            "description": "Green or yellow undertones",
+            "emoji": "🫒"
+          },
+          {
+            "label": "Deep",
+            "description": "Rich warm or cool undertones",
+            "emoji": "✨"
+          }
+        ]
+      },
+      {
+        "title": "How would you describe your lifestyle?",
+        "description": "Your daily routine affects color maintenance and suitability",
+        "options": [
+          {
+            "label": "Professional",
+            "description": "Corporate environment, classic style",
+            "emoji": "💼"
+          },
+          {
+            "label": "Creative",
+            "description": "Artistic field, expression is key",
+            "emoji": "🎨"
+          },
+          {
+            "label": "Casual",
+            "description": "Relaxed, comfortable approach",
+            "emoji": "👟"
+          },
+          {
+            "label": "Glamorous",
+            "description": "Love to stand out and shine",
+            "emoji": "💎"
+          }
+        ]
+      },
+      {
+        "title": "How much hair maintenance do you prefer?",
+        "description": "Different colors require different upkeep levels",
+        "options": [
+          {
+            "label": "Low Maintenance",
+            "description": "Touch-ups every 3-4 months",
+            "emoji": "🌿"
+          },
+          {
+            "label": "Medium Maintenance",
+            "description": "Salon visits every 6-8 weeks",
+            "emoji": "⚡"
+          },
+          {
+            "label": "High Maintenance",
+            "description": "Regular touch-ups and treatments",
+            "emoji": "💅"
+          }
+        ]
+      },
+      {
+        "title": "What is your current hair color?",
+        "description": "Starting point affects the coloring process and options",
+        "options": [
+          {
+            "label": "Blonde",
+            "description": "Light natural or colored blonde",
+            "emoji": "👱‍♀️"
+          },
+          {
+            "label": "Brown",
+            "description": "Light to dark brown shades",
+            "emoji": "👩‍🦱"
+          },
+          {
+            "label": "Black",
+            "description": "Natural or dyed black hair",
+            "emoji": "👩‍🦲"
+          },
+          {
+            "label": "Red",
+            "description": "Natural or colored red tones",
+            "emoji": "👩‍🦰"
+          },
+          {
+            "label": "Other",
+            "description": "Gray, white, or fantasy colors",
+            "emoji": "🌈"
+          }
+        ]
+      },
+      {
+        "title": "What vibe are you going for?",
+        "description": "The overall feeling you want your new color to express",
+        "options": [
+          {
+            "label": "Natural",
+            "description": "Enhance what you have",
+            "emoji": "🍃"
+          },
+          {
+            "label": "Bold",
+            "description": "Make a statement",
+            "emoji": "🔥"
+          },
+          {
+            "label": "Subtle",
+            "description": "Gentle enhancement",
+            "emoji": "🌙"
+          },
+          {
+            "label": "Dramatic",
+            "description": "Complete transformation",
+            "emoji": "⚡"
+          }
+        ]
+      },
+      {
+        "title": "How experienced are you with hair coloring?",
+        "description": "This helps us recommend appropriate color changes",
+        "options": [
+          {
+            "label": "First Time",
+            "description": "New to hair coloring",
+            "emoji": "🌱"
+          },
+          {
+            "label": "Occasional",
+            "description": "Color once in a while",
+            "emoji": "🌸"
+          },
+          {
+            "label": "Regular",
+            "description": "Color frequently",
+            "emoji": "🎯"
+          },
+          {
+            "label": "Expert",
+            "description": "Very experienced with color",
+            "emoji": "👑"
+          }
+        ]
+      }
+    ],
+    "navigation": {
+      "previous": "Previous",
+      "next": "Next",
+      "backToUpload": "Back to Upload",
+      "analyzeColors": "Analyze Colors"
+    }
+  },
+  "aiProcessing": {
+    "title": "Analyzing Your Perfect Colors",
+    "description": "Talia is analyzing your features and preferences...",
+    "steps": [
+      {
+        "message": "Detecting facial features and skin tone..."
+      },
+      {
+        "message": "Analyzing your natural color palette..."
+      },
+      {
+        "message": "Matching colors to your lifestyle preferences..."
+      },
+      {
+        "message": "Calculating color compatibility scores..."
+      },
+      {
+        "message": "Generating personalized recommendations..."
+      },
+      {
+        "message": "Analysis complete! Preparing your results..."
+      }
+    ],
+    "analysisProfile": {
+      "title": "🧬 Your Analysis Profile:",
+      "fields": {
+        "skinTone": "Skin Tone:",
+        "lifestyle": "Lifestyle:",
+        "maintenance": "Maintenance:",
+        "currentColor": "Current Color:",
+        "desiredVibe": "Desired Vibe:",
+        "experience": "Experience:"
+      }
+    },
+    "completionMessage": "Analysis Complete!",
+    "recommendations": {
+      "caramelHighlights": {
+        "name": "Caramel Highlights",
+        "description": "Warm, honey-kissed highlights that add dimension and brightness",
+        "process": "Hand-painted balayage with 20-vol developer, followed by honey-toned gloss for seamless blending",
+        "estimatedTime": "3-4 hours",
+        "price": "R$ 180-250"
+      },
+      "chocolateBrown": {
+        "name": "Rich Chocolate Brown",
+        "description": "Deep, luxurious brown with subtle warm undertones",
+        "process": "Deep base application with demi-permanent color, plus strategic lowlights for dimension",
+        "estimatedTime": "2-3 hours",
+        "price": "R$ 120-180"
+      },
+      "ashBlonde": {
+        "name": "Ash Blonde",
+        "description": "Cool-toned blonde that neutralizes brassiness",
+        "process": "Multi-step lightening with purple-based toner to neutralize warmth and achieve cool undertones",
+        "estimatedTime": "4-5 hours",
+        "price": "R$ 250-350"
+      },
+      "strawberryBlonde": {
+        "name": "Strawberry Blonde",
+        "description": "Warm blonde with soft red undertones",
+        "process": "Sectioned foil highlights with warm copper base, blended with strawberry gloss overlay",
+        "estimatedTime": "3-4 hours",
+        "price": "R$ 200-280"
+      },
+      "burgundyOmbre": {
+        "name": "Burgundy Ombré",
+        "description": "Deep wine red fading from dark roots to vibrant ends",
+        "process": "Gradient lightening technique with creative color melting from natural base to vibrant burgundy ends",
+        "estimatedTime": "4-6 hours",
+        "price": "R$ 280-400"
+      },
+      "copperRed": {
+        "name": "Copper Red",
+        "description": "Vibrant copper with golden highlights",
+        "process": "Pre-lightening with bond protection, followed by vivid copper application and golden highlight accents",
+        "estimatedTime": "4-5 hours",
+        "price": "R$ 220-320"
+      }
+    }
+  },
+  "colorRecommendations": {
+    "title": "This Is YOUR Color! 🎉",
+    "description": "After analyzing your unique features, skin tone, and style preferences, our AI found the perfect color that will make you look absolutely stunning.",
+    "cta": {
+      "bookNowFull": "Book Your Perfect Color Now",
+      "bookNowShort": "Book Now",
+      "tryAgainFull": "Try Again",
+      "tryAgainShort": "Retry"
+    },
+    "whatsappMessage": "Hi! I want to book an appointment for my perfect color: {colorName}! The AI picker recommended this specifically for me.",
+    "processTitle": "🔬 How We'll Create This Look",
+    "fields": {
+      "maintenance": "Maintenance",
+      "time": "Time",
+      "category": "Category",
+      "match": "Match"
+    },
+    "placeholders": {
+      "yourPhoto": "Your Photo",
+      "failedToLoad": "Failed to load"
+    }
+  },
+  "whatsapp": {
+    "appointmentBooking": "Hi! I want to book an appointment for my perfect color: {colorName}! The AI picker recommended this specifically for me.",
+    "generalBooking": "Hi! I'd like to book an appointment with Talia for hair color services."
+  },
+  "altTexts": {
+    "userPhoto": "Your photo",
+    "transformations": [
+      "Honey Balayage transformation",
+      "Natural Blonde highlights",
+      "Ash Blonde Bob cut and color",
+      "Chocolate Caramel balayage",
+      "Classic Brown men's color",
+      "Rainbow Fantasy creative color"
+    ]
+  }
+}
