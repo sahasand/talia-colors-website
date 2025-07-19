@@ -21,6 +21,9 @@
         "instagramHandle": "taliacolors",
         "instagramUrl": "https://instagram.com/taliacolors"
       }
+    },
+    "whatsapp": {
+      "generalBooking": "Oi! Gostaria de agendar um horário com a Talia para serviços de coloração capilar."
     }
   },
   "heroSection": {
@@ -30,6 +33,9 @@
     "cta": {
       "bookAppointmentFull": "Agendar Consulta",
       "bookAppointmentShort": "Agendar"
+    },
+    "whatsapp": {
+      "generalBooking": "Oi! Gostaria de agendar um horário com a Talia para serviços de coloração capilar."
     },
     "imageAltTexts": [
       "Transformação capilar 1",
@@ -289,7 +295,8 @@
       "previous": "Anterior",
       "next": "Próximo",
       "backToUpload": "Voltar ao Upload",
-      "analyzeColors": "Analisar Cores"
+      "analyzeColors": "Analisar Cores",
+      "autoAdvancing": "Avançando para próxima pergunta..."
     }
   },
   "aiProcessing": {

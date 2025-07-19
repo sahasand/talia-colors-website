@@ -10,6 +10,7 @@ const HeroSection = () => {
   const [isPaused, setIsPaused] = useState(false);
   const [lastInteraction, setLastInteraction] = useState(Date.now());
   const [touchingImage, setTouchingImage] = useState<number | null>(null);
+  const [touchingButton, setTouchingButton] = useState(false);
   const [particles, setParticles] = useState<Array<{
     background: string;
     left: string;
@@ -837,7 +838,22 @@ const HeroSection = () => {
           >
             <motion.button
               className="relative bg-gradient-to-r from-purple-600 via-pink-600 to-cyan-600 text-white px-6 sm:px-8 md:px-12 py-3 sm:py-4 md:py-5 rounded-full text-sm sm:text-base md:text-lg lg:text-xl font-bold shadow-2xl overflow-hidden group"
-              onClick={() => window.open('https://wa.me/554899169053', '_blank')}
+              onClick={() => {
+                const message = encodeURIComponent(t('whatsapp.generalBooking'));
+                window.open(`https://wa.me/554899169053?text=${message}`, '_blank');
+              }}
+              onTouchStart={() => {
+                setTouchingButton(true);
+                if (navigator.vibrate) {
+                  navigator.vibrate(15);
+                }
+              }}
+              onTouchEnd={() => {
+                setTouchingButton(false);
+              }}
+              onTouchCancel={() => {
+                setTouchingButton(false);
+              }}
               variants={{
                 hover: { 
                   scale: 1.1,
@@ -860,7 +876,9 @@ const HeroSection = () => {
             >
               {/* Animated Background Layers */}
               <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-cyan-600 via-purple-600 to-pink-600 opacity-0 group-hover:opacity-100"
+                className={`absolute inset-0 bg-gradient-to-r from-cyan-600 via-purple-600 to-pink-600 ${
+                  touchingButton ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                }`}
                 variants={{
                   hover: { 
                     opacity: 1,
@@ -946,6 +964,7 @@ const HeroSection = () => {
                   }
                 }}
                 initial={{ opacity: 0 }}
+                animate={{ opacity: touchingButton ? 1 : 0 }}
               >
                 {[...Array(6)].map((_, i) => (
                   <motion.div
@@ -955,6 +974,12 @@ const HeroSection = () => {
                       left: '50%',
                       top: '50%',
                     }}
+                    animate={touchingButton ? {
+                      x: [0, (Math.cos(i * 60 * Math.PI / 180) * 60)],
+                      y: [0, (Math.sin(i * 60 * Math.PI / 180) * 60)],
+                      opacity: [0, 1, 0],
+                      scale: [0, 1.5, 0],
+                    } : {}}
                     variants={{
                       hover: {
                         x: [0, (Math.cos(i * 60 * Math.PI / 180) * 40)],

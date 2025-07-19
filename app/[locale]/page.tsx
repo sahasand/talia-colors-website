@@ -6,6 +6,7 @@ import HeroSection from '../components/ui/HeroSection';
 import SmartGalleryGrid from '../components/ui/SmartGalleryGrid';
 import AIColorPickerSection from '../components/ai/AIColorPickerSection';
 import LanguageSwitcher from '../components/ui/LanguageSwitcher';
+import WhatsAppButton from '../components/ui/WhatsAppButton';
 import { ErrorBoundary } from '../components/ErrorBoundary';
 
 export function generateStaticParams() {
@@ -88,15 +89,16 @@ export default async function Home({
             {t('sections.footer.tagline')}
           </p>
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6">
-            <a 
-              href={t('sections.contact.whatsappUrl')}
+            <WhatsAppButton
+              message={t('whatsapp.generalBooking')}
+              phoneNumber={t('sections.contact.whatsappNumber')}
               className="group relative px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-purple-600/20 to-pink-600/20 rounded-full border border-purple-300/30 hover:border-purple-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20 hover:-translate-y-1 backdrop-blur-sm w-full sm:w-auto max-w-xs sm:max-w-none"
             >
               <span className="relative z-10 text-purple-700 group-hover:text-purple-800 transition-colors duration-300 font-medium text-sm sm:text-base">
                 {t('sections.footer.whatsappButton')}
               </span>
               <div className="absolute inset-0 bg-gradient-to-r from-purple-600/0 to-pink-600/0 group-hover:from-purple-600/30 group-hover:to-pink-600/30 rounded-full transition-all duration-300" />
-            </a>
+            </WhatsAppButton>
             <a 
               href={t('sections.contact.instagramUrl')}
               className="group relative px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-pink-600/20 to-cyan-600/20 rounded-full border border-pink-300/30 hover:border-pink-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-pink-500/20 hover:-translate-y-1 backdrop-blur-sm w-full sm:w-auto max-w-xs sm:max-w-none"

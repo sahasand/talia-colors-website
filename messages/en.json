@@ -21,6 +21,9 @@
         "instagramHandle": "taliacolors",
         "instagramUrl": "https://instagram.com/taliacolors"
       }
+    },
+    "whatsapp": {
+      "generalBooking": "Hi! I'd like to book an appointment with Talia for hair color services."
     }
   },
   "heroSection": {
@@ -30,6 +33,9 @@
     "cta": {
       "bookAppointmentFull": "Book Appointment",
       "bookAppointmentShort": "Book Now"
+    },
+    "whatsapp": {
+      "generalBooking": "Hi! I'd like to book an appointment with Talia for hair color services."
     },
     "imageAltTexts": [
       "Hair transformation 1",
@@ -289,7 +295,8 @@
       "previous": "Previous",
       "next": "Next",
       "backToUpload": "Back to Upload",
-      "analyzeColors": "Analyze Colors"
+      "analyzeColors": "Analyze Colors",
+      "autoAdvancing": "Moving to next question..."
     }
   },
   "aiProcessing": {

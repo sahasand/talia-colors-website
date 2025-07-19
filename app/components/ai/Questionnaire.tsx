@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { UserPhoto, QuestionnaireData } from './types';
 
@@ -25,6 +25,13 @@ interface Question {
 
 export default function Questionnaire({ userPhoto, onComplete, onBack }: QuestionnaireProps) {
   const t = useTranslations('questionnaire');
+
+  // Detect touch device
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+  
+  useEffect(() => {
+    setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0);
+  }, []);
 
   // Generate questions from translations with memoization
   const questions = useMemo((): Question[] => [
@@ -99,6 +106,7 @@ export default function Questionnaire({ userPhoto, onComplete, onBack }: Questio
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Partial<QuestionnaireData>>({});
   const [selectedOption, setSelectedOption] = useState<string>('');
+  const [isAutoAdvancing, setIsAutoAdvancing] = useState(false);
   
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -114,7 +122,27 @@ export default function Questionnaire({ userPhoto, onComplete, onBack }: Questio
       ...prev,
       [currentQuestion.id]: value
     }));
-  }, [currentQuestion.id]);
+    
+    // Auto-advance on touch devices
+    if (isTouchDevice) {
+      setIsAutoAdvancing(true);
+      // Small delay to show selection feedback
+      setTimeout(() => {
+        if (currentQuestionIndex < questions.length - 1) {
+          setCurrentQuestionIndex(prev => prev + 1);
+          setSelectedOption(answers[questions[currentQuestionIndex + 1].id] || '');
+        } else {
+          // Complete questionnaire
+          const updatedAnswers = { ...answers, [currentQuestion.id]: value };
+          const isComplete = questions.every(q => updatedAnswers[q.id]);
+          if (isComplete) {
+            onComplete(updatedAnswers as QuestionnaireData);
+          }
+        }
+        setIsAutoAdvancing(false);
+      }, 400);
+    }
+  }, [currentQuestion.id, isTouchDevice, currentQuestionIndex, questions, answers, onComplete]);
 
   const handleNext = useCallback(() => {
     if (currentQuestionIndex < questions.length - 1) {
@@ -149,7 +177,7 @@ export default function Questionnaire({ userPhoto, onComplete, onBack }: Questio
     >
       {/* Progress Header */}
       <div className="mb-6 sm:mb-8">
-        <div className="flex flex-col sm:flex-row items-center justify-between mb-4 gap-4 sm:gap-0">
+        <div className="flex flex-col sm:flex-row items-center justify-between mb-4 gap-3 sm:gap-0">
           <div className="flex items-center gap-3 sm:gap-4">
             <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full overflow-hidden border-4 border-purple-200">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -260,7 +288,7 @@ export default function Questionnaire({ userPhoto, onComplete, onBack }: Questio
               >
                 <motion.button
                   onClick={() => handleOptionSelect(option.value)}
-                  className={`relative w-full p-4 sm:p-6 md:p-8 rounded-2xl border-2 text-left transition-all duration-500 overflow-hidden ${
+                  className={`relative w-full p-4 sm:p-6 md:p-8 rounded-2xl border-2 text-left transition-all duration-500 overflow-hidden cursor-pointer active:scale-[0.98] ${
                     selectedOption === option.value
                       ? 'border-purple-500 bg-purple-50 shadow-2xl'
                       : 'border-gray-200 hover:border-purple-300 bg-white'
@@ -307,6 +335,16 @@ export default function Questionnaire({ userPhoto, onComplete, onBack }: Questio
                       initial={{ scale: 0, opacity: 1 }}
                       animate={{ scale: 1.2, opacity: 0 }}
                       transition={{ duration: 1, ease: "easeOut" }}
+                    />
+                  )}
+                  
+                  {/* Touch feedback overlay */}
+                  {isTouchDevice && selectedOption === option.value && isAutoAdvancing && (
+                    <motion.div
+                      className="absolute inset-0 bg-purple-600/10 rounded-2xl"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: [0, 1, 0] }}
+                      transition={{ duration: 0.4 }}
                     />
                   )}
                   
@@ -387,12 +425,29 @@ export default function Questionnaire({ userPhoto, onComplete, onBack }: Questio
         </motion.div>
       </AnimatePresence>
 
-      {/* Advanced Navigation Buttons */}
+      {/* Mobile Back Button - Always visible for touch devices */}
+      {isTouchDevice && (
+        <div className="flex justify-start mb-4">
+          <motion.button
+            onClick={handlePrevious}
+            className="flex items-center gap-2 px-6 py-3 min-h-[44px] bg-gray-100 text-gray-700 font-medium rounded-full active:scale-95 transition-all"
+            whileTap={{ scale: 0.95 }}
+          >
+            <span>←</span>
+            <span>
+              {currentQuestionIndex === 0 ? t('navigation.backToUpload') : t('navigation.previous')}
+            </span>
+          </motion.button>
+        </div>
+      )}
+      
+      {/* Advanced Navigation Buttons - Desktop only or final question on mobile */}
+      {(!isTouchDevice || currentQuestionIndex === questions.length - 1) && (
       <div className="flex justify-between items-center">
         {/* Previous Button */}
         <motion.button
           onClick={handlePrevious}
-          className="relative flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-2 sm:py-3 text-gray-600 hover:text-gray-800 font-medium transition-all duration-300 rounded-full group text-sm sm:text-base"
+          className="relative flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 min-h-[44px] text-gray-600 hover:text-gray-800 font-medium transition-all duration-300 rounded-full group text-sm sm:text-base"
           whileHover={{ 
             scale: 1.05,
             x: -5
@@ -430,7 +485,7 @@ export default function Questionnaire({ userPhoto, onComplete, onBack }: Questio
           <motion.button
             onClick={handleNext}
             disabled={!selectedOption}
-            className={`relative px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-full font-bold transition-all duration-500 overflow-hidden text-sm sm:text-base ${
+            className={`relative px-8 sm:px-10 md:px-12 py-4 sm:py-5 min-h-[48px] rounded-full font-bold transition-all duration-500 overflow-hidden text-base sm:text-lg ${
               selectedOption
                 ? 'bg-gradient-to-r from-purple-600 via-pink-600 to-cyan-600 text-white shadow-2xl'
                 : 'bg-gray-200 text-gray-400 cursor-not-allowed'
@@ -527,7 +582,27 @@ export default function Questionnaire({ userPhoto, onComplete, onBack }: Questio
           </motion.button>
         </motion.div>
       </div>
+      )}
 
+      {/* Auto-advance indicator for mobile */}
+      <AnimatePresence>
+        {isTouchDevice && isAutoAdvancing && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="text-center mt-4 text-sm text-purple-600 font-medium flex items-center justify-center gap-2"
+          >
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+              className="w-4 h-4 border-2 border-purple-600 border-t-transparent rounded-full"
+            />
+            {t('navigation.autoAdvancing')}
+          </motion.div>
+        )}
+      </AnimatePresence>
+      
       {/* Question Indicators */}
       <div className="flex justify-center gap-1 sm:gap-2 mt-4 sm:mt-6">
         {questions.map((_, index) => (
