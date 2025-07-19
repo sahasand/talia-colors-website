@@ -219,7 +219,7 @@ const HeroSectionSimple = () => {
       <div className="relative z-20 max-w-6xl mx-auto px-4 sm:px-6 text-center w-full">
         <div className="mb-4 sm:mb-6 md:mb-8">
           <motion.h1 
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-8xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-cyan-600 bg-clip-text text-transparent leading-tight tracking-tight"
+            className="text-5xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-8xl font-bold text-rainbow-animated leading-tight tracking-tight"
           style={{
             textShadow: '0 0 40px rgba(168, 85, 247, 0.3), 0 0 80px rgba(236, 72, 153, 0.2)',
             filter: 'drop-shadow(0 4px 20px rgba(0,0,0,0.1))'

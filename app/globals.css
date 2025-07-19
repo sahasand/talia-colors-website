@@ -779,6 +779,39 @@ body {
   background-size: 200% 200%;
 }
 
+/* Animated Rainbow Gradient - 2025 Popular Effect */
+@keyframes rainbow-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.text-rainbow-animated {
+  background: linear-gradient(
+    90deg,
+    #ff6b6b,
+    #4ecdc4,
+    #45b7d1,
+    #96ceb4,
+    #feca57,
+    #ff9ff3,
+    #54a0ff,
+    #5f27cd,
+    #ff6b6b
+  );
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: rainbow-shift 6s ease-in-out infinite;
+}
+
 /* Scroll Behavior */
 html {
   scroll-behavior: smooth;
