@@ -25,9 +25,9 @@ const HeroSectionSimple = () => {
   const isTablet = useMemo(() => screenSize.width >= 640 && screenSize.width < 1024, [screenSize.width]);
 
   const imageSizeOffset = useMemo(() => {
-    if (isMobile) return 56; // 112px / 2 (w-28 = 7rem = 112px)
-    if (isTablet) return 88; // 176px / 2 (w-44 = 11rem = 176px)
-    return 144; // 288px / 2 (w-72 = 18rem = 288px)
+    if (isMobile) return 72; // 144px / 2 (w-36 = 9rem = 144px)
+    if (isTablet) return 112; // 224px / 2 (w-56 = 14rem = 224px)
+    return 192; // 384px / 2 (w-96 = 24rem = 384px)
   }, [isMobile, isTablet]);
 
   const heroImages = useMemo(() => [
@@ -48,10 +48,10 @@ const HeroSectionSimple = () => {
     const relativeIndex = (imageIndex - currentIndex + totalImages) % totalImages;
     const angle = (relativeIndex / totalImages) * Math.PI * 2;
     
-    // Responsive circle parameters - mobile optimized for viewport fit with increased spacing
-    const radiusX = isMobile ? 140 : isTablet ? 180 : 260;
-    const radiusZ = isMobile ? 110 : isTablet ? 135 : 195;
-    const baseScale = isMobile ? 0.45 : isTablet ? 0.75 : 0.8;
+    // Responsive circle parameters - larger for more dramatic effect
+    const radiusX = isMobile ? 200 : isTablet ? 280 : 400;
+    const radiusZ = isMobile ? 160 : isTablet ? 210 : 300;
+    const baseScale = isMobile ? 0.55 : isTablet ? 0.85 : 1.0;
     
     // Calculate position on circle
     const x = Math.sin(angle) * radiusX;
@@ -68,13 +68,13 @@ const HeroSectionSimple = () => {
     // Calculate z-index based on position in 3D space
     // Images closer to front (higher z value) get higher z-index
     const normalizedZ = (z + radiusZ * 2) / (radiusZ * 2); // Normalize z to 0-1
-    const zIndex = Math.round(normalizedZ * 100); // Convert to z-index value
+    const zIndex = relativeIndex === 0 ? 25 : Math.round(normalizedZ * 10); // Active image gets z-index 25 to overlap text
     
     return {
       x, y, z,
       scale,
       rotateY,
-      opacity: 0.4 + (1 - distanceFromFront) * 0.6,
+      opacity: relativeIndex === 0 ? 1 : 0.3 + (1 - distanceFromFront) * 0.5,
       zIndex
     };
   }, [isMobile, isTablet]);
@@ -216,53 +216,53 @@ const HeroSectionSimple = () => {
       </motion.button>
 
       {/* Main Content */}
-      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 text-center w-full">
-        <div className="mb-2 sm:mb-4 md:mb-6">
+      <div className="relative z-20 max-w-6xl mx-auto px-4 sm:px-6 text-center w-full">
+        <div className="mb-4 sm:mb-6 md:mb-8">
           <motion.h1 
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-8xl font-bold mb-1 sm:mb-2 md:mb-4 bg-gradient-to-r from-purple-600 via-pink-600 to-cyan-600 bg-clip-text text-transparent leading-tight tracking-tight"
-            style={{
-              textShadow: '0 0 40px rgba(168, 85, 247, 0.3), 0 0 80px rgba(236, 72, 153, 0.2)',
-              filter: 'drop-shadow(0 4px 20px rgba(0,0,0,0.1))'
-            }}
-            initial={{ opacity: 0, y: 30, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 1, delay: 0.2, type: 'spring', stiffness: 100 }}
-          >
-            {t('title')}
-          </motion.h1>
-          
-          <motion.p 
-            className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-light text-gray-100 mb-1 sm:mb-2 backdrop-blur-sm"
-            style={{
-              textShadow: '0 2px 20px rgba(0,0,0,0.5), 0 0 40px rgba(255,255,255,0.1)'
-            }}
-            initial={{ opacity: 0, y: 20, filter: 'blur(10px)' }}
-            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            transition={{ duration: 1, delay: 0.4 }}
-          >
-            {t('tagline')}
-          </motion.p>
-          
-          <motion.p 
-            className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 max-w-xl sm:max-w-3xl mx-auto px-4 sm:px-0 leading-relaxed backdrop-blur-sm"
-            style={{
-              textShadow: '0 2px 15px rgba(0,0,0,0.4)'
-            }}
-            initial={{ opacity: 0, y: 20, filter: 'blur(10px)' }}
-            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            transition={{ duration: 1, delay: 0.6 }}
-          >
-            {t('description')}
-          </motion.p>
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-8xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-cyan-600 bg-clip-text text-transparent leading-tight tracking-tight backdrop-blur-md bg-black/20 p-4 sm:p-6 md:p-8 rounded-3xl border border-white/10 inline-block"
+          style={{
+            textShadow: '0 0 40px rgba(168, 85, 247, 0.3), 0 0 80px rgba(236, 72, 153, 0.2)',
+            filter: 'drop-shadow(0 4px 20px rgba(0,0,0,0.1))'
+          }}
+          initial={{ opacity: 0, y: 30, scale: 0.9 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 1, delay: 0.2, type: 'spring', stiffness: 100 }}
+        >
+          {t('title')}
+        </motion.h1>
         </div>
+        
+        <motion.p 
+          className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-light text-white mb-2 sm:mb-3 md:mb-4"
+          style={{
+            textShadow: '0 4px 30px rgba(0,0,0,0.8), 0 2px 10px rgba(0,0,0,0.6), 0 0 60px rgba(255,255,255,0.1)'
+          }}
+          initial={{ opacity: 0, y: 20, filter: 'blur(10px)' }}
+          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 1, delay: 0.4 }}
+        >
+          {t('tagline')}
+        </motion.p>
+        
+        <motion.p 
+          className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-100 max-w-xl sm:max-w-3xl mx-auto px-4 sm:px-0 leading-relaxed"
+          style={{
+            textShadow: '0 3px 25px rgba(0,0,0,0.7), 0 1px 5px rgba(0,0,0,0.5)'
+          }}
+          initial={{ opacity: 0, y: 20, filter: 'blur(10px)' }}
+          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 1, delay: 0.6 }}
+        >
+          {t('description')}
+        </motion.p>
 
-        {/* 3D Image Gallery - Mobile Optimized */}
-        <div className="relative w-full h-60 sm:h-72 md:h-[22rem] lg:h-[26rem] xl:h-[30rem] mb-2 sm:mb-4 md:mb-6">
+        {/* 3D Image Gallery - Larger and Overlapping */}
+        <div className="relative w-full h-72 sm:h-80 md:h-[28rem] lg:h-[34rem] xl:h-[40rem] -mt-12 sm:-mt-12 md:-mt-8 lg:-mt-4 xl:mt-0 mb-0">
           <motion.div
             className="relative w-full h-full gallery-3d"
             style={{
               transformStyle: 'preserve-3d',
-              perspective: isMobile ? '800px' : '1200px',
+              perspective: isMobile ? '1000px' : '1500px',
             }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -274,7 +274,7 @@ const HeroSectionSimple = () => {
               return (
                 <motion.div
                   key={index}
-                  className="absolute w-28 h-28 sm:w-44 sm:h-44 md:w-56 md:h-56 lg:w-64 lg:h-64 xl:w-72 xl:w-72 rounded-3xl overflow-hidden cursor-pointer group"
+                  className="absolute w-36 h-36 sm:w-56 sm:h-56 md:w-72 md:h-72 lg:w-80 lg:h-80 xl:w-96 xl:h-96 rounded-3xl overflow-hidden cursor-pointer group"
                   style={{
                     left: '50%',
                     top: '50%',
@@ -283,8 +283,8 @@ const HeroSectionSimple = () => {
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     boxShadow: index === currentImageIndex 
-                      ? `0 25px 50px -12px rgba(0,0,0,0.4), 0 0 60px ${image.colors[0]}40, inset 0 0 0 2px rgba(255,255,255,0.1)` 
-                      : '0 15px 30px -10px rgba(0,0,0,0.3), inset 0 0 0 1px rgba(255,255,255,0.05)',
+                      ? `0 35px 70px -15px rgba(0,0,0,0.5), 0 0 100px ${image.colors[0]}50, inset 0 0 0 3px rgba(255,255,255,0.15)` 
+                      : '0 20px 40px -15px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(255,255,255,0.05)',
                     border: index === currentImageIndex 
                       ? `2px solid ${image.colors[0]}60` 
                       : '1px solid rgba(255,255,255,0.1)',
@@ -304,8 +304,8 @@ const HeroSectionSimple = () => {
                         backgroundPosition: 'center',
                         zIndex: pos.zIndex,
                       },
-                      boxShadow: `0 30px 60px -15px rgba(0,0,0,0.5), 0 0 80px ${image.colors[0]}50, 0 0 120px ${image.colors[1]}30, inset 0 0 0 3px rgba(255,255,255,0.15)`,
-                      border: `3px solid ${image.colors[0]}80`,
+                      boxShadow: `0 40px 80px -20px rgba(0,0,0,0.6), 0 0 120px ${image.colors[0]}60, 0 0 180px ${image.colors[1]}40, inset 0 0 0 4px rgba(255,255,255,0.2)`,
+                      border: `4px solid ${image.colors[0]}90`,
                       backdropFilter: 'blur(10px)',
                     }
                   })}
@@ -320,13 +320,13 @@ const HeroSectionSimple = () => {
                   animate={{
                     opacity: touchingImage === index ? pos.opacity * 0.8 : pos.opacity,
                     filter: index === currentImageIndex 
-                      ? 'brightness(1.15) contrast(1.1) saturate(1.2)' 
-                      : 'brightness(0.85) contrast(0.95) saturate(0.9)',
+                      ? 'brightness(1.25) contrast(1.2) saturate(1.3)' 
+                      : 'brightness(0.7) contrast(0.9) saturate(0.8) blur(2px)',
                     x: pos.x - imageSizeOffset,
                     y: pos.y - imageSizeOffset,
                     translateZ: pos.z,
                     rotateY: pos.rotateY,
-                    scale: index === currentImageIndex ? pos.scale * 1.15 : pos.scale
+                    scale: index === currentImageIndex ? pos.scale * 1.3 : pos.scale
                   }}
                   transition={{
                     type: "spring",
@@ -353,17 +353,17 @@ const HeroSectionSimple = () => {
           </motion.div>
         </div>
 
-        {/* CTA Button - Enhanced to Match AI Color Picker */}
+        {/* CTA Button - Overlapping with Carousel */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 1.2 }}
-          className="relative group"
+          className="relative group -mt-16 sm:-mt-16 md:-mt-12 lg:-mt-8 xl:-mt-4 z-30"
           whileHover="hover"
           whileTap="tap"
         >
           <motion.button
-            className="relative bg-gradient-to-r from-purple-600 via-pink-600 to-cyan-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full text-base sm:text-lg font-semibold shadow-2xl overflow-hidden group"
+            className="relative bg-gradient-to-r from-purple-600 via-pink-600 to-cyan-600 text-white px-8 sm:px-10 py-4 sm:py-5 rounded-full text-lg sm:text-xl font-semibold shadow-2xl overflow-hidden group"
             variants={{
               hover: { 
                 scale: 1.15,
