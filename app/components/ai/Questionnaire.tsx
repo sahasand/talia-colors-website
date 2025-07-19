@@ -441,8 +441,8 @@ export default function Questionnaire({ userPhoto, onComplete, onBack }: Questio
         </div>
       )}
       
-      {/* Advanced Navigation Buttons - Desktop only or final question on mobile */}
-      {(!isTouchDevice || currentQuestionIndex === questions.length - 1) && (
+      {/* Advanced Navigation Buttons - Desktop only */}
+      {!isTouchDevice && (
       <div className="flex justify-between items-center">
         {/* Previous Button */}
         <motion.button
