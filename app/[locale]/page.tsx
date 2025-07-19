@@ -7,6 +7,7 @@ import SmartGalleryGrid from '../components/ui/SmartGalleryGrid';
 import AIColorPickerSection from '../components/ai/AIColorPickerSection';
 import LanguageSwitcher from '../components/ui/LanguageSwitcher';
 import WhatsAppButton from '../components/ui/WhatsAppButton';
+import Schema from '../components/Schema';
 import { ErrorBoundary } from '../components/ErrorBoundary';
 
 export function generateStaticParams() {
@@ -26,6 +27,9 @@ export default async function Home({
   const t = await getTranslations('mainPage');
   return (
     <div className="min-h-screen bg-gradient-to-br from-rose-50 via-purple-50 to-cyan-50 overflow-x-hidden">
+      {/* SEO Structured Data */}
+      <Schema locale={locale} />
+      
       {/* Language Switcher */}
       <div className="fixed top-4 right-4 z-50">
         <LanguageSwitcher />
