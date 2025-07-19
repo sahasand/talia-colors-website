@@ -25,9 +25,9 @@ const HeroSectionSimple = () => {
   const isTablet = useMemo(() => screenSize.width >= 640 && screenSize.width < 1024, [screenSize.width]);
 
   const imageSizeOffset = useMemo(() => {
-    if (isMobile) return 80; // 160px / 2 (mobile optimized)
-    if (isTablet) return 100; // 200px / 2 
-    return 140; // 280px / 2
+    if (isMobile) return 56; // 112px / 2 (w-28 = 7rem = 112px)
+    if (isTablet) return 88; // 176px / 2 (w-44 = 11rem = 176px)
+    return 144; // 288px / 2 (w-72 = 18rem = 288px)
   }, [isMobile, isTablet]);
 
   const heroImages = useMemo(() => [
@@ -48,10 +48,10 @@ const HeroSectionSimple = () => {
     const relativeIndex = (imageIndex - currentIndex + totalImages) % totalImages;
     const angle = (relativeIndex / totalImages) * Math.PI * 2;
     
-    // Responsive circle parameters - mobile optimized for viewport fit
-    const radiusX = isMobile ? 90 : isTablet ? 180 : 260;
-    const radiusZ = isMobile ? 70 : isTablet ? 135 : 195;
-    const baseScale = isMobile ? 0.6 : isTablet ? 0.75 : 0.8;
+    // Responsive circle parameters - mobile optimized for viewport fit with increased spacing
+    const radiusX = isMobile ? 140 : isTablet ? 180 : 260;
+    const radiusZ = isMobile ? 110 : isTablet ? 135 : 195;
+    const baseScale = isMobile ? 0.45 : isTablet ? 0.75 : 0.8;
     
     // Calculate position on circle
     const x = Math.sin(angle) * radiusX;
@@ -65,11 +65,17 @@ const HeroSectionSimple = () => {
     // Rotation to face center
     const rotateY = -angle * (180 / Math.PI);
     
+    // Calculate z-index based on position in 3D space
+    // Images closer to front (higher z value) get higher z-index
+    const normalizedZ = (z + radiusZ * 2) / (radiusZ * 2); // Normalize z to 0-1
+    const zIndex = Math.round(normalizedZ * 100); // Convert to z-index value
+    
     return {
       x, y, z,
       scale,
       rotateY,
-      opacity: 0.4 + (1 - distanceFromFront) * 0.6
+      opacity: 0.4 + (1 - distanceFromFront) * 0.6,
+      zIndex
     };
   }, [isMobile, isTablet]);
 
@@ -268,7 +274,7 @@ const HeroSectionSimple = () => {
               return (
                 <motion.div
                   key={index}
-                  className="absolute w-36 h-36 sm:w-44 sm:h-44 md:w-56 md:h-56 lg:w-64 lg:h-64 xl:w-72 xl:h-72 rounded-3xl overflow-hidden cursor-pointer group"
+                  className="absolute w-28 h-28 sm:w-44 sm:h-44 md:w-56 md:h-56 lg:w-64 lg:h-64 xl:w-72 xl:w-72 rounded-3xl overflow-hidden cursor-pointer group"
                   style={{
                     left: '50%',
                     top: '50%',
@@ -283,6 +289,7 @@ const HeroSectionSimple = () => {
                       ? `2px solid ${image.colors[0]}60` 
                       : '1px solid rgba(255,255,255,0.1)',
                     backdropFilter: 'blur(10px)',
+                    zIndex: pos.zIndex,
                   }}
                   
                   // Enhanced ring glow for active image
@@ -295,6 +302,7 @@ const HeroSectionSimple = () => {
                         backgroundImage: `url(${image.src})`,
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
+                        zIndex: pos.zIndex,
                       },
                       boxShadow: `0 30px 60px -15px rgba(0,0,0,0.5), 0 0 80px ${image.colors[0]}50, 0 0 120px ${image.colors[1]}30, inset 0 0 0 3px rgba(255,255,255,0.15)`,
                       border: `3px solid ${image.colors[0]}80`,

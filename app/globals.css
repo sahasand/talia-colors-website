@@ -984,14 +984,17 @@ html {
 .gallery-3d {
   transform-style: preserve-3d;
   will-change: transform;
+  position: relative;
+  isolation: isolate; /* Create new stacking context */
 }
 
 .gallery-3d-item {
   transform-style: preserve-3d;
-  will-change: transform, opacity;
+  will-change: transform, opacity, z-index;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   transform: translate3d(0, 0, 0); /* Force GPU acceleration */
+  position: absolute; /* Ensure z-index works properly */
 }
 
 /* Reduced motion support for 3D effects - keep some motion for visual appeal */
