@@ -26,6 +26,19 @@
       "generalBooking": "Oi! Gostaria de agendar um horário com a Talia para serviços de coloração capilar."
     }
   },
+  "hero": {
+    "title": "Talia Colors",
+    "tagline": "Onde Arte Encontra Cabelos Lindos",
+    "description": "Coloração personalizada by Talia—expertamente criada, criativa e exclusivamente feita para você.",
+    "cta": {
+      "bookAppointmentFull": "Agendar Consulta",
+      "bookAppointmentShort": "Agendar"
+    },
+    "whatsapp": {
+      "greeting": "Oi!",
+      "interest": "Gostaria de agendar um horário com a Talia para serviços de coloração capilar."
+    }
+  },
   "heroSection": {
     "title": "Talia Colors",
     "tagline": "Onde Arte Encontra Cabelos Lindos",

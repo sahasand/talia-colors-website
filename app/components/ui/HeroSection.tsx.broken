@@ -1,0 +1,2984 @@
+'use client';
+
+import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import { useTranslations } from 'next-intl';
+
+const HeroSection = () => {
+  const t = useTranslations('heroSection');
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  
+  // Early return for SSR
+  const [isClient, setIsClient] = useState(false);
+  
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+  const [isPaused, setIsPaused] = useState(false);
+  const [lastInteraction, setLastInteraction] = useState(0);
+  const [touchingImage, setTouchingImage] = useState<number | null>(null);
+  const [touchingButton, setTouchingButton] = useState(false);
+  const [particles, setParticles] = useState<Array<{
+    background: string;
+    left: string;
+    top: string;
+    duration: number;
+    delay: number;
+  }>>([]);
+  const [geometricShapes, setGeometricShapes] = useState<Array<{
+    id: number;
+    x: number;
+    y: number;
+    size: number;
+    rotation: number;
+    color: string;
+    type: 'circle' | 'triangle' | 'square';
+  }>>([]);
+  const [imageParticles, setImageParticles] = useState<Array<{
+    id: string;
+    imageIndex: number;
+    x: number;
+    y: number;
+    color: string;
+    size: number;
+    opacity: number;
+    createdAt: number;
+    vx?: number;
+    vy?: number;
+    magneticAttraction?: number;
+  }>>([]);
+  
+  // New magnetic field states
+  const [magneticParticles, setMagneticParticles] = useState<Array<{
+    id: string;
+    x: number;
+    y: number;
+    vx: number;
+    vy: number;
+    size: number;
+    color: string;
+    opacity: number;
+    magneticCharge: number;
+    createdAt: number;
+  }>>([]);
+  
+  const [energyField, setEnergyField] = useState<Array<{
+    id: string;
+    startX: number;
+    startY: number;
+    endX: number;
+    endY: number;
+    intensity: number;
+    color: string;
+    createdAt: number;
+  }>>([]);
+  
+  // Gravitational wells for future particle physics enhancement
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [gravitationalWells, setGravitationalWells] = useState<Array<{
+    imageIndex: number;
+    x: number;
+    y: number;
+    strength: number;
+    radius: number;
+  }>>([]);
+  
+  // Advanced lighting states
+  const [volumetricRays, setVolumetricRays] = useState<Array<{
+    id: string;
+    startX: number;
+    startY: number;
+    endX: number;
+    endY: number;
+    color: string;
+    intensity: number;
+    angle: number;
+    createdAt: number;
+  }>>([]);
+  
+  const [atmosphericLayers, setAtmosphericLayers] = useState<Array<{
+    id: string;
+    x: number;
+    y: number;
+    radius: number;
+    color: string;
+    opacity: number;
+    depth: number;
+  }>>([]);
+  
+  const [ambientOcclusion, setAmbientOcclusion] = useState<Array<{
+    id: string;
+    imageIndex: number;
+    x: number;
+    y: number;
+    shadowIntensity: number;
+    radius: number;
+  }>>([]);
+  
+  const [colorCast, setColorCast] = useState({
+    color: '#4facfe',
+    intensity: 0,
+    spread: 0,
+  });
+  
+  // Holographic effects states
+  const [prismaticEdges, setPrismaticEdges] = useState<Array<{
+    id: string;
+    imageIndex: number;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    hueShift: number;
+    intensity: number;
+  }>>([]);
+  
+  const [colorBleeding, setColorBleeding] = useState<Array<{
+    id: string;
+    x: number;
+    y: number;
+    color: string;
+    radius: number;
+    opacity: number;
+    createdAt: number;
+  }>>([]);
+  
+  const [chromaticAberration, setChromaticAberration] = useState<Array<{
+    id: string;
+    imageIndex: number;
+    redOffset: { x: number; y: number };
+    greenOffset: { x: number; y: number };
+    blueOffset: { x: number; y: number };
+    intensity: number;
+  }>>([]);
+  
+  const [dynamicAuras, setDynamicAuras] = useState<Array<{
+    id: string;
+    imageIndex: number;
+    x: number;
+    y: number;
+    colors: string[];
+    radius: number;
+    pulsePhase: number;
+    intensity: number;
+  }>>([]);
+  
+  // Enhanced particle physics states
+  const [fluidParticles, setFluidParticles] = useState<Array<{
+    id: string;
+    x: number;
+    y: number;
+    vx: number;
+    vy: number;
+    mass: number;
+    size: number;
+    color: string;
+    density: number;
+    viscosity: number;
+    createdAt: number;
+  }>>([]);
+  
+  const [orbitalParticles, setOrbitalParticles] = useState<Array<{
+    id: string;
+    centerX: number;
+    centerY: number;
+    angle: number;
+    radius: number;
+    speed: number;
+    size: number;
+    color: string;
+    trail: Array<{ x: number; y: number; opacity: number }>;
+    createdAt: number;
+  }>>([]);
+  
+  const [colorHarmonics, setColorHarmonics] = useState<Array<{
+    id: string;
+    baseColor: string;
+    harmonicColors: string[];
+    frequency: number;
+    amplitude: number;
+    phase: number;
+  }>>([]);
+  
+  // Micro-interactions states
+  const [imageBreathing, setImageBreathing] = useState<Array<{
+    imageIndex: number;
+    breathPhase: number;
+    intensity: number;
+  }>>([]);
+  
+  const [liquidSuspension, setLiquidSuspension] = useState<Array<{
+    id: string;
+    imageIndex: number;
+    waveAmplitude: number;
+    waveFrequency: number;
+    viscosity: number;
+  }>>([]);
+  
+  const [resonanceEffects, setResonanceEffects] = useState<Array<{
+    id: string;
+    sourceIndex: number;
+    targetIndex: number;
+    frequency: number;
+    amplitude: number;
+    phase: number;
+  }>>([]);
+  
+  const [quantumEntanglement, setQuantumEntanglement] = useState<Array<{
+    id: string;
+    pairA: number;
+    pairB: number;
+    entanglementStrength: number;
+    phaseOffset: number;
+  }>>([]);
+  
+  // Visual processing states
+  const [depthOfField, setDepthOfField] = useState<Array<{
+    imageIndex: number;
+    blurAmount: number;
+    focusDistance: number;
+  }>>([]);
+  
+  const [edgeLighting, setEdgeLighting] = useState<Array<{
+    id: string;
+    imageIndex: number;
+    edgeColor: string;
+    intensity: number;
+    thickness: number;
+  }>>([]);
+  
+  const [materialPhysics, setMaterialPhysics] = useState<Array<{
+    imageIndex: number;
+    material: 'glass' | 'metal' | 'liquid' | 'crystal';
+    reflectivity: number;
+    transparency: number;
+    roughness: number;
+  }>>([]);
+  
+  // Constellation effects state
+  const [constellationLines, setConstellationLines] = useState<Array<{
+    id: string;
+    fromIndex: number;
+    toIndex: number;
+    fromX: number;
+    fromY: number;
+    toX: number;
+    toY: number;
+    intensity: number;
+    color: string;
+    createdAt: number;
+  }>>([]);
+  
+  const [neuralPathways, setNeuralPathways] = useState<Array<{
+    id: string;
+    nodes: Array<{ x: number; y: number; imageIndex: number }>;
+    pulsePhase: number;
+    color: string;
+    intensity: number;
+    branchCount: number;
+  }>>([]);
+  
+  const [energyTransfers, setEnergyTransfers] = useState<Array<{
+    id: string;
+    fromIndex: number;
+    toIndex: number;
+    progress: number;
+    color: string;
+    intensity: number;
+    particleCount: number;
+    createdAt: number;
+  }>>([]);
+  
+  const [cosmicWeb, setCosmicWeb] = useState<Array<{
+    id: string;
+    centerX: number;
+    centerY: number;
+    radius: number;
+    spokes: Array<{ angle: number; length: number; color: string }>;
+    pulsePhase: number;
+    intensity: number;
+  }>>([]);
+  
+  const [screenSize, setScreenSize] = useState({ width: 1920, height: 1080 }); // Default desktop size
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+  
+  // Magnetic field state
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [magneticStrength, setMagneticStrength] = useState(1);
+  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+  const [magneticInfluence, setMagneticInfluence] = useState({ x: 0, y: 0 });
+  
+  const heroRef = useRef<HTMLDivElement>(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  
+  // Helper function to adjust hue
+  const adjustHue = useCallback((color: string, hueShift: number): string => {
+    // Simple hue adjustment - in a real implementation, you'd want more sophisticated color manipulation
+    const hue = (parseInt(color.replace('#', ''), 16) + hueShift) % 360;
+    return `hsl(${hue}, 70%, 60%)`;
+  }, []);
+  
+  // Responsive values
+  const isMobile = useMemo(() => screenSize.width < 640, [screenSize.width]);
+  const isTablet = useMemo(() => screenSize.width >= 640 && screenSize.width < 1024, [screenSize.width]);
+  
+  const rotationIntensity = useMemo(() => {
+    if (isMobile) return 0.3;
+    if (isTablet) return 0.6;
+    return 1;
+  }, [isMobile, isTablet]);
+  
+  const particleCountMultiplier = useMemo(() => {
+    if (isMobile) return 0.5; // Increased from 0.3 to 0.5 for more visible effects
+    if (isTablet) return 0.75; // Increased from 0.6 to 0.75
+    return 1;
+  }, [isMobile, isTablet]);
+  
+  // Calculate image size offset for centering based on screen size
+  const imageSizeOffset = useMemo(() => {
+    if (isMobile) return 64;  // 32px * 2 (w-32 = 128px / 2)
+    if (isTablet) return 80;  // 40px * 2 (w-40 = 160px / 2)
+    if (screenSize.width < 1280) return 96;  // 48px * 2 (w-48 = 192px / 2)
+    return 112;  // 56px * 2 (w-56 = 224px / 2)
+  }, [isMobile, isTablet, screenSize.width]);
+  
+  // Transform mouse position for parallax effects
+  const backgroundX = useTransform(mouseX, [0, 1920], [-50, 50]);
+  const backgroundY = useTransform(mouseY, [0, 1080], [-30, 30]);
+  const particleX = useTransform(mouseX, [0, 1920], [-20, 20]);
+  const particleY = useTransform(mouseY, [0, 1080], [-15, 15]);
+  const shapeX = useTransform(mouseX, [0, 1920], [-10, 10]);
+  const shapeY = useTransform(mouseY, [0, 1080], [-10, 10]);
+  
+  // Magnetic field transforms (for future enhancements)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const magneticFieldX = useTransform(mouseX, [0, 1920], [-100, 100]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const magneticFieldY = useTransform(mouseY, [0, 1080], [-80, 80]);
+  
+  // Image magnetic attraction transforms (for future enhancements)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const imageMagneticX = useTransform(mouseX, [0, 1920], [-5, 5]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const imageMagneticY = useTransform(mouseY, [0, 1080], [-5, 5]);
+  
+  // 3D rotation transforms for gallery with responsive intensity
+  const rotateX = useTransform(mouseY, [0, 1080], [15 * rotationIntensity, -15 * rotationIntensity]);
+  const rotateY = useTransform(mouseX, [0, 1920], [-20 * rotationIntensity, 20 * rotationIntensity]);
+  const galleryX = useTransform(mouseX, [0, 1920], [-30 * rotationIntensity, 30 * rotationIntensity]);
+  const galleryY = useTransform(mouseY, [0, 1080], [-20 * rotationIntensity, 20 * rotationIntensity]);
+  
+  
+  
+  // Hair transformation images with dominant colors (positions now calculated dynamically)
+  const allHeroImages = useMemo(() => [
+    { src: '/1a.png', colors: ['#8B4513', '#D2691E', '#F4A460'] },
+    { src: '/2a.png', colors: ['#FFD700', '#FFA500', '#FF8C00'] },
+    { src: '/3a.png', colors: ['#DC143C', '#FF1493', '#FF69B4'] },
+    { src: '/4a.png', colors: ['#4B0082', '#8A2BE2', '#9400D3'] },
+    { src: '/5a.png', colors: ['#00CED1', '#20B2AA', '#48D1CC'] },
+    { src: '/6a.png', colors: ['#FF6347', '#FF4500', '#FF8C00'] },
+    { src: '/7a.png', colors: ['#9370DB', '#8B7FD8', '#7B68EE'] },
+    { src: '/8a.png', colors: ['#2E8B57', '#3CB371', '#00FA9A'] },
+    { src: '/9a.png', colors: ['#B22222', '#CD5C5C', '#F08080'] },
+    { src: '/10a.png', colors: ['#4682B4', '#5F9EA0', '#6495ED'] },
+    { src: '/11a.png', colors: ['#DAA520', '#B8860B', '#FFD700'] }
+  ], []);
+  
+  // Responsive image filtering
+  const heroImages = useMemo(() => {
+    if (isMobile) {
+      // Show only 5 images on mobile
+      return [allHeroImages[0], allHeroImages[2], allHeroImages[4], allHeroImages[6], allHeroImages[8]];
+    } else if (isTablet) {
+      // Show 8 images on tablet (skip every 3rd image)
+      return allHeroImages.filter((_, index) => index % 3 !== 2);
+    }
+    // Show all images on desktop
+    return allHeroImages;
+  }, [isMobile, isTablet, allHeroImages]);
+  
+  // Magnetic attraction calculation
+  const calculateMagneticAttraction = useCallback((imageX: number, imageY: number, cursorX: number, cursorY: number) => {
+    const distance = Math.sqrt(Math.pow(cursorX - imageX, 2) + Math.pow(cursorY - imageY, 2));
+    const maxDistance = isMobile ? 150 : 300;
+    const attraction = Math.max(0, 1 - distance / maxDistance);
+    
+    const attractionX = (cursorX - imageX) * attraction * 0.1;
+    const attractionY = (cursorY - imageY) * attraction * 0.1;
+    
+    return { attractionX, attractionY, distance, strength: attraction };
+  }, [isMobile]);
+  
+  // Dynamic 3D position calculation for circular carousel with magnetic enhancement
+  const calculateImagePosition = useCallback((imageIndex: number, totalImages: number, currentIndex: number) => {
+    const relativeIndex = (imageIndex - currentIndex + totalImages) % totalImages;
+    const angle = (relativeIndex / totalImages) * Math.PI * 2;
+    
+    // Responsive circle parameters - optimized for mobile display
+    const radiusX = isMobile ? 80 : isTablet ? 160 : 200;
+    const radiusZ = isMobile ? 60 : isTablet ? 120 : 150;
+    const baseScale = isMobile ? 0.7 : isTablet ? 0.8 : 0.85;
+    
+    // Calculate position on circle
+    const x = Math.sin(angle) * radiusX;
+    const z = Math.cos(angle) * radiusZ - radiusZ; // Offset so front is at z=0
+    const y = Math.sin(angle * 2) * 20; // Slight vertical variation
+    
+    // Scale based on distance (front images larger)
+    const distanceFromFront = Math.abs(relativeIndex - 0) / (totalImages / 2);
+    const scale = baseScale + (1 - baseScale) * Math.max(0, 1 - distanceFromFront);
+    
+    // Rotation to face center
+    const rotateY = -angle * (180 / Math.PI);
+    
+    // Apply magnetic attraction if not in reduced motion mode
+    let magneticX = 0;
+    let magneticY = 0;
+    
+    if (!prefersReducedMotion && isMounted) {
+      const screenCenterX = screenSize.width / 2;
+      const screenCenterY = screenSize.height / 2;
+      
+      const imageScreenX = screenCenterX + x;
+      const imageScreenY = screenCenterY + y;
+      
+      const magnetic = calculateMagneticAttraction(
+        imageScreenX, 
+        imageScreenY, 
+        cursorPosition.x, 
+        cursorPosition.y
+      );
+      
+      magneticX = magnetic.attractionX;
+      magneticY = magnetic.attractionY;
+    }
+    
+    return {
+      x: x + magneticX,
+      y: y + magneticY,
+      z,
+      rotateY,
+      scale,
+      opacity: relativeIndex === 0 ? 1 : 0.7 + (0.3 * Math.max(0, 1 - distanceFromFront)),
+      magneticAttraction: !prefersReducedMotion && isMounted ? 
+        calculateMagneticAttraction(
+          screenSize.width / 2 + x, 
+          screenSize.height / 2 + y, 
+          cursorPosition.x, 
+          cursorPosition.y
+        ).strength : 0
+    };
+  }, [isMobile, isTablet, prefersReducedMotion, isMounted, screenSize, cursorPosition, calculateMagneticAttraction]);
+
+  // Auto-rotation with intelligent pause/resume
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!isPaused && heroImages.length > 0) {
+        setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
+      }
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [heroImages.length, isPaused]);
+  
+  // Resume auto-rotation after 10 seconds of inactivity
+  useEffect(() => {
+    if (isPaused) {
+      const resumeTimer = setTimeout(() => {
+        setIsPaused(false);
+      }, 10000);
+      return () => clearTimeout(resumeTimer);
+    }
+  }, [isPaused, lastInteraction]);
+  
+  // Manual navigation functions
+  const goToImage = useCallback((index: number) => {
+    if (heroImages.length === 0) return;
+    const safeIndex = ((index % heroImages.length) + heroImages.length) % heroImages.length;
+    setCurrentImageIndex(safeIndex);
+    setIsPaused(true);
+    setLastInteraction(Date.now());
+    
+    // Haptic feedback for image selection
+    if (navigator.vibrate) {
+      navigator.vibrate(15);
+    }
+  }, [heroImages.length]);
+  
+  // Touch feedback handlers
+  const handleImageTouchStart = (index: number) => {
+    setTouchingImage(index);
+  };
+  
+  const handleImageTouchEnd = () => {
+    setTouchingImage(null);
+  };
+  
+  const goToPrevious = useCallback(() => {
+    const newIndex = currentImageIndex === 0 ? heroImages.length - 1 : currentImageIndex - 1;
+    goToImage(newIndex);
+  }, [currentImageIndex, heroImages.length, goToImage]);
+  
+  const goToNext = useCallback(() => {
+    const newIndex = (currentImageIndex + 1) % heroImages.length;
+    goToImage(newIndex);
+  }, [currentImageIndex, heroImages.length, goToImage]);
+  
+  // Touch/swipe gesture handling
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  
+  const onTouchStart = useCallback((e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+    
+    // Prevent default behaviors that might interfere
+    e.preventDefault();
+    
+    // Add haptic feedback if supported
+    if (navigator.vibrate) {
+      navigator.vibrate(10);
+    }
+  }, []);
+  
+  const onTouchMove = useCallback((e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+    
+    // Prevent scrolling during swipe
+    e.preventDefault();
+  }, []);
+  
+  const onTouchEnd = useCallback(() => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const velocity = Math.abs(distance) / 100; // Simple velocity calculation
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+    
+    if (isLeftSwipe || isRightSwipe) {
+      // Enhanced haptic feedback based on swipe velocity
+      if (navigator.vibrate) {
+        const vibrationIntensity = Math.min(30, 15 + velocity * 10);
+        navigator.vibrate(vibrationIntensity);
+      }
+      
+      if (isLeftSwipe) {
+        goToNext();
+      } else {
+        goToPrevious();
+      }
+    }
+  }, [touchStart, touchEnd, goToNext, goToPrevious]);
+
+  useEffect(() => {
+    // Increased base particle counts for better mobile visibility
+    const baseParticleCount = prefersReducedMotion ? 30 : 60;
+    const particleCount = Math.floor(baseParticleCount * particleCountMultiplier);
+    const particleData = [...Array(particleCount)].map(() => ({
+      background: `hsl(${Math.random() * 360}, 70%, 60%)`,
+      left: `${Math.random() * 90 + 5}%`, // Keep within 5-95% of viewport
+      top: `${Math.random() * 90 + 5}%`, // Keep within 5-95% of viewport
+      duration: 3 + Math.random() * 2,
+      delay: Math.random() * 2,
+    }));
+    setParticles(particleData);
+  }, [particleCountMultiplier, prefersReducedMotion]);
+
+  // Initialize geometric shapes with performance optimization and viewport constraints
+  useEffect(() => {
+    const shapeCount = isMobile ? 6 : isTablet ? 8 : 10; // More shapes for visual richness
+    const shapes = [...Array(shapeCount)].map((_, i) => ({
+      id: i,
+      x: Math.random() * 90 + 5, // Keep within 5-95% of viewport
+      y: Math.random() * 90 + 5, // Keep within 5-95% of viewport
+      size: isMobile ? 15 + Math.random() * 25 : 20 + Math.random() * 40,
+      rotation: Math.random() * 360,
+      color: `hsl(${Math.random() * 360}, 70%, 60%)`,
+      type: ['circle', 'triangle', 'square'][Math.floor(Math.random() * 3)] as 'circle' | 'triangle' | 'square',
+    }));
+    setGeometricShapes(shapes);
+  }, [isMobile, isTablet]);
+
+  // Enhanced mouse tracking with magnetic field updates
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (heroRef.current) {
+        const rect = heroRef.current.getBoundingClientRect();
+        const newX = e.clientX - rect.left;
+        const newY = e.clientY - rect.top;
+        
+        mouseX.set(newX);
+        mouseY.set(newY);
+        
+        // Update cursor position for magnetic calculations
+        setCursorPosition({ x: e.clientX, y: e.clientY });
+        
+        // Update magnetic influence
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const influenceX = (newX - centerX) / centerX;
+        const influenceY = (newY - centerY) / centerY;
+        setMagneticInfluence({ x: influenceX, y: influenceY });
+      }
+    };
+
+    const currentHeroRef = heroRef.current;
+    if (currentHeroRef) {
+      currentHeroRef.addEventListener('mousemove', handleMouseMove);
+      return () => {
+        currentHeroRef.removeEventListener('mousemove', handleMouseMove);
+      };
+    }
+  }, [mouseX, mouseY]);
+
+  // Generate magnetic particles when cursor moves
+  useEffect(() => {
+    if (prefersReducedMotion || !isMounted || typeof window === 'undefined') return;
+    
+    const generateMagneticParticles = () => {
+      const particleCount = isMobile ? 3 : 5;
+      const newParticles: Array<{
+        id: string;
+        x: number;
+        y: number;
+        vx: number;
+        vy: number;
+        size: number;
+        color: string;
+        opacity: number;
+        magneticCharge: number;
+        createdAt: number;
+      }> = [];
+      
+      for (let i = 0; i < particleCount; i++) {
+        const angle = (Math.random() * Math.PI * 2);
+        const distance = 50 + Math.random() * 100;
+        const x = cursorPosition.x + Math.cos(angle) * distance;
+        const y = cursorPosition.y + Math.sin(angle) * distance;
+        
+        newParticles.push({
+          id: `magnetic-${Date.now()}-${i}`,
+          x: Math.max(20, Math.min(screenSize.width - 20, x)),
+          y: Math.max(20, Math.min(screenSize.height - 20, y)),
+          vx: (Math.random() - 0.5) * 2,
+          vy: (Math.random() - 0.5) * 2,
+          size: 1 + Math.random() * 2,
+          color: `hsl(${Math.random() * 60 + 180}, 70%, 60%)`, // Blue to cyan range
+          opacity: 0.6 + Math.random() * 0.4,
+          magneticCharge: Math.random() * 2 - 1, // -1 to 1
+          createdAt: Date.now(),
+        });
+      }
+      
+      setMagneticParticles(prev => [...prev, ...newParticles]);
+    };
+    
+    const interval = setInterval(generateMagneticParticles, 150);
+    return () => clearInterval(interval);
+  }, [cursorPosition, prefersReducedMotion, isMounted, isMobile, screenSize]);
+  
+  // Update gravitational wells based on image positions
+  useEffect(() => {
+    if (prefersReducedMotion || !isMounted || typeof window === 'undefined') return;
+    
+    const wells = heroImages.map((_, index) => {
+      const pos = calculateImagePosition(index, heroImages.length, currentImageIndex);
+      return {
+        imageIndex: index,
+        x: screenSize.width / 2 + pos.x,
+        y: screenSize.height / 2 + pos.y,
+        strength: index === currentImageIndex ? 1.5 : 0.8,
+        radius: isMobile ? 80 : 120,
+      };
+    });
+    
+    setGravitationalWells(wells);
+  }, [heroImages, currentImageIndex, calculateImagePosition, prefersReducedMotion, isMounted, screenSize, isMobile]);
+  
+  // Generate energy field lines
+  useEffect(() => {
+    if (prefersReducedMotion || !isMounted || typeof window === 'undefined') return;
+    
+    const activeImagePos = calculateImagePosition(currentImageIndex, heroImages.length, currentImageIndex);
+    const centerX = screenSize.width / 2 + activeImagePos.x;
+    const centerY = screenSize.height / 2 + activeImagePos.y;
+    
+    const fieldLines: Array<{
+      id: string;
+      startX: number;
+      startY: number;
+      endX: number;
+      endY: number;
+      intensity: number;
+      color: string;
+      createdAt: number;
+    }> = [];
+    const lineCount = isMobile ? 6 : 12;
+    
+    for (let i = 0; i < lineCount; i++) {
+      const angle = (i / lineCount) * Math.PI * 2;
+      const length = 60 + Math.random() * 40;
+      
+      fieldLines.push({
+        id: `field-${currentImageIndex}-${i}`,
+        startX: centerX,
+        startY: centerY,
+        endX: centerX + Math.cos(angle) * length,
+        endY: centerY + Math.sin(angle) * length,
+        intensity: 0.3 + Math.random() * 0.4,
+        color: heroImages[currentImageIndex]?.colors[0] || '#4facfe',
+        createdAt: Date.now(),
+      });
+    }
+    
+    setEnergyField(fieldLines);
+  }, [currentImageIndex, heroImages, calculateImagePosition, prefersReducedMotion, isMounted, screenSize, isMobile]);
+  
+  // Generate volumetric lighting rays
+  useEffect(() => {
+    if (prefersReducedMotion || !isMounted || typeof window === 'undefined') return;
+    
+    const activeImagePos = calculateImagePosition(currentImageIndex, heroImages.length, currentImageIndex);
+    const centerX = screenSize.width / 2 + activeImagePos.x;
+    const centerY = screenSize.height / 2 + activeImagePos.y;
+    
+    const rayCount = isMobile ? 8 : 16;
+    const rays: Array<{
+      id: string;
+      startX: number;
+      startY: number;
+      endX: number;
+      endY: number;
+      color: string;
+      intensity: number;
+      angle: number;
+      createdAt: number;
+    }> = [];
+    
+    for (let i = 0; i < rayCount; i++) {
+      const angle = (i / rayCount) * Math.PI * 2 + Math.random() * 0.3;
+      const length = isMobile ? 200 + Math.random() * 150 : 300 + Math.random() * 200;
+      const endX = centerX + Math.cos(angle) * length;
+      const endY = centerY + Math.sin(angle) * length;
+      
+      rays.push({
+        id: `ray-${currentImageIndex}-${i}`,
+        startX: centerX,
+        startY: centerY,
+        endX: Math.max(0, Math.min(screenSize.width, endX)),
+        endY: Math.max(0, Math.min(screenSize.height, endY)),
+        color: heroImages[currentImageIndex]?.colors[Math.floor(Math.random() * heroImages[currentImageIndex].colors.length)] || '#4facfe',
+        intensity: 0.2 + Math.random() * 0.3,
+        angle: angle,
+        createdAt: Date.now(),
+      });
+    }
+    
+    setVolumetricRays(rays);
+  }, [currentImageIndex, heroImages, calculateImagePosition, prefersReducedMotion, isMounted, screenSize, isMobile]);
+  
+  // Generate atmospheric depth layers
+  useEffect(() => {
+    if (prefersReducedMotion || !isMounted || typeof window === 'undefined') return;
+    
+    const layerCount = isMobile ? 3 : 6;
+    const layers: Array<{
+      id: string;
+      x: number;
+      y: number;
+      radius: number;
+      color: string;
+      opacity: number;
+      depth: number;
+    }> = [];
+    
+    for (let i = 0; i < layerCount; i++) {
+      const depth = i / layerCount;
+      const size = (1 - depth) * (isMobile ? 200 : 400) + 100;
+      
+      layers.push({
+        id: `atmosphere-${i}`,
+        x: Math.random() * screenSize.width,
+        y: Math.random() * screenSize.height,
+        radius: size,
+        color: `hsl(${220 + Math.random() * 60}, 70%, ${50 + Math.random() * 30}%)`,
+        opacity: (1 - depth) * 0.1 + 0.05,
+        depth: depth,
+      });
+    }
+    
+    setAtmosphericLayers(layers);
+  }, [prefersReducedMotion, isMounted, screenSize, isMobile]);
+  
+  // Generate ambient occlusion shadows
+  useEffect(() => {
+    if (prefersReducedMotion || !isMounted || typeof window === 'undefined') return;
+    
+    const shadows = heroImages.map((_, index) => {
+      const pos = calculateImagePosition(index, heroImages.length, currentImageIndex);
+      const shadowIntensity = index === currentImageIndex ? 0.3 : 0.15;
+      
+      return {
+        id: `shadow-${index}`,
+        imageIndex: index,
+        x: screenSize.width / 2 + pos.x + 10, // Offset shadow slightly
+        y: screenSize.height / 2 + pos.y + 15,
+        shadowIntensity,
+        radius: isMobile ? 60 : 100,
+      };
+    });
+    
+    setAmbientOcclusion(shadows);
+  }, [heroImages, currentImageIndex, calculateImagePosition, prefersReducedMotion, isMounted, screenSize, isMobile]);
+  
+  // Update dynamic color cast
+  useEffect(() => {
+    if (prefersReducedMotion || !isMounted || typeof window === 'undefined') return;
+    
+    const activeImage = heroImages[currentImageIndex];
+    if (activeImage && activeImage.colors) {
+      const dominantColor = activeImage.colors[0];
+      setColorCast({
+        color: dominantColor,
+        intensity: 0.2,
+        spread: isMobile ? 0.3 : 0.5,
+      });
+    }
+  }, [currentImageIndex, heroImages, prefersReducedMotion, isMounted, isMobile]);
+  
+  // Generate prismatic edge effects
+  useEffect(() => {
+    if (prefersReducedMotion || !isMounted || typeof window === 'undefined') return;
+    
+    const edges = heroImages.map((_, index) => {
+      const pos = calculateImagePosition(index, heroImages.length, currentImageIndex);
+      const size = isMobile ? 128 : (screenSize.width < 1280 ? 192 : 224);
+      
+      return {
+        id: `prism-${index}`,
+        imageIndex: index,
+        x: screenSize.width / 2 + pos.x - size / 2,
+        y: screenSize.height / 2 + pos.y - size / 2,
+        width: size,
+        height: size,
+        hueShift: isMounted ? (Date.now() / 50) % 360 : 0,
+        intensity: index === currentImageIndex ? 0.6 : 0.3,
+      };
+    });
+    
+    setPrismaticEdges(edges);
+  }, [heroImages, currentImageIndex, calculateImagePosition, prefersReducedMotion, isMounted, screenSize, isMobile]);
+  
+  // Generate color bleeding effects
+  useEffect(() => {
+    if (prefersReducedMotion || !isMounted || typeof window === 'undefined') return;
+    
+    const activeImage = heroImages[currentImageIndex];
+    if (!activeImage || !activeImage.colors) return;
+    
+    const activeImagePos = calculateImagePosition(currentImageIndex, heroImages.length, currentImageIndex);
+    const centerX = screenSize.width / 2 + activeImagePos.x;
+    const centerY = screenSize.height / 2 + activeImagePos.y;
+    
+    const bleedingEffects: Array<{
+      id: string;
+      x: number;
+      y: number;
+      color: string;
+      radius: number;
+      opacity: number;
+      createdAt: number;
+    }> = [];
+    const bleedCount = isMobile ? 6 : 12;
+    
+    activeImage.colors.forEach((color, colorIndex) => {
+      for (let i = 0; i < bleedCount / activeImage.colors.length; i++) {
+        const angle = ((colorIndex * bleedCount / activeImage.colors.length + i) / bleedCount) * Math.PI * 2;
+        const distance = 80 + Math.random() * 120;
+        const x = centerX + Math.cos(angle) * distance;
+        const y = centerY + Math.sin(angle) * distance;
+        
+        bleedingEffects.push({
+          id: `bleed-${currentImageIndex}-${colorIndex}-${i}`,
+          x: Math.max(0, Math.min(screenSize.width, x)),
+          y: Math.max(0, Math.min(screenSize.height, y)),
+          color: color,
+          radius: isMobile ? 40 + Math.random() * 30 : 60 + Math.random() * 40,
+          opacity: 0.1 + Math.random() * 0.2,
+          createdAt: Date.now(),
+        });
+      }
+    });
+    
+    setColorBleeding(bleedingEffects);
+  }, [currentImageIndex, heroImages, calculateImagePosition, prefersReducedMotion, isMounted, screenSize, isMobile]);
+  
+  // Generate chromatic aberration effects
+  useEffect(() => {
+    if (prefersReducedMotion || !isMounted || typeof window === 'undefined') return;
+    
+    const aberrations = heroImages.map((_, index) => {
+      const intensity = index === currentImageIndex ? 0.8 : 0.4;
+      const offset = isMobile ? 2 : 3;
+      
+      return {
+        id: `chromatic-${index}`,
+        imageIndex: index,
+        redOffset: { 
+          x: Math.random() * offset - offset / 2, 
+          y: Math.random() * offset - offset / 2 
+        },
+        greenOffset: { x: 0, y: 0 },
+        blueOffset: { 
+          x: Math.random() * -offset + offset / 2, 
+          y: Math.random() * -offset + offset / 2 
+        },
+        intensity: intensity,
+      };
+    });
+    
+    setChromaticAberration(aberrations);
+  }, [heroImages, currentImageIndex, prefersReducedMotion, isMounted, isMobile]);
+  
+  // Generate dynamic auras
+  useEffect(() => {
+    if (prefersReducedMotion || !isMounted || typeof window === 'undefined') return;
+    
+    const auras = heroImages.map((image, index) => {
+      const pos = calculateImagePosition(index, heroImages.length, currentImageIndex);
+      const isActive = index === currentImageIndex;
+      
+      return {
+        id: `aura-${index}`,
+        imageIndex: index,
+        x: screenSize.width / 2 + pos.x,
+        y: screenSize.height / 2 + pos.y,
+        colors: image.colors,
+        radius: isMobile ? (isActive ? 90 : 60) : (isActive ? 140 : 90),
+        pulsePhase: isMounted ? (Date.now() / 2000 + index) % (Math.PI * 2) : 0,
+        intensity: isActive ? 0.6 : 0.3,
+      };
+    });
+    
+    setDynamicAuras(auras);
+  }, [heroImages, currentImageIndex, calculateImagePosition, prefersReducedMotion, isMounted, screenSize, isMobile]);
+  
+  // Generate fluid dynamics particles
+  useEffect(() => {
+    if (prefersReducedMotion || !isMounted || typeof window === 'undefined') return;
+    
+    const generateFluidParticles = () => {
+      const particleCount = isMobile ? 8 : 15;
+      const newParticles: Array<{
+        id: string;
+        x: number;
+        y: number;
+        vx: number;
+        vy: number;
+        mass: number;
+        size: number;
+        color: string;
+        density: number;
+        viscosity: number;
+        createdAt: number;
+      }> = [];
+      
+      for (let i = 0; i < particleCount; i++) {
+        const mass = 0.5 + Math.random() * 1.5;
+        const activeImage = heroImages[currentImageIndex];
+        const color = activeImage?.colors[Math.floor(Math.random() * activeImage.colors.length)] || '#4facfe';
+        
+        newParticles.push({
+          id: `fluid-${Date.now()}-${i}`,
+          x: Math.random() * screenSize.width,
+          y: Math.random() * screenSize.height,
+          vx: (Math.random() - 0.5) * 2,
+          vy: (Math.random() - 0.5) * 2,
+          mass: mass,
+          size: mass * (isMobile ? 2 : 3),
+          color: color,
+          density: 0.8 + Math.random() * 0.4,
+          viscosity: 0.1 + Math.random() * 0.2,
+          createdAt: Date.now(),
+        });
+      }
+      
+      setFluidParticles(prev => [...prev, ...newParticles]);
+    };
+    
+    const interval = setInterval(generateFluidParticles, 2000);
+    return () => clearInterval(interval);
+  }, [currentImageIndex, heroImages, isMobile, screenSize, prefersReducedMotion, isMounted]);
+  
+  // Generate orbital mechanics particles
+  useEffect(() => {
+    if (prefersReducedMotion || !isMounted || typeof window === 'undefined') return;
+    
+    const orbitals = heroImages.map((image, index) => {
+      const pos = calculateImagePosition(index, heroImages.length, currentImageIndex);
+      const centerX = screenSize.width / 2 + pos.x;
+      const centerY = screenSize.height / 2 + pos.y;
+      
+      const particleCount = index === currentImageIndex ? 6 : 3;
+      const particles: Array<{
+        id: string;
+        centerX: number;
+        centerY: number;
+        angle: number;
+        radius: number;
+        speed: number;
+        size: number;
+        color: string;
+        trail: Array<{ x: number; y: number; opacity: number }>;
+        createdAt: number;
+      }> = [];
+      
+      for (let i = 0; i < particleCount; i++) {
+        particles.push({
+          id: `orbital-${index}-${i}`,
+          centerX: centerX,
+          centerY: centerY,
+          angle: (i / particleCount) * Math.PI * 2,
+          radius: isMobile ? 40 + i * 15 : 60 + i * 20,
+          speed: 0.02 + Math.random() * 0.03,
+          size: isMobile ? 2 + Math.random() : 3 + Math.random() * 2,
+          color: image.colors[i % image.colors.length],
+          trail: [],
+          createdAt: Date.now(),
+        });
+      }
+      
+      return particles;
+    }).flat();
+    
+    setOrbitalParticles(orbitals);
+  }, [heroImages, currentImageIndex, calculateImagePosition, screenSize, isMobile, prefersReducedMotion, isMounted]);
+  
+  // Generate color harmonics
+  useEffect(() => {
+    if (prefersReducedMotion || !isMounted || typeof window === 'undefined') return;
+    
+    const activeImage = heroImages[currentImageIndex];
+    if (!activeImage || !activeImage.colors) return;
+    
+    const harmonics = activeImage.colors.map((color, index) => {
+      // Generate harmonic colors based on color theory
+      const harmonicColors = [
+        color, // Base color
+        adjustHue(color, 60), // Analogous
+        adjustHue(color, -60), // Analogous
+        adjustHue(color, 180), // Complementary
+        adjustHue(color, 120), // Triadic
+        adjustHue(color, -120), // Triadic
+      ];
+      
+      return {
+        id: `harmonic-${currentImageIndex}-${index}`,
+        baseColor: color,
+        harmonicColors: harmonicColors,
+        frequency: 0.5 + Math.random() * 2,
+        amplitude: 0.3 + Math.random() * 0.4,
+        phase: index * Math.PI / 3,
+      };
+    });
+    
+    setColorHarmonics(harmonics);
+  }, [currentImageIndex, heroImages, prefersReducedMotion, isMounted, adjustHue]);
+  
+  // Generate image breathing effects
+  useEffect(() => {
+    if (prefersReducedMotion || !isMounted || typeof window === 'undefined') return;
+    
+    const breathing = heroImages.map((_, index) => ({
+      imageIndex: index,
+      breathPhase: Math.random() * Math.PI * 2,
+      intensity: index === currentImageIndex ? 0.8 : 0.4,
+    }));
+    
+    setImageBreathing(breathing);
+  }, [heroImages, currentImageIndex, prefersReducedMotion, isMounted]);
+  
+  // Generate liquid suspension effects
+  useEffect(() => {
+    if (prefersReducedMotion || !isMounted || typeof window === 'undefined') return;
+    
+    const suspension = heroImages.map((_, index) => ({
+      id: `liquid-${index}`,
+      imageIndex: index,
+      waveAmplitude: 2 + Math.random() * 4,
+      waveFrequency: 0.5 + Math.random() * 1,
+      viscosity: 0.3 + Math.random() * 0.4,
+    }));
+    
+    setLiquidSuspension(suspension);
+  }, [heroImages, prefersReducedMotion, isMounted]);
+  
+  // Generate resonance effects
+  useEffect(() => {
+    if (prefersReducedMotion || !isMounted || typeof window === 'undefined') return;
+    
+    const resonances: Array<{
+      id: string;
+      sourceIndex: number;
+      targetIndex: number;
+      frequency: number;
+      amplitude: number;
+      phase: number;
+    }> = [];
+    
+    // Create resonance pairs between adjacent images
+    for (let i = 0; i < heroImages.length; i++) {
+      const nextIndex = (i + 1) % heroImages.length;
+      resonances.push({
+        id: `resonance-${i}-${nextIndex}`,
+        sourceIndex: i,
+        targetIndex: nextIndex,
+        frequency: 0.8 + Math.random() * 0.4,
+        amplitude: 0.2 + Math.random() * 0.3,
+        phase: Math.random() * Math.PI * 2,
+      });
+    }
+    
+    setResonanceEffects(resonances);
+  }, [heroImages, prefersReducedMotion, isMounted]);
+  
+  // Generate quantum entanglement effects
+  useEffect(() => {
+    if (prefersReducedMotion || !isMounted || typeof window === 'undefined') return;
+    
+    const entanglements: Array<{
+      id: string;
+      pairA: number;
+      pairB: number;
+      entanglementStrength: number;
+      phaseOffset: number;
+    }> = [];
+    
+    // Create quantum pairs between opposite images
+    const halfLength = Math.floor(heroImages.length / 2);
+    for (let i = 0; i < halfLength; i++) {
+      const pairB = (i + halfLength) % heroImages.length;
+      entanglements.push({
+        id: `quantum-${i}-${pairB}`,
+        pairA: i,
+        pairB: pairB,
+        entanglementStrength: 0.6 + Math.random() * 0.4,
+        phaseOffset: Math.random() * Math.PI,
+      });
+    }
+    
+    setQuantumEntanglement(entanglements);
+  }, [heroImages, prefersReducedMotion, isMounted]);
+  
+  // Generate depth of field effects
+  useEffect(() => {
+    if (prefersReducedMotion || !isMounted || typeof window === 'undefined') return;
+    
+    const depthEffects = heroImages.map((_, index) => {
+      const distanceFromActive = Math.abs(index - currentImageIndex);
+      const maxDistance = Math.floor(heroImages.length / 2);
+      const normalizedDistance = distanceFromActive / maxDistance;
+      
+      return {
+        imageIndex: index,
+        blurAmount: normalizedDistance * (isMobile ? 3 : 5),
+        focusDistance: 1 - normalizedDistance,
+      };
+    });
+    
+    setDepthOfField(depthEffects);
+  }, [heroImages, currentImageIndex, isMobile, prefersReducedMotion, isMounted]);
+  
+  // Generate edge lighting effects
+  useEffect(() => {
+    if (prefersReducedMotion || !isMounted || typeof window === 'undefined') return;
+    
+    const edges = heroImages.map((image, index) => {
+      const dominantColor = image.colors[0];
+      const isActive = index === currentImageIndex;
+      
+      return {
+        id: `edge-${index}`,
+        imageIndex: index,
+        edgeColor: dominantColor,
+        intensity: isActive ? 0.8 : 0.4,
+        thickness: isActive ? 3 : 1.5,
+      };
+    });
+    
+    setEdgeLighting(edges);
+  }, [heroImages, currentImageIndex, prefersReducedMotion, isMounted]);
+  
+  // Generate material physics
+  useEffect(() => {
+    if (prefersReducedMotion || !isMounted || typeof window === 'undefined') return;
+    
+    const materials: ('glass' | 'metal' | 'liquid' | 'crystal')[] = ['glass', 'metal', 'liquid', 'crystal'];
+    
+    const physics = heroImages.map((_, index) => {
+      const material = materials[index % materials.length];
+      
+      const properties = {
+        glass: { reflectivity: 0.3, transparency: 0.7, roughness: 0.1 },
+        metal: { reflectivity: 0.9, transparency: 0.0, roughness: 0.2 },
+        liquid: { reflectivity: 0.4, transparency: 0.6, roughness: 0.8 },
+        crystal: { reflectivity: 0.8, transparency: 0.5, roughness: 0.05 },
+      };
+      
+      return {
+        imageIndex: index,
+        material,
+        ...properties[material],
+      };
+    });
+    
+    setMaterialPhysics(physics);
+  }, [heroImages, prefersReducedMotion, isMounted]);
+  
+  // Generate dynamic constellation lines
+  useEffect(() => {
+    if (prefersReducedMotion || !isMounted || typeof window === 'undefined') return;
+    
+    const lines: Array<{
+      id: string;
+      fromIndex: number;
+      toIndex: number;
+      fromX: number;
+      fromY: number;
+      toX: number;
+      toY: number;
+      intensity: number;
+      color: string;
+      createdAt: number;
+    }> = [];
+    
+    // Create connections between related images (by color similarity)
+    for (let i = 0; i < heroImages.length; i++) {
+      const fromPos = calculateImagePosition(i, heroImages.length, currentImageIndex);
+      const fromImage = heroImages[i];
+      
+      // Find 1-2 related images to connect to
+      const connections = Math.min(2, Math.floor(heroImages.length / 3));
+      for (let c = 0; c < connections; c++) {
+        const toIndex = (i + Math.floor(heroImages.length / connections) + c * 2) % heroImages.length;
+        if (toIndex === i) continue;
+        
+        const toPos = calculateImagePosition(toIndex, heroImages.length, currentImageIndex);
+        const toImage = heroImages[toIndex];
+        
+        // Calculate color similarity for line color
+        const dominantColor = fromImage?.colors?.[0] || '#4facfe';
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const secondaryColor = toImage?.colors?.[0] || '#4facfe';
+        
+        lines.push({
+          id: `constellation-${i}-${toIndex}`,
+          fromIndex: i,
+          toIndex: toIndex,
+          fromX: screenSize.width / 2 + fromPos.x,
+          fromY: screenSize.height / 2 + fromPos.y,
+          toX: screenSize.width / 2 + toPos.x,
+          toY: screenSize.height / 2 + toPos.y,
+          intensity: (i === currentImageIndex || toIndex === currentImageIndex) ? 0.8 : 0.4,
+          color: dominantColor,
+          createdAt: Date.now(),
+        });
+      }
+    }
+    
+    setConstellationLines(lines);
+  }, [heroImages, currentImageIndex, calculateImagePosition, prefersReducedMotion, isMounted, screenSize]);
+  
+  // Generate neural pathways
+  useEffect(() => {
+    if (prefersReducedMotion || !isMounted || typeof window === 'undefined') return;
+    
+    const pathways: Array<{
+      id: string;
+      nodes: Array<{ x: number; y: number; imageIndex: number }>;
+      pulsePhase: number;
+      color: string;
+      intensity: number;
+      branchCount: number;
+    }> = [];
+    
+    // Create neural networks connecting images
+    const networkCount = isMobile ? 2 : 4;
+    for (let n = 0; n < networkCount; n++) {
+      const startIndex = Math.floor((n / networkCount) * heroImages.length);
+      const startPos = calculateImagePosition(startIndex, heroImages.length, currentImageIndex);
+      
+      const nodes: Array<{ x: number; y: number; imageIndex: number }> = [];
+      const branchCount = 3 + Math.floor(Math.random() * 3);
+      
+      // Start node
+      nodes.push({
+        x: screenSize.width / 2 + startPos.x,
+        y: screenSize.height / 2 + startPos.y,
+        imageIndex: startIndex
+      });
+      
+      // Generate pathway nodes
+      for (let b = 0; b < branchCount; b++) {
+        const targetIndex = (startIndex + b + 1) % heroImages.length;
+        const targetPos = calculateImagePosition(targetIndex, heroImages.length, currentImageIndex);
+        
+        // Add intermediate nodes for curved pathways
+        const midX = (nodes[0].x + (screenSize.width / 2 + targetPos.x)) / 2 + (Math.random() - 0.5) * 100;
+        const midY = (nodes[0].y + (screenSize.height / 2 + targetPos.y)) / 2 + (Math.random() - 0.5) * 100;
+        
+        nodes.push({
+          x: midX,
+          y: midY,
+          imageIndex: -1 // Intermediate node
+        });
+        
+        nodes.push({
+          x: screenSize.width / 2 + targetPos.x,
+          y: screenSize.height / 2 + targetPos.y,
+          imageIndex: targetIndex
+        });
+      }
+      
+      pathways.push({
+        id: `neural-${n}`,
+        nodes,
+        pulsePhase: Math.random() * Math.PI * 2,
+        color: heroImages[startIndex]?.colors?.[0] || '#4facfe',
+        intensity: 0.6,
+        branchCount
+      });
+    }
+    
+    setNeuralPathways(pathways);
+  }, [heroImages, currentImageIndex, calculateImagePosition, prefersReducedMotion, isMounted, screenSize, isMobile]);
+  
+  // Generate energy transfers
+  useEffect(() => {
+    if (prefersReducedMotion || !isMounted || typeof window === 'undefined') return;
+    
+    const interval = setInterval(() => {
+      setEnergyTransfers(prev => {
+        const newTransfers = [...prev];
+        
+        // Add new energy transfer
+        if (newTransfers.length < (isMobile ? 3 : 6)) {
+          const fromIndex = Math.floor(Math.random() * heroImages.length);
+          let toIndex = Math.floor(Math.random() * heroImages.length);
+          while (toIndex === fromIndex) {
+            toIndex = Math.floor(Math.random() * heroImages.length);
+          }
+          
+          newTransfers.push({
+            id: `energy-${Date.now()}-${Math.random()}`,
+            fromIndex,
+            toIndex,
+            progress: 0,
+            color: heroImages[fromIndex]?.colors?.[0] || '#4facfe',
+            intensity: 0.7,
+            particleCount: 8 + Math.floor(Math.random() * 8),
+            createdAt: Date.now(),
+          });
+        }
+        
+        // Update progress and remove completed transfers
+        return newTransfers
+          .map(transfer => ({
+            ...transfer,
+            progress: Math.min(1, transfer.progress + 0.02)
+          }))
+          .filter(transfer => transfer.progress < 1);
+      });
+    }, 2000); // New transfer every 2 seconds
+    
+    return () => clearInterval(interval);
+  }, [heroImages, isMobile, prefersReducedMotion, isMounted]);
+  
+  // Generate cosmic web
+  useEffect(() => {
+    if (prefersReducedMotion || !isMounted || typeof window === 'undefined') return;
+    
+    const webs: Array<{
+      id: string;
+      centerX: number;
+      centerY: number;
+      radius: number;
+      spokes: Array<{ angle: number; length: number; color: string }>;
+      pulsePhase: number;
+      intensity: number;
+    }> = [];
+    
+    const webCount = isMobile ? 2 : 3;
+    for (let w = 0; w < webCount; w++) {
+      const spokeCount = 6 + Math.floor(Math.random() * 6);
+      const spokes: Array<{ angle: number; length: number; color: string }> = [];
+      
+      for (let s = 0; s < spokeCount; s++) {
+        spokes.push({
+          angle: (s / spokeCount) * Math.PI * 2 + Math.random() * 0.5,
+          length: (isMobile ? 100 : 150) + Math.random() * (isMobile ? 100 : 200),
+          color: `hsl(${220 + Math.random() * 120}, 70%, ${50 + Math.random() * 30}%)`
+        });
+      }
+      
+      webs.push({
+        id: `cosmic-web-${w}`,
+        centerX: (w + 1) * (screenSize.width / (webCount + 1)),
+        centerY: screenSize.height / 2 + (Math.random() - 0.5) * 200,
+        radius: isMobile ? 80 : 120,
+        spokes,
+        pulsePhase: Math.random() * Math.PI * 2,
+        intensity: 0.3
+      });
+    }
+    
+    setCosmicWeb(webs);
+  }, [prefersReducedMotion, isMounted, screenSize, isMobile]);
+  
+  // Clean up magnetic particles, lighting effects, holographic effects, and enhanced particles
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setMagneticParticles(prev => 
+        prev.filter(particle => Date.now() - particle.createdAt < 3000)
+      );
+      setEnergyField(prev => 
+        prev.filter(field => Date.now() - field.createdAt < 2000)
+      );
+      setVolumetricRays(prev => 
+        prev.filter(ray => Date.now() - ray.createdAt < 4000)
+      );
+      setColorBleeding(prev => 
+        prev.filter(bleed => Date.now() - bleed.createdAt < 3000)
+      );
+      setFluidParticles(prev => 
+        prev.filter(particle => Date.now() - particle.createdAt < 5000)
+      );
+      setOrbitalParticles(prev => 
+        prev.filter(particle => Date.now() - particle.createdAt < 8000)
+      );
+    }, 100);
+    
+    return () => clearInterval(interval);
+  }, []);
+  
+  
+  // Generate particles when active image changes (optimized for performance)
+  useEffect(() => {
+    // Generate particles even with reduced motion, but fewer and with simpler animations
+    // This ensures mobile users still see beautiful effects
+    
+    // Ensure currentImageIndex is within bounds of heroImages array
+    const safeIndex = currentImageIndex % heroImages.length;
+    const currentImage = heroImages[safeIndex];
+    
+    // Safety check in case heroImages is empty or undefined
+    if (!currentImage || !currentImage.colors) return;
+    
+    const currentImagePosition = calculateImagePosition(safeIndex, heroImages.length, safeIndex);
+    const baseParticleCount = isMobile ? 10 : 15; // Increased for better visibility
+    const particleCount = Math.floor(baseParticleCount * particleCountMultiplier);
+    const newParticles: Array<{
+      id: string;
+      imageIndex: number;
+      x: number;
+      y: number;
+      color: string;
+      size: number;
+      opacity: number;
+      createdAt: number;
+      vx?: number;
+      vy?: number;
+      magneticAttraction?: number;
+    }> = [];
+    
+    for (let i = 0; i < particleCount; i++) {
+      const color = currentImage.colors[Math.floor(Math.random() * currentImage.colors.length)];
+      
+      // Constrain particles within viewport bounds with better mobile constraints
+      const maxX = typeof window !== 'undefined' ? window.innerWidth - 40 : 1900;
+      const maxY = typeof window !== 'undefined' ? window.innerHeight - 40 : 1060;
+      const centerX = (typeof window !== 'undefined' ? window.innerWidth : 1920) / 2;
+      const centerY = (typeof window !== 'undefined' ? window.innerHeight : 1080) / 2;
+      
+      // More restrictive bounds for mobile
+      const minBound = 40;
+      const maxBoundX = maxX - 40;
+      const maxBoundY = maxY - 40;
+      
+      const particleX = Math.max(minBound, Math.min(maxBoundX, centerX + currentImagePosition.x * 0.8));
+      const particleY = Math.max(minBound, Math.min(maxBoundY, centerY + currentImagePosition.y * 0.8));
+      
+      newParticles.push({
+        id: `${Date.now()}-${i}`,
+        imageIndex: safeIndex,
+        x: particleX,
+        y: particleY,
+        color,
+        size: isMobile ? 1.5 + Math.random() * 1.5 : 2 + Math.random() * 2,
+        opacity: 1,
+        createdAt: Date.now(),
+        vx: (Math.random() - 0.5) * 4,
+        vy: (Math.random() - 0.5) * 4,
+        magneticAttraction: 0.5 + Math.random() * 0.5,
+      });
+    }
+    
+    setImageParticles(prev => [...prev, ...newParticles]);
+  }, [currentImageIndex, heroImages, particleCountMultiplier, prefersReducedMotion, isMobile, calculateImagePosition]);
+
+  // Clean up old particles with optimized interval
+  useEffect(() => {
+    const intervalTime = isMobile ? 200 : 100; // Less frequent cleanup on mobile
+    const interval = setInterval(() => {
+      setImageParticles(prev => 
+        prev.filter(particle => Date.now() - particle.createdAt < 2000)
+      );
+    }, intervalTime);
+    
+    return () => clearInterval(interval);
+  }, [isMobile]);
+
+  // Track screen size and reduced motion preference
+  useEffect(() => {
+    setIsMounted(true);
+    
+    const handleResize = () => {
+      if (typeof window !== 'undefined') {
+        setScreenSize({ width: window.innerWidth, height: window.innerHeight });
+      }
+    };
+    
+    const checkReducedMotion = () => {
+      if (typeof window !== 'undefined') {
+        const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+        setPrefersReducedMotion(mediaQuery.matches);
+        return mediaQuery;
+      }
+      return null;
+    };
+    
+    // Initial size with SSR protection
+    if (typeof window !== 'undefined') {
+      handleResize();
+      window.addEventListener('resize', handleResize);
+      
+      const mediaQuery = checkReducedMotion();
+      if (mediaQuery) {
+        mediaQuery.addEventListener('change', (e) => setPrefersReducedMotion(e.matches));
+      }
+      
+      return () => {
+        if (typeof window !== 'undefined') {
+          window.removeEventListener('resize', handleResize);
+          if (mediaQuery) {
+            mediaQuery.removeEventListener('change', (e) => setPrefersReducedMotion(e.matches));
+          }
+        }
+      };
+    }
+  }, []);
+
+  // Initialize mouse position to center of screen
+  useEffect(() => {
+    if (typeof window !== 'undefined' && heroRef.current) {
+      const rect = heroRef.current.getBoundingClientRect();
+      mouseX.set(rect.width / 2);
+      mouseY.set(rect.height / 2);
+    }
+  }, [mouseX, mouseY, screenSize]);
+
+  // Apply background images after mount to avoid hydration issues
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const imageElements = document.querySelectorAll('[data-bg-image]');
+      imageElements.forEach((element) => {
+        const bgImage = element.getAttribute('data-bg-image');
+        if (bgImage && element instanceof HTMLElement) {
+          element.style.backgroundImage = `url(${bgImage})`;
+          element.style.backgroundSize = 'cover';
+          element.style.backgroundPosition = 'center';
+        }
+      });
+    }
+  }, [heroImages]);
+
+  // Don't render complex effects during SSR or enable performance mode for mobile
+  const performanceMode = isMobile || prefersReducedMotion;
+  
+  if (!isClient || !isMounted || typeof window === 'undefined') {
+    return (
+      <div className="relative w-full min-h-[calc(100vh-3rem)] sm:min-h-screen hero-mobile-optimized flex items-center justify-center overflow-hidden py-2 sm:py-8 md:py-12">
+        {/* Simplified SSR version */}
+        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 text-center w-full">
+          <div className="mb-4 sm:mb-6 md:mb-8">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-3 sm:mb-4 md:mb-6 bg-gradient-to-r from-purple-600 via-pink-600 to-cyan-600 bg-clip-text text-transparent">
+              {t('title')}
+            </h1>
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl font-light text-gray-700 mb-2 sm:mb-3">
+              {t('tagline')}
+            </p>
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-xl sm:max-w-2xl mx-auto px-4 sm:px-0">
+              {t('description')}
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div ref={heroRef} className="relative w-full min-h-[calc(100vh-3rem)] sm:min-h-screen hero-mobile-optimized flex items-center justify-center overflow-hidden py-2 sm:py-8 md:py-12">
+      {/* Gradient Overlay Background */}
+      <div className="absolute inset-0 bg-gradient-to-r from-violet-600/10 via-purple-600/10 to-pink-600/10 animate-pulse" />
+      
+      {/* Morphing Blob Background */}
+      <motion.div 
+        className="absolute inset-0 bg-gradient-to-br from-purple-600/20 via-pink-500/20 to-cyan-500/20"
+        style={{
+          x: isMobile ? 0 : backgroundX,
+          y: isMobile ? 0 : backgroundY,
+        }}
+      />
+      
+      {/* Geometric Shapes Layer */}
+      <div className="absolute inset-0">
+        {geometricShapes.map((shape) => (
+          <motion.div
+            key={shape.id}
+            className="absolute opacity-20"
+            style={{
+              left: `${shape.x}%`,
+              top: `${shape.y}%`,
+              width: shape.size,
+              height: shape.size,
+              x: isMobile ? 0 : shapeX,
+              y: isMobile ? 0 : shapeY,
+            }}
+            animate={prefersReducedMotion ? {
+              opacity: [0.2, 0.3, 0.2],
+            } : {
+              rotate: [shape.rotation, shape.rotation + 360],
+              scale: [1, 1.2, 1],
+            }}
+            transition={{
+              rotate: { 
+                duration: 15, 
+                repeat: prefersReducedMotion ? 1 : Infinity, 
+                ease: "linear" 
+              },
+              scale: { 
+                duration: 4, 
+                repeat: prefersReducedMotion ? 1 : Infinity, 
+                ease: "easeInOut" 
+              },
+              opacity: {
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut"
+              },
+              x: { type: "spring", stiffness: 50 },
+              y: { type: "spring", stiffness: 50 },
+            }}
+          >
+            {shape.type === 'circle' && (
+              <div 
+                className="w-full h-full rounded-full border-2"
+                style={{ borderColor: shape.color }}
+              />
+            )}
+            {shape.type === 'triangle' && (
+              <div 
+                className="w-full h-full"
+                style={{ 
+                  clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
+                  backgroundColor: shape.color
+                }}
+              />
+            )}
+            {shape.type === 'square' && (
+              <div 
+                className="w-full h-full border-2 rotate-45"
+                style={{ borderColor: shape.color }}
+              />
+            )}
+          </motion.div>
+        ))}
+      </div>
+      
+      {/* Image Particle Trails */}
+      <div className="absolute inset-0 pointer-events-none">
+        {imageParticles.map((particle) => {
+          const age = (Date.now() - particle.createdAt) / 2000; // 0 to 1 over 2 seconds
+          const opacity = particle.opacity * (1 - age);
+          const scale = particle.size * (1 + age * 2);
+          const disperseX = (Math.random() - 0.5) * 100 * age;
+          const disperseY = -50 * age + (Math.random() - 0.5) * 50 * age;
+          
+          return (
+            <motion.div
+              key={particle.id}
+              className="absolute rounded-full particle-trail hair-particle"
+              style={{
+                left: particle.x,
+                top: particle.y,
+                width: scale,
+                height: scale * 3, // Elongated like hair strands
+                backgroundColor: particle.color,
+                opacity,
+                transform: `translate(${disperseX}px, ${disperseY}px) rotate(${Math.random() * 360}deg)`,
+                filter: 'blur(0.5px)',
+              }}
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.3 }}
+            />
+          );
+        })}
+      </div>
+      
+      {/* Dynamic Color Cast Background - Always enabled for basic ambiance */}
+      <motion.div 
+        className="absolute inset-0"
+        style={{
+          background: `radial-gradient(circle at 50% 50%, ${colorCast.color}${Math.floor(colorCast.intensity * 255 * 0.2).toString(16).padStart(2, '0')} ${colorCast.spread * 15}%, transparent ${colorCast.spread * 40}%)`,
+          filter: 'blur(30px)',
+        }}
+        animate={performanceMode ? {
+          opacity: colorCast.intensity * 0.3
+        } : {
+          opacity: [colorCast.intensity * 0.5, colorCast.intensity, colorCast.intensity * 0.7],
+          scale: [1, 1.1, 1],
+        }}
+        transition={{
+          duration: 4,
+          repeat: performanceMode ? 0 : Infinity,
+          ease: "easeInOut"
+        }}
+      />
+
+      {/* Complex Effects - Desktop Only */}
+      {!performanceMode && (
+      <>
+      
+      {/* Atmospheric Depth Layers */}
+      <div className="absolute inset-0 pointer-events-none">
+        {atmosphericLayers.map((layer) => (
+          <motion.div
+            key={layer.id}
+            className="absolute rounded-full"
+            style={{
+              left: layer.x - layer.radius / 2,
+              top: layer.y - layer.radius / 2,
+              width: layer.radius,
+              height: layer.radius,
+              background: `radial-gradient(circle, ${layer.color}${Math.floor(layer.opacity * 255).toString(16).padStart(2, '0')} 0%, transparent 70%)`,
+              filter: `blur(${20 + layer.depth * 30}px)`,
+              transform: `translateZ(${layer.depth * 100}px)`,
+            }}
+            animate={isMounted ? {
+              x: [0, Math.sin(Date.now() / 5000 + layer.depth) * 20],
+              y: [0, Math.cos(Date.now() / 4000 + layer.depth) * 15],
+              scale: [1, 1 + layer.depth * 0.2, 1],
+              opacity: [layer.opacity * 0.5, layer.opacity, layer.opacity * 0.8],
+            } : {}}
+            transition={{
+              duration: 8 + layer.depth * 4,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: layer.depth * 2,
+            }}
+          />
+        ))}
+      </div>
+      
+      {/* Ambient Occlusion Shadows */}
+      <div className="absolute inset-0 pointer-events-none">
+        {ambientOcclusion.map((shadow) => (
+          <motion.div
+            key={shadow.id}
+            className="absolute rounded-full"
+            style={{
+              left: shadow.x - shadow.radius / 2,
+              top: shadow.y - shadow.radius / 2,
+              width: shadow.radius,
+              height: shadow.radius,
+              background: `radial-gradient(circle, rgba(0,0,0,${shadow.shadowIntensity}) 0%, transparent 70%)`,
+              filter: 'blur(15px)',
+              transform: 'translateZ(-10px)',
+            }}
+            animate={{
+              opacity: [shadow.shadowIntensity * 0.5, shadow.shadowIntensity, shadow.shadowIntensity * 0.7],
+              scale: [0.8, 1, 0.9],
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: shadow.imageIndex * 0.5,
+            }}
+          />
+        ))}
+      </div>
+      
+      {/* Volumetric Lighting Rays */}
+      <div className="absolute inset-0 pointer-events-none">
+        {volumetricRays.map((ray) => {
+          const age = (Date.now() - ray.createdAt) / 4000;
+          const opacity = ray.intensity * (1 - age);
+          const length = Math.sqrt(
+            Math.pow(ray.endX - ray.startX, 2) + 
+            Math.pow(ray.endY - ray.startY, 2)
+          );
+          
+          return (
+            <motion.div
+              key={ray.id}
+              className="absolute"
+              style={{
+                left: ray.startX,
+                top: ray.startY,
+                width: isMobile ? 2 : 3,
+                height: length,
+                background: `linear-gradient(to bottom, ${ray.color}${Math.floor(opacity * 255 * 0.6).toString(16).padStart(2, '0')} 0%, ${ray.color}${Math.floor(opacity * 255 * 0.3).toString(16).padStart(2, '0')} 50%, transparent 100%)`,
+                transformOrigin: 'top center',
+                transform: `rotate(${Math.atan2(
+                  ray.endY - ray.startY, 
+                  ray.endX - ray.startX
+                ) * 180 / Math.PI + 90}deg)`,
+                filter: `blur(${isMobile ? 1 : 1.5}px)`,
+                boxShadow: `0 0 ${isMobile ? 15 : 25}px ${ray.color}`,
+              }}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ 
+                opacity: [0, opacity, opacity * 0.7, 0],
+                scale: [0, 1, 1.1, 0.8],
+                filter: [`blur(${isMobile ? 2 : 3}px)`, `blur(${isMobile ? 1 : 1.5}px)`, `blur(${isMobile ? 1.5 : 2}px)`],
+              }}
+              transition={{ 
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: Math.random() * 2,
+              }}
+            />
+          );
+        })}
+      </div>
+      
+      {/* Dynamic Auras */}
+      <div className="absolute inset-0 pointer-events-none">
+        {dynamicAuras.map((aura) => (
+          <motion.div
+            key={aura.id}
+            className="absolute rounded-full"
+            style={{
+              left: aura.x - aura.radius / 2,
+              top: aura.y - aura.radius / 2,
+              width: aura.radius,
+              height: aura.radius,
+              background: `conic-gradient(from ${aura.pulsePhase * 180 / Math.PI}deg, ${aura.colors.map((color, i) => 
+                `${color}${Math.floor(aura.intensity * 255 * 0.4).toString(16).padStart(2, '0')} ${i * (100 / aura.colors.length)}%`
+              ).join(', ')})`,
+              filter: 'blur(20px)',
+              transform: `rotate(${aura.pulsePhase * 180 / Math.PI}deg)`,
+            }}
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [aura.intensity * 0.6, aura.intensity, aura.intensity * 0.8],
+              rotate: [0, 360],
+            }}
+            transition={{
+              scale: { duration: 3, repeat: Infinity, ease: "easeInOut" },
+              opacity: { duration: 2, repeat: Infinity, ease: "easeInOut" },
+              rotate: { duration: 20, repeat: Infinity, ease: "linear" },
+            }}
+          />
+        ))}
+      </div>
+      
+      {/* Color Bleeding Effects */}
+      <div className="absolute inset-0 pointer-events-none">
+        {colorBleeding.map((bleed) => {
+          const age = (Date.now() - bleed.createdAt) / 3000;
+          const opacity = bleed.opacity * (1 - age);
+          
+          return (
+            <motion.div
+              key={bleed.id}
+              className="absolute rounded-full"
+              style={{
+                left: bleed.x - bleed.radius / 2,
+                top: bleed.y - bleed.radius / 2,
+                width: bleed.radius,
+                height: bleed.radius,
+                background: `radial-gradient(circle, ${bleed.color}${Math.floor(opacity * 255).toString(16).padStart(2, '0')} 0%, transparent 70%)`,
+                filter: 'blur(25px)',
+              }}
+              animate={{
+                scale: [0.8, 1.2, 1],
+                opacity: [0, opacity, opacity * 0.5, 0],
+              }}
+              transition={{
+                duration: 4,
+                ease: "easeInOut",
+                delay: Math.random() * 2,
+              }}
+            />
+          );
+        })}
+      </div>
+      
+      {/* Prismatic Edge Effects */}
+      <div className="absolute inset-0 pointer-events-none">
+        {prismaticEdges.map((edge) => (
+          <motion.div
+            key={edge.id}
+            className="absolute rounded-2xl"
+            style={{
+              left: edge.x,
+              top: edge.y,
+              width: edge.width,
+              height: edge.height,
+              background: `conic-gradient(from ${edge.hueShift}deg, 
+                hsl(0, 100%, 50%) 0deg,
+                hsl(60, 100%, 50%) 60deg,
+                hsl(120, 100%, 50%) 120deg,
+                hsl(180, 100%, 50%) 180deg,
+                hsl(240, 100%, 50%) 240deg,
+                hsl(300, 100%, 50%) 300deg,
+                hsl(360, 100%, 50%) 360deg)`,
+              opacity: edge.intensity * 0.3,
+              filter: 'blur(3px)',
+              mixBlendMode: 'overlay',
+              border: `2px solid rgba(255, 255, 255, ${edge.intensity * 0.5})`,
+            }}
+            animate={{
+              rotate: [0, 360],
+              opacity: [edge.intensity * 0.2, edge.intensity * 0.4, edge.intensity * 0.2],
+              scale: [0.98, 1.02, 0.98],
+            }}
+            transition={{
+              rotate: { duration: 10, repeat: Infinity, ease: "linear" },
+              opacity: { duration: 3, repeat: Infinity, ease: "easeInOut" },
+              scale: { duration: 2, repeat: Infinity, ease: "easeInOut" },
+            }}
+          />
+        ))}
+      </div>
+      
+      {/* Chromatic Aberration Effects */}
+      <div className="absolute inset-0 pointer-events-none">
+        {chromaticAberration.map((aberration) => {
+          const pos = calculateImagePosition(aberration.imageIndex, heroImages.length, currentImageIndex);
+          const size = isMobile ? 128 : (screenSize.width < 1280 ? 192 : 224);
+          
+          return (
+            <div key={aberration.id} className="absolute" style={{
+              left: screenSize.width / 2 + pos.x - size / 2,
+              top: screenSize.height / 2 + pos.y - size / 2,
+              width: size,
+              height: size,
+            }}>
+              {/* Red channel */}
+              <motion.div
+                className="absolute inset-0 rounded-2xl"
+                style={{
+                  background: `url(${heroImages[aberration.imageIndex]?.src})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  filter: 'sepia(100%) hue-rotate(320deg) saturate(200%)',
+                  mixBlendMode: 'screen',
+                  opacity: aberration.intensity * 0.3,
+                }}
+                animate={{
+                  x: [0, aberration.redOffset.x, aberration.redOffset.x * 0.5, 0],
+                  y: [0, aberration.redOffset.y, aberration.redOffset.y * 0.5, 0],
+                }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              />
+              
+              {/* Blue channel */}
+              <motion.div
+                className="absolute inset-0 rounded-2xl"
+                style={{
+                  background: `url(${heroImages[aberration.imageIndex]?.src})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  filter: 'sepia(100%) hue-rotate(200deg) saturate(200%)',
+                  mixBlendMode: 'screen',
+                  opacity: aberration.intensity * 0.3,
+                }}
+                animate={{
+                  x: [0, aberration.blueOffset.x, aberration.blueOffset.x * 0.5, 0],
+                  y: [0, aberration.blueOffset.y, aberration.blueOffset.y * 0.5, 0],
+                }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+              />
+            </div>
+          );
+        })}
+      </div>
+      
+      {/* Magnetic Field Visualization */}
+      <div className="absolute inset-0 pointer-events-none">
+        {energyField.map((field) => {
+          const age = (Date.now() - field.createdAt) / 2000;
+          const opacity = field.intensity * (1 - age);
+          
+          return (
+            <motion.div
+              key={field.id}
+              className="absolute"
+              style={{
+                left: field.startX,
+                top: field.startY,
+                width: 2,
+                height: Math.sqrt(
+                  Math.pow(field.endX - field.startX, 2) + 
+                  Math.pow(field.endY - field.startY, 2)
+                ),
+                background: `linear-gradient(to bottom, ${field.color}${Math.floor(opacity * 255).toString(16).padStart(2, '0')}, transparent)`,
+                transformOrigin: 'top center',
+                transform: `rotate(${Math.atan2(
+                  field.endY - field.startY, 
+                  field.endX - field.startX
+                ) * 180 / Math.PI + 90}deg)`,
+                filter: 'blur(0.5px)',
+              }}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: opacity, scale: 1 }}
+              transition={{ duration: 0.3 }}
+            />
+          );
+        })}
+      </div>
+      
+      {/* Fluid Dynamics Particles */}
+      <div className="absolute inset-0 pointer-events-none">
+        {fluidParticles.map((particle) => {
+          const age = (Date.now() - particle.createdAt) / 5000;
+          const opacity = (1 - age) * particle.density;
+          
+          // Apply fluid dynamics simulation
+          const time = Date.now() / 1000;
+          const flowX = Math.sin(time * particle.viscosity + particle.x / 100) * 20;
+          const flowY = Math.cos(time * particle.viscosity + particle.y / 100) * 15;
+          
+          return (
+            <motion.div
+              key={particle.id}
+              className="absolute rounded-full"
+              style={{
+                left: particle.x,
+                top: particle.y,
+                width: particle.size,
+                height: particle.size,
+                backgroundColor: particle.color,
+                opacity,
+                filter: `blur(${particle.viscosity * 3}px)`,
+                boxShadow: `0 0 ${particle.size * 3}px ${particle.color}`,
+              }}
+              animate={{
+                x: [0, flowX, flowX * 1.5, flowX * 0.5],
+                y: [0, flowY, flowY * 1.5, flowY * 0.5],
+                scale: [1, 1 + particle.mass * 0.3, 1],
+              }}
+              transition={{
+                duration: 4 + particle.viscosity * 2,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: Math.random() * 2,
+              }}
+            />
+          );
+        })}
+      </div>
+      
+      {/* Orbital Mechanics Particles */}
+      <div className="absolute inset-0 pointer-events-none">
+        {orbitalParticles.map((particle) => {
+          const age = (Date.now() - particle.createdAt) / 8000;
+          const opacity = (1 - age) * 0.8;
+          
+          // Calculate orbital position
+          const time = Date.now() / 1000;
+          const currentAngle = particle.angle + time * particle.speed;
+          const x = particle.centerX + Math.cos(currentAngle) * particle.radius;
+          const y = particle.centerY + Math.sin(currentAngle) * particle.radius * 0.7; // Elliptical orbit
+          
+          return (
+            <motion.div
+              key={particle.id}
+              className="absolute rounded-full"
+              style={{
+                left: x - particle.size / 2,
+                top: y - particle.size / 2,
+                width: particle.size,
+                height: particle.size,
+                backgroundColor: particle.color,
+                opacity,
+                boxShadow: `0 0 ${particle.size * 2}px ${particle.color}`,
+                filter: 'blur(0.5px)',
+              }}
+              animate={{
+                scale: [1, 1.3, 1],
+                opacity: [opacity * 0.7, opacity, opacity * 0.8],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+          );
+        })}
+      </div>
+      
+      {/* Color Harmonics Visualization */}
+      <div className="absolute inset-0 pointer-events-none">
+        {colorHarmonics.map((harmonic) => {
+          const time = Date.now() / 1000;
+          const waveOffset = Math.sin(time * harmonic.frequency + harmonic.phase) * harmonic.amplitude;
+          
+          return (
+            <div key={harmonic.id} className="absolute inset-0">
+              {harmonic.harmonicColors.map((color, index) => {
+                const angle = (index / harmonic.harmonicColors.length) * Math.PI * 2;
+                const radius = 100 + index * 20 + waveOffset * 30;
+                const centerX = screenSize.width / 2;
+                const centerY = screenSize.height / 2;
+                const x = centerX + Math.cos(angle + time * 0.5) * radius;
+                const y = centerY + Math.sin(angle + time * 0.5) * radius;
+                
+                return (
+                  <motion.div
+                    key={`${harmonic.id}-${index}`}
+                    className="absolute rounded-full"
+                    style={{
+                      left: x - 5,
+                      top: y - 5,
+                      width: 10,
+                      height: 10,
+                      backgroundColor: color,
+                      opacity: 0.4 + waveOffset * 0.3,
+                      filter: 'blur(2px)',
+                    }}
+                    animate={{
+                      scale: [1, 1.5, 1],
+                      opacity: [0.2, 0.6, 0.2],
+                    }}
+                    transition={{
+                      duration: 3 + index * 0.5,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: index * 0.2,
+                    }}
+                  />
+                );
+              })}
+            </div>
+          );
+        })}
+      </div>
+      
+      {/* Magnetic Particles */}
+      <div className="absolute inset-0 pointer-events-none">
+        {magneticParticles.map((particle) => {
+          const age = (Date.now() - particle.createdAt) / 3000;
+          const opacity = particle.opacity * (1 - age);
+          
+          // Apply magnetic attraction toward cursor
+          const deltaX = (cursorPosition.x - particle.x) * 0.02 * particle.magneticCharge;
+          const deltaY = (cursorPosition.y - particle.y) * 0.02 * particle.magneticCharge;
+          
+          return (
+            <motion.div
+              key={particle.id}
+              className="absolute rounded-full"
+              style={{
+                left: particle.x,
+                top: particle.y,
+                width: particle.size,
+                height: particle.size,
+                backgroundColor: particle.color,
+                opacity,
+                boxShadow: `0 0 ${particle.size * 2}px ${particle.color}`,
+                filter: 'blur(0.5px)',
+              }}
+              animate={{
+                x: [0, deltaX * 20, deltaX * 40],
+                y: [0, deltaY * 20, deltaY * 40],
+                scale: [1, 1.2, 0.8],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
+          );
+        })}
+      </div>
+      
+      {/* Enhanced Floating Color Particles */}
+      <motion.div 
+        className="absolute inset-0 overflow-hidden"
+        style={{
+          x: isMobile ? 0 : particleX,
+          y: isMobile ? 0 : particleY,
+        }}
+      >
+        {particles.map((particle, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-2 h-2 rounded-full blur-sm"
+            style={{
+              background: particle.background,
+              left: particle.left,
+              top: particle.top,
+            }}
+            animate={prefersReducedMotion ? {
+              opacity: [0.3, 0.6, 0.3],
+            } : {
+              y: [0, -30, 0],
+              opacity: [0.3, 0.8, 0.3],
+              scale: [1, 1.2, 1],
+              rotate: [0, 180, 360],
+              x: isMobile ? 0 : magneticInfluence.x * 10,
+            }}
+            transition={{
+              duration: particle.duration,
+              repeat: prefersReducedMotion ? 1 : Infinity,
+              delay: particle.delay,
+            }}
+            whileHover={!prefersReducedMotion ? {
+              scale: 2,
+              opacity: 1,
+              x: magneticInfluence.x * 20,
+              y: magneticInfluence.y * 20,
+            } : {}}
+          />
+        ))}
+      </motion.div>
+
+      {/* Main Content */}
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 text-center w-full">
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          className="mb-4 sm:mb-6 md:mb-8"
+        >
+          <motion.h1 
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-3 sm:mb-4 md:mb-6"
+            animate={{
+              backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+          >
+            <motion.span 
+              className="bg-gradient-to-r from-purple-600 via-pink-600 via-cyan-600 to-purple-600 bg-clip-text text-transparent animate-pulse-color"
+              style={{
+                backgroundSize: '200% 200%',
+              }}
+              whileHover={{
+                scale: 1.05,
+                textShadow: '0 0 30px rgba(139, 69, 19, 0.5)',
+              }}
+            >
+              {t('title')}
+            </motion.span>
+          </motion.h1>
+          
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.5 }}
+          >
+            <motion.p 
+              className="text-base sm:text-lg md:text-xl lg:text-2xl font-light text-gray-700 mb-2 sm:mb-3"
+              animate={{
+                y: [0, -5, 0],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            >
+              {t('tagline')}
+            </motion.p>
+            <motion.p 
+              className="text-base sm:text-lg md:text-xl text-gray-600 max-w-xl sm:max-w-2xl mx-auto px-4 sm:px-0"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 1 }}
+            >
+              {t('description')}
+            </motion.p>
+          </motion.div>
+        </motion.div>
+
+        {/* 3D Floating Gallery */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, delay: 0.5 }}
+          className="relative w-full h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] mx-auto mb-4 sm:mb-6 md:mb-8"
+          style={{
+            perspective: '1000px',
+            perspectiveOrigin: '50% 50%',
+            overflow: 'hidden',
+            maxWidth: '100vw',
+            contain: 'layout',
+          }}
+        >
+          {/* Navigation Arrows */}
+          <motion.button
+            onClick={goToPrevious}
+            className="absolute left-4 top-1/2 transform -translate-y-1/2 z-20 w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all duration-300"
+            whileHover={{ scale: 1.1, x: -5 }}
+            whileTap={{ scale: 0.9 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: isPaused ? 1 : 0.3 }}
+            transition={{ duration: 0.3 }}
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </motion.button>
+          
+          <motion.button
+            onClick={goToNext}
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 z-20 w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all duration-300"
+            whileHover={{ scale: 1.1, x: 5 }}
+            whileTap={{ scale: 0.9 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: isPaused ? 1 : 0.3 }}
+            transition={{ duration: 0.3 }}
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </motion.button>
+          <motion.div
+            className="relative w-full h-full gallery-3d"
+            style={{
+              transformStyle: 'preserve-3d',
+              x: prefersReducedMotion ? 0 : (isMobile ? 0 : galleryX),
+              y: prefersReducedMotion ? 0 : (isMobile ? 0 : galleryY),
+              rotateX: prefersReducedMotion ? 0 : (isMobile ? 0 : rotateX),
+              rotateY: prefersReducedMotion ? 0 : (isMobile ? 0 : rotateY),
+              touchAction: 'none', // Prevent default touch behaviors
+              userSelect: 'none', // Prevent text selection
+              overflow: 'visible',
+              maxWidth: '100%',
+              position: 'relative',
+            }}
+            transition={{
+              type: "spring",
+              stiffness: prefersReducedMotion ? 100 : 50,
+              damping: prefersReducedMotion ? 30 : 20
+            }}
+            onTouchStart={onTouchStart}
+            onTouchMove={onTouchMove}
+            onTouchEnd={onTouchEnd}
+          >
+            {heroImages.map((image, index) => {
+              const staggerDelay = index * 0.1;
+              
+              return (
+                <motion.div
+                  key={index}
+                  className="absolute w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 rounded-2xl overflow-hidden shadow-2xl gallery-3d-item cursor-pointer"
+                  data-bg-image={image.src}
+                  style={{
+                    left: '50%',
+                    top: '50%',
+                    willChange: 'transform',
+                    backfaceVisibility: 'hidden',
+                    transformStyle: 'preserve-3d',
+                    // Enhanced touch target padding
+                    padding: '8px',
+                    margin: '-8px',
+                    // Note: Depth-based responsiveness handled in animate props instead of transforms
+                  }}
+                  initial={ isMounted ? (() => {
+                      const pos = calculateImagePosition(index, heroImages.length, 0); // Start from position 0
+                      return {
+                        opacity: 0,
+                        x: pos.x - imageSizeOffset,
+                        y: pos.y - imageSizeOffset,
+                        translateZ: pos.z,
+                        rotateY: pos.rotateY,
+                        scale: pos.scale
+                      };
+                    })() : {
+                      opacity: 0,
+                      x: 0,
+                      y: 0,
+                      translateZ: 0,
+                      rotateY: 0,
+                      scale: 1
+                    }
+                  }
+                  animate={ isMounted ? (() => {
+                      const pos = calculateImagePosition(index, heroImages.length, currentImageIndex);
+                      
+                      // Performance mode: simplified animations only
+                      if (performanceMode) {
+                        return {
+                          opacity: index === currentImageIndex ? 1 : 0.7,
+                          filter: index === currentImageIndex ? 'brightness(1.1)' : 'brightness(0.9)',
+                          x: pos.x - imageSizeOffset,
+                          y: pos.y - imageSizeOffset,
+                          translateZ: pos.z,
+                          rotateY: pos.rotateY,
+                          rotateZ: 0,
+                          scale: index === currentImageIndex ? pos.scale * 1.05 : pos.scale
+                        };
+                      }
+                      
+                      // Full effects mode: reduced complexity
+                      const time = Date.now() / 1000;
+                      
+                      // Simple breathing effect (reduced complexity)
+                      const breathScale = index === currentImageIndex ? 
+                        1 + Math.sin(time * 1.5) * 0.02 : 1;
+                      
+                      // Basic depth of field
+                      const blurAmount = index === currentImageIndex ? 0 : Math.abs(index - currentImageIndex) * 0.5;
+                      const blurEffect = `blur(${blurAmount}px)`;
+                      
+                      return {
+                        opacity: touchingImage === index ? pos.opacity * 0.8 : pos.opacity,
+                        filter: [
+                          index === currentImageIndex ? 'brightness(1.2)' : 'brightness(0.8)',
+                          blurEffect
+                        ].join(' '),
+                        x: pos.x - imageSizeOffset,
+                        y: pos.y - imageSizeOffset,
+                        translateZ: pos.z,
+                        rotateY: pos.rotateY,
+                        rotateZ: 0,
+                        scale: (index === currentImageIndex ? pos.scale * 1.1 : pos.scale) * breathScale
+                      };
+                    })() : {
+                      opacity: index === currentImageIndex ? 1 : 0.7,
+                      filter: index === currentImageIndex ? 'brightness(1.2)' : 'brightness(0.8)',
+                      x: 0,
+                      y: 0,
+                      translateZ: 0,
+                      rotateY: 0,
+                      rotateZ: 0,
+                      scale: index === currentImageIndex ? 1.1 : 1
+                    }
+                  }
+                  transition={{ 
+                    opacity: { duration: 1, delay: staggerDelay },
+                    filter: { duration: 1, delay: staggerDelay },
+                    x: { 
+                      type: "spring", 
+                      stiffness: 60, 
+                      damping: 25,
+                      duration: 1.5
+                    },
+                    y: prefersReducedMotion ? { 
+                      type: "spring", 
+                      stiffness: 60, 
+                      damping: 25,
+                      duration: 1.5
+                    } : {
+                      duration: 4 + index * 0.3,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: staggerDelay
+                    },
+                    translateZ: { 
+                      type: "spring", 
+                      stiffness: 60, 
+                      damping: 25,
+                      duration: 1.5
+                    },
+                    rotateY: { 
+                      type: "spring", 
+                      stiffness: 60, 
+                      damping: 25,
+                      duration: 1.5
+                    },
+                    rotateZ: prefersReducedMotion ? { duration: 0 } : {
+                      duration: 6 + index * 0.5,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: staggerDelay
+                    },
+                    scale: { 
+                      type: "spring", 
+                      stiffness: 60, 
+                      damping: 25,
+                      duration: 1.5
+                    }
+                  }}
+                  whileHover={isMounted ? {
+                    scale: calculateImagePosition(index, heroImages.length, currentImageIndex).scale * 1.1,
+                    filter: 'brightness(1.3)',
+                    transition: { duration: 0.3 }
+                  } : {
+                    scale: 1.1,
+                    filter: 'brightness(1.3)',
+                    transition: { duration: 0.3 }
+                  }}
+                  whileTap={isMounted ? {
+                    scale: calculateImagePosition(index, heroImages.length, currentImageIndex).scale * 0.95,
+                    transition: { duration: 0.1 }
+                  } : {
+                    scale: 0.95,
+                    transition: { duration: 0.1 }
+                  }}
+                  onClick={() => goToImage(index)}
+                  onTouchStart={() => handleImageTouchStart(index)}
+                  onTouchEnd={handleImageTouchEnd}
+                  role="img"
+                  aria-label={t(`imageAltTexts.${index % 3}`)}
+                />
+              );
+            })}
+          </motion.div>
+        </motion.div>
+
+        {/* Advanced CTA Buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 1 }}
+          className="flex justify-center items-center mb-2 sm:mb-4"
+        >
+          {/* Magnetic Book Appointment Button */}
+          <motion.div
+            className="relative group"
+            whileHover="hover"
+            whileTap="tap"
+          >
+            <motion.button
+              className="relative bg-gradient-to-r from-purple-600 via-pink-600 to-cyan-600 text-white px-6 sm:px-8 md:px-12 py-3 sm:py-4 md:py-5 rounded-full text-sm sm:text-base md:text-lg lg:text-xl font-bold shadow-2xl overflow-hidden group"
+              onClick={() => {
+                const message = encodeURIComponent(t('whatsapp.generalBooking'));
+                window.open(`https://wa.me/554899169053?text=${message}`, '_blank');
+              }}
+              onTouchStart={() => {
+                setTouchingButton(true);
+                if (navigator.vibrate) {
+                  navigator.vibrate(15);
+                }
+              }}
+              onTouchEnd={() => {
+                setTouchingButton(false);
+              }}
+              onTouchCancel={() => {
+                setTouchingButton(false);
+              }}
+              variants={{
+                hover: { 
+                  scale: 1.1,
+                  rotateY: 10,
+                  rotateX: 5,
+                  boxShadow: "0 20px 40px rgba(139, 69, 19, 0.4)"
+                },
+                tap: { 
+                  scale: 1.05,
+                  rotateY: 15,
+                  rotateX: 8,
+                  boxShadow: "0 25px 50px rgba(139, 69, 19, 0.5)"
+                }
+              }}
+              transition={{
+                type: "spring",
+                stiffness: 300,
+                damping: 20
+              }}
+            >
+              {/* Animated Background Layers */}
+              <motion.div
+                className={`absolute inset-0 bg-gradient-to-r from-cyan-600 via-purple-600 to-pink-600 ${
+                  touchingButton ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                }`}
+                variants={{
+                  hover: { 
+                    opacity: 1,
+                    scale: 1.2,
+                    rotate: 180
+                  },
+                  tap: { 
+                    opacity: 1,
+                    scale: 1.3,
+                    rotate: 270
+                  }
+                }}
+                transition={{ duration: 0.6 }}
+              />
+              
+              {/* Ripple Effect */}
+              <motion.div
+                className="absolute inset-0 bg-white/20 rounded-full scale-0"
+                variants={{
+                  hover: { 
+                    scale: [0, 1.5],
+                    opacity: [0.3, 0]
+                  },
+                  tap: { 
+                    scale: [0, 2],
+                    opacity: [0.5, 0]
+                  }
+                }}
+                transition={{ duration: 0.6 }}
+              />
+              
+              {/* Button Content */}
+              <motion.span 
+                className="relative z-10 flex items-center gap-3"
+                variants={{
+                  hover: { 
+                    y: -2,
+                    letterSpacing: "0.05em"
+                  },
+                  tap: { 
+                    y: -4,
+                    letterSpacing: "0.08em"
+                  }
+                }}
+              >
+                <motion.svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="text-white"
+                  variants={{
+                    hover: { 
+                      rotate: 360,
+                      scale: 1.2
+                    },
+                    tap: { 
+                      rotate: 540,
+                      scale: 1.4
+                    }
+                  }}
+                  transition={{ duration: 0.8 }}
+                >
+                  <path
+                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.893 3.496"
+                    fill="currentColor"
+                  />
+                </motion.svg>
+                <span className="hidden sm:inline">{t('cta.bookAppointmentFull')}</span>
+                <span className="sm:hidden">{t('cta.bookAppointmentShort')}</span>
+              </motion.span>
+              
+              {/* Particle Burst Effect */}
+              <motion.div
+                className="absolute inset-0 pointer-events-none"
+                variants={{
+                  hover: {
+                    opacity: 1
+                  },
+                  tap: {
+                    opacity: 1
+                  }
+                }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: touchingButton ? 1 : 0 }}
+              >
+                {[...Array(6)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    className="absolute w-2 h-2 bg-white rounded-full"
+                    style={{
+                      left: '50%',
+                      top: '50%',
+                    }}
+                    animate={touchingButton ? {
+                      x: [0, (Math.cos(i * 60 * Math.PI / 180) * 60)],
+                      y: [0, (Math.sin(i * 60 * Math.PI / 180) * 60)],
+                      opacity: [0, 1, 0],
+                      scale: [0, 1.5, 0],
+                    } : {}}
+                    variants={{
+                      hover: {
+                        x: [0, (Math.cos(i * 60 * Math.PI / 180) * 40)],
+                        y: [0, (Math.sin(i * 60 * Math.PI / 180) * 40)],
+                        opacity: [0, 1, 0],
+                        scale: [0, 1, 0],
+                      },
+                      tap: {
+                        x: [0, (Math.cos(i * 60 * Math.PI / 180) * 60)],
+                        y: [0, (Math.sin(i * 60 * Math.PI / 180) * 60)],
+                        opacity: [0, 1, 0],
+                        scale: [0, 1.5, 0],
+                      }
+                    }}
+                    transition={{
+                      duration: 0.8,
+                      ease: "easeOut",
+                      delay: i * 0.1
+                    }}
+                  />
+                ))}
+              </motion.div>
+            </motion.button>
+          </motion.div>
+        </motion.div>
+
+        {/* Dynamic Constellation Lines */}
+        <div className="absolute inset-0 pointer-events-none">
+          <svg className="w-full h-full" style={{ position: 'absolute' }}>
+            {constellationLines.map((line) => (
+              <motion.line
+                key={line.id}
+                x1={line.fromX}
+                y1={line.fromY}
+                x2={line.toX}
+                y2={line.toY}
+                stroke={line.color}
+                strokeWidth="1"
+                strokeOpacity={line.intensity * 0.6}
+                className="animate-constellation-draw"
+                initial={{ strokeDasharray: "0 100", opacity: 0 }}
+                animate={{ 
+                  strokeDasharray: ["0 100", "50 100", "100 100"],
+                  opacity: [0, line.intensity * 0.8, line.intensity * 0.6]
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: Math.random() * 2
+                }}
+              />
+            ))}
+          </svg>
+        </div>
+
+        {/* Neural Pathways */}
+        <div className="absolute inset-0 pointer-events-none">
+          <svg className="w-full h-full" style={{ position: 'absolute' }}>
+            {neuralPathways.map((pathway) => (
+              <g key={pathway.id}>
+                {/* Draw curved pathway */}
+                {pathway.nodes.length > 2 && [...Array(pathway.nodes.length - 1)].map((_, i) => {
+                  const start = pathway.nodes[i];
+                  const end = pathway.nodes[i + 1];
+                  const controlX = (start.x + end.x) / 2 + Math.sin(pathway.pulsePhase + i) * 30;
+                  const controlY = (start.y + end.y) / 2 + Math.cos(pathway.pulsePhase + i) * 30;
+                  
+                  return (
+                    <motion.path
+                      key={`${pathway.id}-segment-${i}`}
+                      d={`M ${start.x} ${start.y} Q ${controlX} ${controlY} ${end.x} ${end.y}`}
+                      stroke={pathway.color}
+                      strokeWidth="2"
+                      fill="none"
+                      strokeOpacity={pathway.intensity * 0.7}
+                      animate={{
+                        strokeDasharray: ["0 10", "5 10", "10 10"],
+                        strokeOpacity: [pathway.intensity * 0.4, pathway.intensity * 0.8, pathway.intensity * 0.5]
+                      }}
+                      transition={{
+                        duration: 2 + i * 0.3,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: i * 0.5
+                      }}
+                    />
+                  );
+                })}
+                
+                {/* Neural nodes */}
+                {pathway.nodes.map((node, i) => (
+                  node.imageIndex >= 0 && (
+                    <motion.circle
+                      key={`${pathway.id}-node-${i}`}
+                      cx={node.x}
+                      cy={node.y}
+                      r="4"
+                      fill={pathway.color}
+                      fillOpacity={pathway.intensity}
+                      animate={{
+                        r: [3, 6, 4],
+                        fillOpacity: [pathway.intensity * 0.6, pathway.intensity, pathway.intensity * 0.7]
+                      }}
+                      transition={{
+                        duration: 1.5,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: Math.sin(pathway.pulsePhase + i) * 0.5
+                      }}
+                    />
+                  )
+                ))}
+              </g>
+            ))}
+          </svg>
+        </div>
+
+        {/* Energy Transfers */}
+        <div className="absolute inset-0 pointer-events-none">
+          {energyTransfers.map((transfer) => {
+            const fromPos = calculateImagePosition(transfer.fromIndex, heroImages.length, currentImageIndex);
+            const toPos = calculateImagePosition(transfer.toIndex, heroImages.length, currentImageIndex);
+            
+            const startX = screenSize.width / 2 + fromPos.x;
+            const startY = screenSize.height / 2 + fromPos.y;
+            const endX = screenSize.width / 2 + toPos.x;
+            const endY = screenSize.height / 2 + toPos.y;
+            
+            // Calculate intermediate points for energy particles
+            const particles = [...Array(transfer.particleCount)].map((_, i) => {
+              const progress = (transfer.progress + i * 0.1) % 1;
+              const x = startX + (endX - startX) * progress;
+              const y = startY + (endY - startY) * progress;
+              return { x, y, progress };
+            });
+            
+            return (
+              <div key={transfer.id}>
+                {particles.map((particle, i) => (
+                  <motion.div
+                    key={`${transfer.id}-particle-${i}`}
+                    className="absolute w-3 h-3 rounded-full"
+                    style={{
+                      left: particle.x - 1.5,
+                      top: particle.y - 1.5,
+                      background: `radial-gradient(circle, ${transfer.color} 0%, transparent 70%)`,
+                      filter: 'blur(0.5px)',
+                    }}
+                    animate={{
+                      scale: [0.8, 1.2, 0.8],
+                      opacity: particle.progress > 0.9 ? [transfer.intensity, 0] : [transfer.intensity * 0.8, transfer.intensity, transfer.intensity * 0.8]
+                    }}
+                    transition={{
+                      scale: { duration: 0.5 + i * 0.1, repeat: Infinity, ease: "easeInOut" },
+                      opacity: { duration: 0.3 }
+                    }}
+                  />
+                ))}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Cosmic Web */}
+        <div className="absolute inset-0 pointer-events-none">
+          <svg className="w-full h-full" style={{ position: 'absolute' }}>
+            {cosmicWeb.map((web) => (
+              <g key={web.id}>
+                {/* Central hub */}
+                <motion.circle
+                  cx={web.centerX}
+                  cy={web.centerY}
+                  r={web.radius * 0.1}
+                  fill="rgba(255, 255, 255, 0.3)"
+                  animate={{
+                    r: [web.radius * 0.08, web.radius * 0.15, web.radius * 0.1],
+                    fillOpacity: [0.2, 0.5, 0.3]
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: Math.sin(web.pulsePhase)
+                  }}
+                />
+                
+                {/* Web spokes */}
+                {web.spokes.map((spoke, i) => {
+                  const endX = web.centerX + Math.cos(spoke.angle + web.pulsePhase) * spoke.length;
+                  const endY = web.centerY + Math.sin(spoke.angle + web.pulsePhase) * spoke.length;
+                  
+                  return (
+                    <motion.line
+                      key={`${web.id}-spoke-${i}`}
+                      x1={web.centerX}
+                      y1={web.centerY}
+                      x2={endX}
+                      y2={endY}
+                      stroke={spoke.color}
+                      strokeWidth="1"
+                      strokeOpacity={web.intensity}
+                      animate={{
+                        strokeOpacity: [web.intensity * 0.3, web.intensity * 0.8, web.intensity * 0.5],
+                        strokeDasharray: ["0 5", "3 5", "5 5"]
+                      }}
+                      transition={{
+                        duration: 4 + i * 0.2,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: i * 0.3
+                      }}
+                    />
+                  );
+                })}
+                
+                {/* Web connection points */}
+                {web.spokes.map((spoke, i) => {
+                  const pointX = web.centerX + Math.cos(spoke.angle + web.pulsePhase) * spoke.length * 0.7;
+                  const pointY = web.centerY + Math.sin(spoke.angle + web.pulsePhase) * spoke.length * 0.7;
+                  
+                  return (
+                    <motion.circle
+                      key={`${web.id}-point-${i}`}
+                      cx={pointX}
+                      cy={pointY}
+                      r="2"
+                      fill={spoke.color}
+                      fillOpacity={web.intensity * 0.6}
+                      animate={{
+                        r: [1.5, 3, 2],
+                        fillOpacity: [web.intensity * 0.4, web.intensity * 0.8, web.intensity * 0.6]
+                      }}
+                      transition={{
+                        duration: 2 + i * 0.1,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: Math.cos(web.pulsePhase + i) * 0.5
+                      }}
+                    />
+                  );
+                })}
+              </g>
+            ))}
+          </svg>
+        </div>
+        )}
+
+        {/* Scroll Indicator - Hidden on small screens to save space */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 1.5 }}
+          className="absolute bottom-2 sm:bottom-8 left-1/2 transform -translate-x-1/2 hidden sm:block"
+        >
+          <motion.div
+            animate={{ y: [0, 10, 0] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            className="w-6 h-10 border-2 border-purple-400 rounded-full flex justify-center"
+          >
+            <motion.div
+              animate={{ y: [0, 12, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              className="w-1 h-3 bg-purple-400 rounded-full mt-2"
+            />
+          </motion.div>
+        </motion.div>
+      </div>
+    </div>
+  );
+};
+
+export default HeroSection;

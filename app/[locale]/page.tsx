@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 import { getTranslations } from 'next-intl/server';
 import { setRequestLocale } from 'next-intl/server';
 import { routing } from '../../src/i18n/routing';
-import HeroSection from '../components/ui/HeroSection';
+import HeroSectionSimple from '../components/ui/HeroSectionSimple';
 import SmartGalleryGrid from '../components/ui/SmartGalleryGrid';
 import AIColorPickerSection from '../components/ai/AIColorPickerSection';
 import LanguageSwitcher from '../components/ui/LanguageSwitcher';
@@ -33,7 +33,7 @@ export default async function Home({
 
       {/* Revolutionary Hero Section with AI Try-On */}
       <section className="relative">
-        <HeroSection />
+        <HeroSectionSimple />
       </section>
 
       {/* AI Color Picker Section */}

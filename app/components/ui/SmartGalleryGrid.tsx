@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion, useMotionValue } from 'framer-motion';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
@@ -18,10 +18,21 @@ const SmartGalleryGrid = () => {
   const t = useTranslations('gallery');
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isMobile, setIsMobile] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
+
+  // Detect screen size for responsive layout
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
   
   const handleMouseMove = (e: React.MouseEvent) => {
     if (containerRef.current) {
@@ -35,6 +46,18 @@ const SmartGalleryGrid = () => {
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
+    if (containerRef.current && e.touches.length > 0) {
+      const rect = containerRef.current.getBoundingClientRect();
+      const x = e.touches[0].clientX - rect.left;
+      const y = e.touches[0].clientY - rect.top;
+      setMousePosition({ x, y });
+      mouseX.set(x);
+      mouseY.set(y);
+    }
+  };
+
+  // Enhanced touch handling for mobile magnetic effect
+  const handleTouchStart = (e: React.TouchEvent) => {
     if (containerRef.current && e.touches.length > 0) {
       const rect = containerRef.current.getBoundingClientRect();
       const x = e.touches[0].clientX - rect.left;
@@ -103,6 +126,7 @@ const SmartGalleryGrid = () => {
       className="max-w-7xl mx-auto relative"
       onMouseMove={handleMouseMove}
       onTouchMove={handleTouchMove}
+      onTouchStart={handleTouchStart}
       onMouseLeave={() => {
         setMousePosition({ x: 0, y: 0 });
         mouseX.set(0);
@@ -148,7 +172,7 @@ const SmartGalleryGrid = () => {
         />
         
         {/* Floating Accent Particles */}
-        {[...Array(6)].map((_, i) => (
+        {[...Array(isMobile ? 3 : 6)].map((_, i) => (
           <motion.div
             key={i}
             className="absolute w-1 h-1 bg-purple-400 rounded-full"
@@ -178,13 +202,50 @@ const SmartGalleryGrid = () => {
         }}
       >
         {transformations.map((transformation, index) => {
-          // Calculate magnetic field effect for each card
+          // Calculate magnetic field effect using actual container dimensions
+          let cardCenterX, cardCenterY;
+          
+          // Get actual container dimensions
+          const containerRect = containerRef.current?.getBoundingClientRect();
+          const containerWidth = containerRect?.width || 800;
+          
+          // Determine layout based on consistent breakpoints
+          const isTablet = !isMobile && containerWidth < 1024;
+          
+          if (isMobile) {
+            // Mobile: single column layout (< 768px)
+            cardCenterX = containerWidth / 2;
+            // Calculate card height based on 3:4 aspect ratio and actual width
+            const cardWidth = containerWidth - 48; // Account for padding
+            const cardHeight = (cardWidth * 4) / 3; // 3:4 aspect ratio
+            const gap = 24; // gap-6 = 24px
+            const marginBottom = 16; // mb-4 = 16px
+            const headerHeight = 200; // Approximate header height
+            cardCenterY = headerHeight + (index * (cardHeight + gap + marginBottom)) + (cardHeight / 2);
+          } else if (isTablet) {
+            // Tablet: 2 column layout (768px - 1024px)
+            const cardWidth = (containerWidth - 40 - 48) / 2; // Account for gap and padding
+            cardCenterX = (index % 2) * (cardWidth + 40) + (cardWidth / 2) + 24;
+            const cardHeight = (cardWidth * 4) / 3;
+            const gap = 40; // gap-10 = 40px
+            cardCenterY = 200 + (Math.floor(index / 2) * (cardHeight + gap)) + (cardHeight / 2);
+          } else {
+            // Desktop: 3 column layout (>= 1024px)
+            const cardWidth = (containerWidth - 96 - 48) / 3; // Account for gaps and padding
+            cardCenterX = (index % 3) * (cardWidth + 48) + (cardWidth / 2) + 24;
+            const cardHeight = (cardWidth * 4) / 3;
+            const gap = 48; // gap-12 = 48px
+            cardCenterY = 200 + (Math.floor(index / 3) * (cardHeight + gap)) + (cardHeight / 2);
+          }
+          
           const cardDistance = mousePosition.x ? Math.sqrt(
-            Math.pow(mousePosition.x - (index % 3) * 300 - 150, 2) + 
-            Math.pow(mousePosition.y - Math.floor(index / 3) * 400 - 200, 2)
+            Math.pow(mousePosition.x - cardCenterX, 2) + 
+            Math.pow(mousePosition.y - cardCenterY, 2)
           ) : 1000;
           
-          const magneticEffect = Math.max(0, 100 - cardDistance) / 100;
+          // Increased magnetic range for better mobile interaction
+          const magneticRange = isMobile ? 150 : 100;
+          const magneticEffect = Math.max(0, magneticRange - cardDistance) / magneticRange;
           
           return (
             <motion.div
@@ -200,8 +261,8 @@ const SmartGalleryGrid = () => {
               className="group relative"
               style={{
                 transformStyle: "preserve-3d",
-                x: magneticEffect * (mousePosition.x > 0 ? (mousePosition.x - 600) / 30 : 0),
-                y: magneticEffect * (mousePosition.y > 0 ? (mousePosition.y - 400) / 40 : 0),
+                x: magneticEffect * (mousePosition.x > 0 ? (mousePosition.x - cardCenterX) / (isMobile ? 15 : 30) : 0),
+                y: magneticEffect * (mousePosition.y > 0 ? (mousePosition.y - cardCenterY) / (isMobile ? 18 : 40) : 0),
               }}
             >
               {/* 3D Card Container */}
@@ -321,7 +382,7 @@ const SmartGalleryGrid = () => {
                     }}
                     initial={{ opacity: 0 }}
                   >
-                    {[...Array(8)].map((_, i) => (
+                    {[...Array(isMobile ? 4 : 8)].map((_, i) => (
                       <motion.div
                         key={i}
                         className="absolute w-1 h-1 bg-white rounded-full"

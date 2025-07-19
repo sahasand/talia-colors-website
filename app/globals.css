@@ -232,6 +232,218 @@ body {
   }
 }
 
+/* Ultra-Enhanced Visual Effects Keyframes */
+@keyframes prismatic-rotation {
+  0% {
+    filter: hue-rotate(0deg) saturate(150%);
+  }
+  25% {
+    filter: hue-rotate(90deg) saturate(200%);
+  }
+  50% {
+    filter: hue-rotate(180deg) saturate(150%);
+  }
+  75% {
+    filter: hue-rotate(270deg) saturate(200%);
+  }
+  100% {
+    filter: hue-rotate(360deg) saturate(150%);
+  }
+}
+
+@keyframes volumetric-rays {
+  0% {
+    opacity: 0;
+    transform: scaleY(0) rotate(var(--ray-angle, 0deg));
+    filter: blur(3px);
+  }
+  30% {
+    opacity: 0.8;
+    transform: scaleY(1) rotate(var(--ray-angle, 0deg));
+    filter: blur(1px);
+  }
+  70% {
+    opacity: 0.6;
+    transform: scaleY(1.1) rotate(calc(var(--ray-angle, 0deg) + 5deg));
+    filter: blur(1.5px);
+  }
+  100% {
+    opacity: 0;
+    transform: scaleY(0.8) rotate(calc(var(--ray-angle, 0deg) + 10deg));
+    filter: blur(3px);
+  }
+}
+
+@keyframes color-bleeding {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+    filter: blur(30px);
+  }
+  40% {
+    opacity: 0.8;
+    transform: scale(1.2);
+    filter: blur(20px);
+  }
+  80% {
+    opacity: 0.4;
+    transform: scale(1.5);
+    filter: blur(40px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2);
+    filter: blur(60px);
+  }
+}
+
+@keyframes magnetic-attraction {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(var(--magnetic-x, 0), var(--magnetic-y, 0)) scale(1.2);
+  }
+  100% {
+    transform: translate(calc(var(--magnetic-x, 0) * 0.8), calc(var(--magnetic-y, 0) * 0.8)) scale(0.9);
+  }
+}
+
+@keyframes chromatic-aberration {
+  0% {
+    filter: 
+      drop-shadow(2px 0 0 red) 
+      drop-shadow(-2px 0 0 cyan);
+  }
+  50% {
+    filter: 
+      drop-shadow(3px 1px 0 red) 
+      drop-shadow(-3px -1px 0 cyan);
+  }
+  100% {
+    filter: 
+      drop-shadow(1px -1px 0 red) 
+      drop-shadow(-1px 1px 0 cyan);
+  }
+}
+
+@keyframes atmospheric-depth {
+  0% {
+    opacity: 0.3;
+    transform: translateZ(0px) scale(1);
+    filter: blur(10px);
+  }
+  50% {
+    opacity: 0.6;
+    transform: translateZ(20px) scale(1.1);
+    filter: blur(15px);
+  }
+  100% {
+    opacity: 0.2;
+    transform: translateZ(10px) scale(0.9);
+    filter: blur(25px);
+  }
+}
+
+@keyframes holographic-shimmer {
+  0% {
+    background-position: -100% 0;
+    filter: hue-rotate(0deg);
+  }
+  50% {
+    background-position: 100% 0;
+    filter: hue-rotate(180deg);
+  }
+  100% {
+    background-position: 200% 0;
+    filter: hue-rotate(360deg);
+  }
+}
+
+@keyframes dynamic-aura {
+  0% {
+    transform: rotate(0deg) scale(1);
+    opacity: 0.4;
+  }
+  33% {
+    transform: rotate(120deg) scale(1.2);
+    opacity: 0.8;
+  }
+  66% {
+    transform: rotate(240deg) scale(0.9);
+    opacity: 0.6;
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+    opacity: 0.4;
+  }
+}
+
+@keyframes particle-orbit {
+  0% {
+    transform: rotate(0deg) translateX(var(--orbit-radius, 50px)) rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg) translateX(var(--orbit-radius, 50px)) rotate(-360deg);
+  }
+}
+
+@keyframes energy-pulse {
+  0%, 100% {
+    box-shadow: 
+      0 0 10px currentColor,
+      0 0 20px currentColor,
+      0 0 30px currentColor;
+    filter: brightness(1);
+  }
+  50% {
+    box-shadow: 
+      0 0 20px currentColor,
+      0 0 40px currentColor,
+      0 0 60px currentColor,
+      0 0 80px currentColor;
+    filter: brightness(1.5);
+  }
+}
+
+@keyframes liquid-float {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+    border-radius: 50%;
+  }
+  25% {
+    transform: translateY(-10px) rotate(90deg);
+    border-radius: 60% 40% 30% 70%;
+  }
+  50% {
+    transform: translateY(-5px) rotate(180deg);
+    border-radius: 40% 60% 70% 30%;
+  }
+  75% {
+    transform: translateY(-15px) rotate(270deg);
+    border-radius: 70% 30% 40% 60%;
+  }
+  100% {
+    transform: translateY(0px) rotate(360deg);
+    border-radius: 50%;
+  }
+}
+
+@keyframes constellation-draw {
+  0% {
+    stroke-dasharray: 0 100;
+    opacity: 0;
+  }
+  50% {
+    stroke-dasharray: 50 100;
+    opacity: 1;
+  }
+  100% {
+    stroke-dasharray: 100 100;
+    opacity: 0.7;
+  }
+}
+
 /* Utility Classes */
 .animate-gradient-x {
   animation: gradient-x 15s ease infinite;
@@ -272,6 +484,236 @@ body {
 
 .animate-glow-pulse {
   animation: glow-pulse 2s ease-in-out infinite;
+}
+
+/* Ultra-Enhanced Visual Effect Utilities */
+.animate-prismatic-rotation {
+  animation: prismatic-rotation 8s ease-in-out infinite;
+}
+
+.animate-volumetric-rays {
+  animation: volumetric-rays 3s ease-in-out infinite;
+}
+
+.animate-color-bleeding {
+  animation: color-bleeding 4s ease-out infinite;
+}
+
+.animate-magnetic-attraction {
+  animation: magnetic-attraction 2s ease-in-out infinite;
+}
+
+.animate-chromatic-aberration {
+  animation: chromatic-aberration 3s ease-in-out infinite;
+}
+
+.animate-atmospheric-depth {
+  animation: atmospheric-depth 6s ease-in-out infinite;
+}
+
+.animate-holographic-shimmer {
+  animation: holographic-shimmer 4s linear infinite;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  background-size: 200% 100%;
+}
+
+.animate-dynamic-aura {
+  animation: dynamic-aura 8s ease-in-out infinite;
+}
+
+.animate-particle-orbit {
+  animation: particle-orbit 10s linear infinite;
+}
+
+.animate-energy-pulse {
+  animation: energy-pulse 2s ease-in-out infinite;
+}
+
+.animate-liquid-float {
+  animation: liquid-float 4s ease-in-out infinite;
+}
+
+.animate-constellation-draw {
+  animation: constellation-draw 3s ease-in-out infinite;
+}
+
+/* Enhanced 3D Effects */
+.effect-magnetic-field {
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.effect-magnetic-field::before {
+  content: '';
+  position: absolute;
+  inset: -20px;
+  background: radial-gradient(circle, rgba(0, 150, 255, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(10px);
+  animation: energy-pulse 3s ease-in-out infinite;
+}
+
+.effect-volumetric-lighting {
+  position: relative;
+  overflow: visible;
+}
+
+.effect-volumetric-lighting::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 200px;
+  background: linear-gradient(to bottom, currentColor, transparent);
+  transform: translate(-50%, -50%);
+  animation: volumetric-rays 4s ease-in-out infinite;
+  filter: blur(1px);
+}
+
+.effect-holographic {
+  position: relative;
+  overflow: hidden;
+}
+
+.effect-holographic::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(255, 0, 255, 0.3) 90deg,
+    rgba(0, 255, 255, 0.3) 180deg,
+    rgba(255, 255, 0, 0.3) 270deg,
+    transparent 360deg
+  );
+  animation: prismatic-rotation 6s linear infinite;
+  mix-blend-mode: overlay;
+  border-radius: inherit;
+}
+
+.effect-chromatic {
+  position: relative;
+}
+
+.effect-chromatic::before,
+.effect-chromatic::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  border-radius: inherit;
+}
+
+.effect-chromatic::before {
+  filter: sepia(100%) hue-rotate(320deg) saturate(200%);
+  mix-blend-mode: screen;
+  animation: chromatic-aberration 3s ease-in-out infinite;
+  opacity: 0.3;
+}
+
+.effect-chromatic::after {
+  filter: sepia(100%) hue-rotate(200deg) saturate(200%);
+  mix-blend-mode: screen;
+  animation: chromatic-aberration 3s ease-in-out infinite reverse;
+  opacity: 0.3;
+}
+
+.effect-atmospheric-depth {
+  position: relative;
+}
+
+.effect-atmospheric-depth::before {
+  content: '';
+  position: absolute;
+  inset: -50px;
+  background: radial-gradient(circle, rgba(100, 150, 255, 0.1), transparent 70%);
+  animation: atmospheric-depth 8s ease-in-out infinite;
+  border-radius: 50%;
+  filter: blur(20px);
+}
+
+.effect-liquid-surface {
+  animation: liquid-float 5s ease-in-out infinite;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+}
+
+.effect-energy-field {
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.effect-energy-field::before {
+  content: '';
+  position: absolute;
+  inset: -30px;
+  background: conic-gradient(
+    from 0deg,
+    rgba(0, 255, 255, 0.1) 0deg,
+    rgba(255, 0, 255, 0.1) 120deg,
+    rgba(255, 255, 0, 0.1) 240deg,
+    rgba(0, 255, 255, 0.1) 360deg
+  );
+  border-radius: 50%;
+  animation: dynamic-aura 6s linear infinite;
+  filter: blur(15px);
+}
+
+/* Responsive enhancements for ultra effects */
+@media (max-width: 640px) {
+  .animate-prismatic-rotation,
+  .animate-volumetric-rays,
+  .animate-holographic-shimmer {
+    animation-duration: 4s;
+  }
+  
+  .effect-magnetic-field::before,
+  .effect-atmospheric-depth::before,
+  .effect-energy-field::before {
+    inset: -10px;
+    filter: blur(5px);
+  }
+  
+  .effect-volumetric-lighting::after {
+    height: 100px;
+    filter: blur(0.5px);
+  }
+}
+
+/* Performance optimizations for complex effects */
+@media (prefers-reduced-motion: reduce) {
+  .animate-prismatic-rotation,
+  .animate-volumetric-rays,
+  .animate-color-bleeding,
+  .animate-magnetic-attraction,
+  .animate-chromatic-aberration,
+  .animate-atmospheric-depth,
+  .animate-holographic-shimmer,
+  .animate-dynamic-aura,
+  .animate-particle-orbit,
+  .animate-energy-pulse,
+  .animate-liquid-float,
+  .animate-constellation-draw {
+    animation-duration: 1s !important;
+    animation-iteration-count: 1 !important;
+  }
+  
+  .effect-magnetic-field::before,
+  .effect-volumetric-lighting::after,
+  .effect-holographic::before,
+  .effect-chromatic::before,
+  .effect-chromatic::after,
+  .effect-atmospheric-depth::before,
+  .effect-energy-field::before {
+    animation: none !important;
+    opacity: 0.3 !important;
+  }
 }
 
 /* Advanced Button Effects */

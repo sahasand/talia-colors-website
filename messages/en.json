@@ -26,6 +26,19 @@
       "generalBooking": "Hi! I'd like to book an appointment with Talia for hair color services."
     }
   },
+  "hero": {
+    "title": "Talia Colors",
+    "tagline": "Where Artistry Meets Beautiful Hair",
+    "description": "Personalized hair color by Talia—expertly crafted, creative, and uniquely tailored to you.",
+    "cta": {
+      "bookAppointmentFull": "Book Appointment",
+      "bookAppointmentShort": "Book Now"
+    },
+    "whatsapp": {
+      "greeting": "Hi!",
+      "interest": "I'd like to book an appointment with Talia for hair color services."
+    }
+  },
   "heroSection": {
     "title": "Talia Colors",
     "tagline": "Where Artistry Meets Beautiful Hair",

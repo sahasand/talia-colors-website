@@ -26,6 +26,19 @@
       "generalBooking": "¡Hola! Me gustaría reservar una cita con Talia para servicios de coloración capilar."
     }
   },
+  "hero": {
+    "title": "Talia Colors",
+    "tagline": "Donde Arte Encuentra Cabello Hermoso",
+    "description": "Coloración personalizada by Talia—expertamente creada, creativa y exclusivamente hecha para ti.",
+    "cta": {
+      "bookAppointmentFull": "Reservar Cita",
+      "bookAppointmentShort": "Reservar"
+    },
+    "whatsapp": {
+      "greeting": "¡Hola!",
+      "interest": "Me gustaría programar una cita con Talia para servicios de coloración capilar."
+    }
+  },
   "heroSection": {
     "title": "Talia Colors",
     "tagline": "Donde el Arte Encuentra Cabello Hermoso",

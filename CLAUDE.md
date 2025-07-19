@@ -42,9 +42,11 @@ This is a sophisticated hair colorist website featuring an AI-powered color reco
 │   ├── ColorRecommendations.tsx    # Results display, mobile-optimized
 │   └── types.ts                    # Shared TypeScript interfaces
 └── ui/                    # Reusable UI Components (Responsive & Internationalized)
-    ├── HeroSection.tsx             # Animated hero with responsive carousel
-    ├── LanguageSwitcher.tsx        # Locale switching component
-    └── SmartGalleryGrid.tsx        # Portfolio transformations, touch-optimized
+    ├── HeroSectionSimple.tsx       # Active 3D carousel hero with advanced effects
+    ├── HeroSection.tsx.broken       # Legacy hero component (backup)
+    ├── LanguageSwitcher.tsx         # Locale switching component
+    ├── SmartGalleryGrid.tsx         # Portfolio transformations, touch-optimized
+    └── WhatsAppButton.tsx           # Reusable WhatsApp booking component
 ```
 
 **Technology Stack**
@@ -76,18 +78,24 @@ This is a sophisticated hair colorist website featuring an AI-powered color reco
 - Single-column layouts on mobile for better readability
 - Context-aware button sizing and text content
 
-**3D Interactive Hero Carousel (Featured)**
-- **Circular Rotation System**: True 3D carousel where all images physically rotate through circular positions
+**3D Interactive Hero Carousel (Featured) - Advanced Visual Effects**
+- **Circular Rotation System**: True 3D carousel where all 11 images physically rotate through circular positions
 - **Dynamic Position Calculation**: Mathematical algorithm positions images on responsive 3D circles
-- **All Images Featured**: Every transformation gets prominent front-center display time
+- **All Images Featured**: Every transformation gets prominent front-center display time with enhanced scaling
 - **Hybrid Auto/Manual System**: Auto-rotates every 4 seconds with intelligent pause/resume
 - **Multi-Control Interface**: Click images, navigation arrows, swipe gestures (mobile)
 - **Smart Interaction**: Pauses auto-rotation on user interaction, resumes after 10 seconds
 - **Touch-Optimized**: Enhanced haptic feedback, conflict prevention, optimized touch targets
 - **Visual-Only Interface**: Clean, text-free design with intuitive discovery-based controls
-- **Responsive 3D Circles**: Mobile (5 images, 120px radius), Tablet (8 images, 160px), Desktop (11 images, 200px)
+- **Mobile-Optimized 3D Circles**: Mobile (90px radius), Tablet (180px radius), Desktop (260px radius) - all with 11 images
 - **Smooth Transitions**: 1.5-second spring physics for natural movement between positions
-- **Particle Trail System**: Hair-colored particles emit from active transformations with dynamic positioning
+- **Advanced Visual Effects**:
+  - **Glassmorphism Design**: Frosted glass borders with backdrop blur effects
+  - **Dynamic Ambient Lighting**: Background gradients shift with active image colors
+  - **Color-Matched Glows**: Active images emit glowing rings matching their color palette
+  - **Enhanced Depth Shadows**: Multi-layered shadow system with color-coordinated effects
+  - **Sophisticated Hover States**: 3D tilt animations with spring physics (rotateY: 15°, rotateX: 10°)
+- **Premium Button Effects**: Morphing backgrounds, pulsing rings, animated sparkles on hover
 
 **Additional Features**
 - Portfolio gallery with touch-optimized interactions
@@ -179,6 +187,9 @@ This is a sophisticated hair colorist website featuring an AI-powered color reco
 - Image optimization warnings for blob URLs are expected (user-uploaded content)
 - Memory management is critical for camera and file operations
 - Blob URLs created in PhotoUpload persist until AIColorPickerSection cleanup to ensure image loads in ColorRecommendations
+- **Current Hero Images**: Uses 1a.png through 11a.png (11 total images) - older img1-6.png and transform1-3.png are legacy backups
+- **Active Hero Component**: HeroSectionSimple.tsx is the current implementation with advanced effects
+- **Mobile Viewport Priority**: All layout optimizations prioritize mobile-first design with viewport constraint handling
 
 ## Business Logic
 
@@ -203,10 +214,19 @@ This is a sophisticated hair colorist website featuring an AI-powered color reco
 **3D Carousel Technical Implementation**
 - **Dynamic Position Algorithm**: `calculateImagePosition(imageIndex, totalImages, currentIndex)` using trigonometric functions
 - **Circular Mathematics**: `angle = (relativeIndex / totalImages) * Math.PI * 2` for precise positioning
-- **Responsive Scaling**: `radiusX/radiusZ` adapt based on device type (mobile: 120px, tablet: 160px, desktop: 200px)
+- **Mobile-Optimized Responsive Scaling**: 
+  - Mobile: radiusX: 90px, radiusZ: 70px, baseScale: 0.6
+  - Tablet: radiusX: 180px, radiusZ: 135px, baseScale: 0.75  
+  - Desktop: radiusX: 260px, radiusZ: 195px, baseScale: 0.8
 - **Spring Physics**: 1.5-second transitions with stiffness: 60, damping: 25 for natural movement
 - **Memory Management**: `useCallback` for position calculator, proper dependency arrays for optimization
 - **Touch Integration**: Velocity-based haptic feedback, conflict prevention, enhanced touch targets
+- **Viewport Optimization**: Compressed spacing and sizing for mobile viewport constraints
+- **Enhanced Visual Effects Implementation**:
+  - Dynamic background gradients following active image colors
+  - Multi-layer shadow systems with color coordination
+  - Glassmorphism effects with backdrop-filter: blur(10px)
+  - Sophisticated hover animations with 3D transforms
 
 **Key Integrations**
 - WhatsApp Business for appointment booking with locale-specific contact information
@@ -220,11 +240,8 @@ This is a sophisticated hair colorist website featuring an AI-powered color reco
 **Public Assets**
 ```
 /public/
-├── images/
-│   ├── hero/           # Hero section carousel images
-│   └── portfolio/      # Portfolio transformation gallery
-├── img1.png - img6.png # Sample transformation images
-├── transform1.png - transform3.png # Additional transformations
+├── 1a.png - 11a.png    # 11 Hero carousel transformation images (primary)
+├── img1.png - img6.png # Legacy transformation images (backup)
 └── SVG icons (next.svg, vercel.svg, etc.)
 ```
 
@@ -244,8 +261,8 @@ This is a sophisticated hair colorist website featuring an AI-powered color reco
 
 **Current Website Sections (All Internationalized)**
 1. **Language Switcher**: Fixed position language selector for Portuguese, Spanish, and English
-2. **Hero Section**: Revolutionary design with AI try-on preview, responsive carousel and mobile-optimized typography
-3. **AI Color Picker**: Complete workflow with photo upload and analysis, mobile-first design with touch-friendly interface
+2. **Hero Section**: Revolutionary 3D carousel design with advanced visual effects, glassmorphism UI, dynamic ambient lighting, and mobile-optimized viewport layout
+3. **AI Color Picker**: Complete workflow with photo upload and analysis, mobile-first design with touch-friendly interface and sophisticated button animations
 4. **Smart Gallery**: Portfolio transformations with responsive grid and touch-optimized interactions
 5. **Footer**: Branded footer with WhatsApp and Instagram integration, mobile-friendly button layout
 
@@ -301,19 +318,40 @@ This is a sophisticated hair colorist website featuring an AI-powered color reco
 - Solution: Added comprehensive error boundaries and null safety checks
 - Enhanced user experience with proper error states and fallbacks
 
+**Mobile Viewport Optimization (RESOLVED)**
+- Fixed: Hero button getting cut off on mobile browsers due to viewport overflow
+- Solution: Implemented intelligent layout compression with aggressive spacing reduction
+- Features: Mobile-optimized carousel sizing (h-64→h-60), reduced circle radius (100px→90px), compressed margins
+- Result: Button fully visible with proper clearance across all mobile devices
+
+**Advanced Visual Effects Implementation (RESOLVED)**
+- Fixed: Basic carousel design lacking premium visual appeal
+- Solution: Implemented sophisticated glassmorphism design system with dynamic effects
+- Features: Color-matched ambient lighting, morphing button backgrounds, sparkle animations, multi-layer shadows
+- Result: Premium UI design matching modern design standards while maintaining performance
+
+**Button Effects Consistency (RESOLVED)**
+- Fixed: Inconsistent animation systems between hero and AI section buttons
+- Solution: Unified button animation system with matching visual effects
+- Features: 3D hover transforms (rotateY: 15°, rotateX: 10°), pulsing rings, sparkle effects, morphing backgrounds
+- Result: Cohesive user experience across all interactive elements
+
 **Security & Performance**
 - CORS headers configured for AI/ML integrations
 - Camera permissions properly configured with mobile camera API support
 - Content Security Policy for SVG handling
 - Webpack optimizations for AI libraries
 
-**Mobile Responsiveness & Touch Optimization**
+**Mobile Responsiveness & Touch Optimization (ENHANCED)**
 - All components fully responsive across mobile, tablet, and desktop
 - Touch-friendly interface with minimum 44px touch targets
 - Mobile-first CSS with progressive enhancement
 - Responsive typography and spacing optimized for small screens
 - Cross-device testing validated for seamless functionality
 - Mobile-specific performance optimizations and reduced motion support
+- **Advanced Mobile Viewport Optimization**: Compressed layout spacing and element sizing for optimal button visibility
+- **Intelligent Layout Compression**: Dynamic spacing reduction on mobile to prevent UI cutoff
+- **3D Carousel Mobile Adaptation**: Reduced image sizes and circle radius for mobile viewport constraints
 
 ## Internationalization Guidelines
 
@@ -365,3 +403,6 @@ This is a sophisticated hair colorist website featuring an AI-powered color reco
 - Touch interaction debouncing
 - Mobile-specific CSS optimizations
 - Efficient responsive breakpoint handling
+- **Viewport Constraint Management**: Aggressive spacing compression for mobile layout optimization
+- **3D Effect Performance**: Optimized carousel sizing and positioning for mobile hardware
+- **Advanced Animation Optimization**: Glassmorphism and visual effects optimized for mobile performance
