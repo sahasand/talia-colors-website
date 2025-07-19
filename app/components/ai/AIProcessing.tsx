@@ -67,7 +67,7 @@ const AIProcessing = ({ userPhoto, questionnaireData, onComplete }: AIProcessing
         process: t('recommendations.caramelHighlights.process'),
         estimatedTime: t('recommendations.caramelHighlights.estimatedTime'),
         price: t('recommendations.caramelHighlights.price'),
-        confidence: 92,
+        confidence: 80,
         suitabilityScore: 85
       },
       {
@@ -80,7 +80,7 @@ const AIProcessing = ({ userPhoto, questionnaireData, onComplete }: AIProcessing
         process: t('recommendations.chocolateBrown.process'),
         estimatedTime: t('recommendations.chocolateBrown.estimatedTime'),
         price: t('recommendations.chocolateBrown.price'),
-        confidence: 88,
+        confidence: 80,
         suitabilityScore: 90
       },
       // Cool tones
@@ -94,7 +94,7 @@ const AIProcessing = ({ userPhoto, questionnaireData, onComplete }: AIProcessing
         process: t('recommendations.ashBlonde.process'),
         estimatedTime: t('recommendations.ashBlonde.estimatedTime'),
         price: t('recommendations.ashBlonde.price'),
-        confidence: 78,
+        confidence: 80,
         suitabilityScore: 75
       },
       {
@@ -107,7 +107,7 @@ const AIProcessing = ({ userPhoto, questionnaireData, onComplete }: AIProcessing
         process: t('recommendations.strawberryBlonde.process'),
         estimatedTime: t('recommendations.strawberryBlonde.estimatedTime'),
         price: t('recommendations.strawberryBlonde.price'),
-        confidence: 85,
+        confidence: 80,
         suitabilityScore: 82
       },
       // Bold options
@@ -121,7 +121,7 @@ const AIProcessing = ({ userPhoto, questionnaireData, onComplete }: AIProcessing
         process: t('recommendations.burgundyOmbre.process'),
         estimatedTime: t('recommendations.burgundyOmbre.estimatedTime'),
         price: t('recommendations.burgundyOmbre.price'),
-        confidence: 70,
+        confidence: 80,
         suitabilityScore: 65
       },
       {
@@ -134,35 +134,91 @@ const AIProcessing = ({ userPhoto, questionnaireData, onComplete }: AIProcessing
         process: t('recommendations.copperRed.process'),
         estimatedTime: t('recommendations.copperRed.estimatedTime'),
         price: t('recommendations.copperRed.price'),
-        confidence: 82,
+        confidence: 80,
         suitabilityScore: 78
       }
     ];
 
-  // Filter and customize based on questionnaire responses
-  return baseRecommendations
-    .filter(rec => {
-      // Filter by maintenance preference
-      if (data.maintenance === 'low' && rec.maintenanceLevel === 'high') return false;
-      if (data.maintenance === 'high' && rec.maintenanceLevel === 'low') return false;
+  // Shuffle recommendations to prevent predictable ordering
+  const shuffled = [...baseRecommendations].sort(() => Math.random() - 0.5);
+  
+  // Score and filter based on questionnaire responses
+  const scoredRecommendations = shuffled
+    .map(rec => {
+      let score = rec.confidence;
+      let boost = 0;
       
-      // Filter by lifestyle
-      if (data.lifestyle === 'professional' && rec.name.includes('Burgundy')) return false;
-      if (data.lifestyle === 'creative' && rec.name.includes('Ash')) return false;
+      // Maintenance matching (strong weight)
+      if (data.maintenance === rec.maintenanceLevel) {
+        boost += 15;
+      } else if (
+        (data.maintenance === 'low' && rec.maintenanceLevel === 'medium') ||
+        (data.maintenance === 'high' && rec.maintenanceLevel === 'medium') ||
+        (data.maintenance === 'medium')
+      ) {
+        boost += 5;
+      } else {
+        boost -= 10;
+      }
       
-      // Filter by desired vibe
-      if (data.desiredVibe === 'natural' && rec.category === 'ombre') return false;
-      if (data.desiredVibe === 'dramatic' && rec.maintenanceLevel === 'low') return false;
+      // Lifestyle matching
+      if (data.lifestyle === 'professional') {
+        if (rec.name.includes('Burgundy') || rec.category === 'ombre') boost -= 15;
+        if (rec.name.includes('Chocolate') || rec.name.includes('Caramel')) boost += 10;
+      } else if (data.lifestyle === 'creative') {
+        if (rec.category === 'ombre' || rec.name.includes('Strawberry')) boost += 10;
+        if (rec.name.includes('Chocolate')) boost -= 5;
+      } else if (data.lifestyle === 'glamorous') {
+        if (rec.name.includes('Ash') || rec.name.includes('Burgundy')) boost += 10;
+        if (rec.category === 'highlights') boost += 5;
+      }
       
-      return true;
+      // Vibe matching
+      if (data.desiredVibe === 'natural') {
+        if (rec.category === 'highlights' || rec.name.includes('Caramel') || rec.name.includes('Chocolate')) boost += 10;
+        if (rec.category === 'ombre' || rec.name.includes('Burgundy')) boost -= 15;
+      } else if (data.desiredVibe === 'bold') {
+        if (rec.name.includes('Burgundy') || rec.name.includes('Copper')) boost += 15;
+        if (rec.name.includes('Chocolate')) boost -= 10;
+      } else if (data.desiredVibe === 'dramatic') {
+        if (rec.category === 'ombre' || rec.maintenanceLevel === 'high') boost += 10;
+        if (rec.maintenanceLevel === 'low') boost -= 10;
+      }
+      
+      // Experience level consideration
+      if (data.experience === 'first-time' && rec.maintenanceLevel === 'high') {
+        boost -= 10;
+      } else if (data.experience === 'expert' && rec.maintenanceLevel === 'low') {
+        boost -= 5;
+      }
+      
+      // Current hair color compatibility
+      if (data.currentHairColor === 'blonde' && (rec.name.includes('Ash') || rec.name.includes('Strawberry'))) {
+        boost += 5;
+      } else if (data.currentHairColor === 'brunette' && (rec.name.includes('Caramel') || rec.name.includes('Copper'))) {
+        boost += 5;
+      }
+      
+      return {
+        ...rec,
+        confidence: Math.max(40, Math.min(95, score + boost + (Math.random() * 10 - 5))),
+        suitabilityScore: Math.max(50, Math.min(95, rec.suitabilityScore + boost/2 + (Math.random() * 10 - 5)))
+      };
     })
-    .slice(0, 4) // Return top 4 recommendations
-    .map(rec => ({
+    .filter(rec => rec.confidence >= 50) // Only keep reasonable matches
+    .sort((a, b) => b.confidence - a.confidence)
+    .slice(0, 4); // Return top 4 recommendations
+    
+  // Ensure at least one recommendation
+  if (scoredRecommendations.length === 0) {
+    return [shuffled[0]].map(rec => ({
       ...rec,
-      confidence: Math.max(65, rec.confidence + Math.random() * 10 - 5),
-      suitabilityScore: Math.max(60, rec.suitabilityScore + Math.random() * 10 - 5)
-    }))
-    .sort((a, b) => b.confidence - a.confidence);
+      confidence: 70,
+      suitabilityScore: 65
+    }));
+  }
+  
+  return scoredRecommendations;
   }, [t]);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [progress, setProgress] = useState(0);
