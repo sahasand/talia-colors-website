@@ -139,8 +139,12 @@ const AIProcessing = ({ userPhoto, questionnaireData, onComplete }: AIProcessing
       }
     ];
 
-  // Shuffle recommendations to prevent predictable ordering
-  const shuffled = [...baseRecommendations].sort(() => Math.random() - 0.5);
+  // Proper Fisher-Yates shuffle for true randomization
+  const shuffled = [...baseRecommendations];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
   
   // Score and filter based on questionnaire responses
   const scoredRecommendations = shuffled
@@ -164,25 +168,46 @@ const AIProcessing = ({ userPhoto, questionnaireData, onComplete }: AIProcessing
       // Lifestyle matching
       if (data.lifestyle === 'professional') {
         if (rec.name.includes('Burgundy') || rec.category === 'ombre') boost -= 15;
-        if (rec.name.includes('Chocolate') || rec.name.includes('Caramel')) boost += 10;
+        if (rec.name.includes('Chocolate')) boost += 10;
+        if (rec.name.includes('Caramel')) boost += 5; // Reduced from 10
+        if (rec.name.includes('Ash')) boost += 8; // Added bonus for professional
       } else if (data.lifestyle === 'creative') {
         if (rec.category === 'ombre' || rec.name.includes('Strawberry')) boost += 10;
+        if (rec.name.includes('Burgundy')) boost += 8; // Added for creative
+        if (rec.name.includes('Copper')) boost += 8; // Added for creative
         if (rec.name.includes('Chocolate')) boost -= 5;
+        if (rec.name.includes('Caramel')) boost -= 5; // Penalty for creative
       } else if (data.lifestyle === 'glamorous') {
         if (rec.name.includes('Ash') || rec.name.includes('Burgundy')) boost += 10;
-        if (rec.category === 'highlights') boost += 5;
+        if (rec.name.includes('Strawberry')) boost += 8; // Added for glamorous
+        if (rec.category === 'highlights') boost += 3; // Reduced from 5
+      } else if (data.lifestyle === 'casual') {
+        if (rec.name.includes('Chocolate') || rec.name.includes('Strawberry')) boost += 8;
+        if (rec.name.includes('Caramel')) boost -= 3; // Small penalty for casual
       }
       
-      // Vibe matching
+      // Vibe matching - Fixed double counting
       if (data.desiredVibe === 'natural') {
-        if (rec.category === 'highlights' || rec.name.includes('Caramel') || rec.name.includes('Chocolate')) boost += 10;
+        // Only count once per color, not double for category + name
+        if (rec.name.includes('Chocolate')) boost += 12;
+        else if (rec.name.includes('Caramel')) boost += 8; // Reduced advantage
+        else if (rec.category === 'highlights') boost += 6;
+        
         if (rec.category === 'ombre' || rec.name.includes('Burgundy')) boost -= 15;
       } else if (data.desiredVibe === 'bold') {
         if (rec.name.includes('Burgundy') || rec.name.includes('Copper')) boost += 15;
-        if (rec.name.includes('Chocolate')) boost -= 10;
+        if (rec.name.includes('Strawberry')) boost += 10; // Added for bold
+        if (rec.name.includes('Chocolate') || rec.name.includes('Caramel')) boost -= 10;
       } else if (data.desiredVibe === 'dramatic') {
-        if (rec.category === 'ombre' || rec.maintenanceLevel === 'high') boost += 10;
+        if (rec.category === 'ombre') boost += 12;
+        if (rec.name.includes('Burgundy') || rec.name.includes('Ash')) boost += 10;
+        if (rec.maintenanceLevel === 'high') boost += 8;
         if (rec.maintenanceLevel === 'low') boost -= 10;
+        if (rec.name.includes('Caramel')) boost -= 8; // Penalty for dramatic
+      } else if (data.desiredVibe === 'subtle') {
+        if (rec.name.includes('Ash') || rec.name.includes('Chocolate')) boost += 10;
+        if (rec.category === 'highlights' && !rec.name.includes('Caramel')) boost += 8;
+        if (rec.name.includes('Burgundy') || rec.name.includes('Copper')) boost -= 10;
       }
       
       // Experience level consideration
@@ -192,17 +217,29 @@ const AIProcessing = ({ userPhoto, questionnaireData, onComplete }: AIProcessing
         boost -= 5;
       }
       
-      // Current hair color compatibility
-      if (data.currentHairColor === 'blonde' && (rec.name.includes('Ash') || rec.name.includes('Strawberry'))) {
-        boost += 5;
-      } else if (data.currentHairColor === 'brunette' && (rec.name.includes('Caramel') || rec.name.includes('Copper'))) {
-        boost += 5;
+      // Current hair color compatibility - More balanced
+      if (data.currentHairColor === 'blonde') {
+        if (rec.name.includes('Ash') || rec.name.includes('Strawberry')) boost += 8;
+        if (rec.name.includes('Caramel')) boost -= 5; // Less suitable for blondes
+      } else if (data.currentHairColor === 'brunette') {
+        if (rec.name.includes('Caramel')) boost += 3; // Reduced from implicit 5
+        if (rec.name.includes('Copper') || rec.name.includes('Chocolate')) boost += 6;
+        if (rec.name.includes('Ash')) boost -= 3; // Less suitable for brunettes
+      } else if (data.currentHairColor === 'black') {
+        if (rec.name.includes('Burgundy') || rec.name.includes('Copper')) boost += 8;
+        if (rec.name.includes('Caramel') || rec.name.includes('Ash')) boost -= 5;
+      } else if (data.currentHairColor === 'red') {
+        if (rec.name.includes('Copper') || rec.name.includes('Strawberry')) boost += 10;
+        if (rec.name.includes('Ash')) boost -= 8;
       }
+      
+      // Add more variation to prevent predictability
+      const randomFactor = Math.random() * 20 - 10; // Increased from 10 to 20
       
       return {
         ...rec,
-        confidence: Math.max(40, Math.min(95, score + boost + (Math.random() * 10 - 5))),
-        suitabilityScore: Math.max(50, Math.min(95, rec.suitabilityScore + boost/2 + (Math.random() * 10 - 5)))
+        confidence: Math.max(40, Math.min(95, score + boost + randomFactor)),
+        suitabilityScore: Math.max(50, Math.min(95, rec.suitabilityScore + boost/2 + (Math.random() * 15 - 7.5)))
       };
     })
     .filter(rec => rec.confidence >= 50) // Only keep reasonable matches
