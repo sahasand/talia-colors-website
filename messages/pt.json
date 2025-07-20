@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "title": "Talia Colors - Onde Arte Encontra Cabelos Lindos",
-    "description": "Coloração personalizada by Talia—expertamente criada, criativa e exclusivamente feita para você. Recomendações de cor com IA e serviços profissionais de coloração."
+    "title": "Talia Colors - Coloração Profissional no Conforto da Sua Casa",
+    "description": "A comodidade que você merece com qualidade de salão no seu espaço privado em Florianópolis. Recomendações de cor com IA e serviços profissionais de coloração."
   },
   "mainPage": {
     "sections": {
@@ -11,7 +11,7 @@
       },
       "footer": {
         "brandName": "Talia Colors",
-        "tagline": "Onde Arte Encontra Cabelos Lindos",
+        "tagline": "Coloração Profissional no Conforto da Sua Casa",
         "whatsappButton": "💬 WhatsApp",
         "instagramButton": "📸 Instagram"
       },
@@ -28,8 +28,8 @@
   },
   "hero": {
     "title": "Talia Colors",
-    "tagline": "Onde Arte Encontra Cabelos Lindos",
-    "description": "Coloração personalizada by Talia—expertamente criada, criativa e exclusivamente feita para você.",
+    "tagline": "Coloração Profissional no Conforto da Sua Casa",
+    "description": "A comodidade que você merece com qualidade de salão no seu espaço privado em Florianópolis.",
     "cta": {
       "bookAppointmentFull": "Agendar Consulta",
       "bookAppointmentShort": "Agendar"
@@ -41,8 +41,8 @@
   },
   "heroSection": {
     "title": "Talia Colors",
-    "tagline": "Onde Arte Encontra Cabelos Lindos",
-    "description": "Coloração personalizada by Talia—expertamente criada, criativa e exclusivamente feita para você.",
+    "tagline": "Coloração Profissional no Conforto da Sua Casa",
+    "description": "A comodidade que você merece com qualidade de salão no seu espaço privado em Florianópolis.",
     "cta": {
       "bookAppointmentFull": "Agendar Consulta",
       "bookAppointmentShort": "Agendar"

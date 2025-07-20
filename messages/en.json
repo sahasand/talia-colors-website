@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "title": "Talia Colors - Where Artistry Meets Beautiful Hair",
-    "description": "Personalized hair color by Talia—expertly crafted, creative, and uniquely tailored to you. AI-powered color recommendations and professional hair styling services."
+    "title": "Talia Colors - Professional Hair Coloring in the Comfort of Your Home",
+    "description": "The convenience you deserve with salon-quality service in your private space in Florianópolis. AI-powered color recommendations and professional hair styling services."
   },
   "mainPage": {
     "sections": {
@@ -11,7 +11,7 @@
       },
       "footer": {
         "brandName": "Talia Colors",
-        "tagline": "Where Artistry Meets Beautiful Hair",
+        "tagline": "Professional Hair Coloring in the Comfort of Your Home",
         "whatsappButton": "💬 WhatsApp",
         "instagramButton": "📸 Instagram"
       },
@@ -28,8 +28,8 @@
   },
   "hero": {
     "title": "Talia Colors",
-    "tagline": "Where Artistry Meets Beautiful Hair",
-    "description": "Personalized hair color by Talia—expertly crafted, creative, and uniquely tailored to you.",
+    "tagline": "Professional Hair Coloring in the Comfort of Your Home",
+    "description": "The convenience you deserve with salon-quality service in your private space in Florianópolis.",
     "cta": {
       "bookAppointmentFull": "Book Appointment",
       "bookAppointmentShort": "Book Now"
@@ -41,8 +41,8 @@
   },
   "heroSection": {
     "title": "Talia Colors",
-    "tagline": "Where Artistry Meets Beautiful Hair",
-    "description": "Personalized hair color by Talia—expertly crafted, creative, and uniquely tailored to you.",
+    "tagline": "Professional Hair Coloring in the Comfort of Your Home",
+    "description": "The convenience you deserve with salon-quality service in your private space in Florianópolis.",
     "cta": {
       "bookAppointmentFull": "Book Appointment",
       "bookAppointmentShort": "Book Now"
