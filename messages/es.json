@@ -12,7 +12,8 @@
       "footer": {
         "brandName": "Talia Colors",
         "tagline": "Coloración Profesional en la Comodidad de Tu Hogar",
-        "whatsappButton": "💬 WhatsApp",
+        "serviceArea": "Sirviendo con orgullo Florianópolis y área metropolitana",
+        "whatsappButton": "💬 Reserva Tu Sesión en Casa",
         "instagramButton": "📸 Instagram"
       },
       "contact": {
@@ -29,6 +30,7 @@
   "hero": {
     "title": "Talia Colors",
     "tagline": "Coloración Profesional en la Comodidad de Tu Hogar",
+    "credentials": "Colorista Licenciada • 8+ Años de Experiencia • Sirviendo Gran Floripa",
     "description": "La comodidad que mereces con calidad de salón en tu espacio privado en Florianópolis.",
     "cta": {
       "bookAppointmentFull": "Reservar Cita",
@@ -42,6 +44,7 @@
   "heroSection": {
     "title": "Talia Colors",
     "tagline": "Coloración Profesional en la Comodidad de Tu Hogar",
+    "credentials": "Colorista Licenciada • 8+ Años de Experiencia • Sirviendo Gran Floripa",
     "description": "La comodidad que mereces con calidad de salón en tu espacio privado en Florianópolis.",
     "cta": {
       "bookAppointmentFull": "Reservar Cita",
@@ -58,6 +61,7 @@
   },
   "gallery": {
     "title": "Transformaciones",
+    "subtitle": "Resultados de Calidad de Salón en Tu Espacio Privado",
     "transformations": [
       {
         "title": "Balayage Miel",
@@ -88,7 +92,7 @@
   "aiColorPicker": {
     "intro": {
       "title": "Consulta Personal de Colores",
-      "description": "Análisis experto de colores de Talia potenciado por tecnología IA avanzada para entender tus características únicas, estilo de vida y preferencias de estilo para recomendaciones perfectamente personalizadas.",
+      "description": "Adiós a las conjeturas del salón. Obtén análisis profesional de color potenciado por tecnología IA y reserva tu transformación privada en casa en Florianópolis.",
       "ctaButton": "Descubre Tus Colores Perfectos"
     },
     "workflow": {
@@ -116,7 +120,7 @@
   },
   "photoUpload": {
     "title": "Sube Tu Foto",
-    "description": "Toma una foto o sube una para el análisis de color con IA más preciso",
+    "description": "Toma una foto o sube una para el análisis de color con IA más preciso • No se requieren visitas al salón • Preparación profesional incluida",
     "dragDrop": {
       "default": "Arrastra y suelta tu foto aquí",
       "active": "¡Suelta tu foto aquí!",
@@ -417,6 +421,30 @@
   "whatsapp": {
     "appointmentBooking": "¡Hola! ¡Quiero reservar una cita para mi color perfecto: {colorName}! El selector de IA lo recomendó específicamente para mí.",
     "generalBooking": "¡Hola! Me gustaría reservar una cita con Talia para servicios de coloración capilar."
+  },
+  "trustSection": {
+    "title": "¿Por Qué Elegir Nuestros Servicios?",
+    "benefits": [
+      {
+        "icon": "✅",
+        "text": "Profesional Licenciada y Asegurada"
+      },
+      {
+        "icon": "⏰",
+        "text": "Horarios Flexibles - Tu Agenda"
+      },
+      {
+        "icon": "🏠",
+        "text": "Preparación y Limpieza Completa Incluida"
+      },
+      {
+        "icon": "💯",
+        "text": "Satisfacción Garantizada"
+      }
+    ],
+    "cta": {
+      "bookNow": "Reserva Tu Sesión en Casa"
+    }
   },
   "altTexts": {
     "userPhoto": "Tu foto",

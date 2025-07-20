@@ -245,6 +245,18 @@ const HeroSectionSimple = () => {
         </motion.p>
         
         <motion.p 
+          className="text-sm sm:text-base md:text-lg text-yellow-200 font-medium mb-3 sm:mb-4 md:mb-6"
+          style={{
+            textShadow: '0 2px 15px rgba(0,0,0,0.6), 0 1px 3px rgba(0,0,0,0.4)'
+          }}
+          initial={{ opacity: 0, y: 15, filter: 'blur(5px)' }}
+          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 1, delay: 0.5 }}
+        >
+          {t('credentials')}
+        </motion.p>
+        
+        <motion.p 
           className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-100 max-w-xl sm:max-w-3xl mx-auto px-4 sm:px-0 leading-relaxed"
           style={{
             textShadow: '0 3px 25px rgba(0,0,0,0.7), 0 1px 5px rgba(0,0,0,0.5)'

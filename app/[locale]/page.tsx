@@ -5,6 +5,7 @@ import { routing } from '../../src/i18n/routing';
 import HeroSectionSimple from '../components/ui/HeroSectionSimple';
 import SmartGalleryGrid from '../components/ui/SmartGalleryGrid';
 import AIColorPickerSection from '../components/ai/AIColorPickerSection';
+import TrustSection from '../components/ui/TrustSection';
 import LanguageSwitcher from '../components/ui/LanguageSwitcher';
 import WhatsAppButton from '../components/ui/WhatsAppButton';
 import Schema from '../components/Schema';
@@ -49,6 +50,9 @@ export default async function Home({
         <AIColorPickerSection />
       </ErrorBoundary>
 
+      {/* Trust & Benefits Section */}
+      <TrustSection />
+
       {/* Smart Portfolio Gallery with Streaming */}
       <section className="py-24 bg-pink-100/90 backdrop-blur-sm">
         <div className="container mx-auto px-4 sm:px-6">
@@ -89,8 +93,11 @@ export default async function Home({
               {t('sections.footer.brandName')}
             </span>
           </h3>
-          <p className="text-base sm:text-lg mb-6 sm:mb-8 text-gray-700 font-light tracking-wide max-w-md mx-auto px-4 sm:px-0">
+          <p className="text-base sm:text-lg mb-4 text-gray-700 font-light tracking-wide max-w-md mx-auto px-4 sm:px-0">
             {t('sections.footer.tagline')}
+          </p>
+          <p className="text-sm sm:text-base mb-6 sm:mb-8 text-gray-600 font-light max-w-lg mx-auto px-4 sm:px-0">
+            {t('sections.footer.serviceArea')}
           </p>
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6">
             <WhatsAppButton

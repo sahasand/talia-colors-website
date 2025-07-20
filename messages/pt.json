@@ -12,7 +12,8 @@
       "footer": {
         "brandName": "Talia Colors",
         "tagline": "Coloração Profissional no Conforto da Sua Casa",
-        "whatsappButton": "💬 WhatsApp",
+        "serviceArea": "Atendendo com orgulho Florianópolis e região metropolitana",
+        "whatsappButton": "💬 Agende Sua Sessão em Casa",
         "instagramButton": "📸 Instagram"
       },
       "contact": {
@@ -29,6 +30,7 @@
   "hero": {
     "title": "Talia Colors",
     "tagline": "Coloração Profissional no Conforto da Sua Casa",
+    "credentials": "Colorista Licenciada • 8+ Anos de Experiência • Atendendo a Grande Floripa",
     "description": "A comodidade que você merece com qualidade de salão no seu espaço privado em Florianópolis.",
     "cta": {
       "bookAppointmentFull": "Agendar Consulta",
@@ -42,6 +44,7 @@
   "heroSection": {
     "title": "Talia Colors",
     "tagline": "Coloração Profissional no Conforto da Sua Casa",
+    "credentials": "Colorista Licenciada • 8+ Anos de Experiência • Atendendo a Grande Floripa",
     "description": "A comodidade que você merece com qualidade de salão no seu espaço privado em Florianópolis.",
     "cta": {
       "bookAppointmentFull": "Agendar Consulta",
@@ -58,6 +61,7 @@
   },
   "gallery": {
     "title": "Transformações",
+    "subtitle": "Resultados de Qualidade de Salão no Seu Espaço Privado",
     "transformations": [
       {
         "title": "Luzes Mel",
@@ -88,7 +92,7 @@
   "aiColorPicker": {
     "intro": {
       "title": "Consulta Pessoal de Cores",
-      "description": "Análise especializada de cores da Talia potencializada por tecnologia IA avançada para entender suas características únicas, estilo de vida e preferências de estilo para recomendações perfeitamente personalizadas.",
+      "description": "Chega de adivinhação no salão. Obtenha análise profissional de cores potencializada por tecnologia IA e agende sua transformação privada em casa em Florianópolis.",
       "ctaButton": "Descubra Suas Cores Perfeitas"
     },
     "workflow": {
@@ -116,7 +120,7 @@
   },
   "photoUpload": {
     "title": "Envie Sua Foto",
-    "description": "Tire uma foto ou envie uma para a análise de cores com IA mais precisa",
+    "description": "Tire uma foto ou envie uma para a análise de cores com IA mais precisa • Sem visitas ao salão necessárias • Preparação profissional incluída",
     "dragDrop": {
       "default": "Arraste e solte sua foto aqui",
       "active": "Solte sua foto aqui!",
@@ -417,6 +421,30 @@
   "whatsapp": {
     "appointmentBooking": "Oi! Quero agendar um horário para minha cor perfeita: {colorName}! O seletor de IA recomendou especificamente para mim.",
     "generalBooking": "Oi! Gostaria de agendar um horário com a Talia para serviços de coloração capilar."
+  },
+  "trustSection": {
+    "title": "Por Que Escolher Nossos Serviços?",
+    "benefits": [
+      {
+        "icon": "✅",
+        "text": "Profissional Licenciada e Segurada"
+      },
+      {
+        "icon": "⏰",
+        "text": "Horários Flexíveis - Sua Agenda"
+      },
+      {
+        "icon": "🏠",
+        "text": "Preparação e Limpeza Completa Incluída"
+      },
+      {
+        "icon": "💯",
+        "text": "Satisfação Garantida"
+      }
+    ],
+    "cta": {
+      "bookNow": "Agende Sua Sessão em Casa"
+    }
   },
   "altTexts": {
     "userPhoto": "Sua foto",

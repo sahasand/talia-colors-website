@@ -155,6 +155,15 @@ const SmartGalleryGrid = () => {
           {t('title')}
         </motion.h2>
         
+        <motion.p 
+          className="text-lg sm:text-xl md:text-2xl text-gray-600 mb-6 max-w-2xl mx-auto"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          {t('subtitle')}
+        </motion.p>
+        
         {/* Dynamic Accent Line */}
         <motion.div 
           className="h-1 bg-gradient-to-r from-purple-500 to-pink-500 mx-auto relative"

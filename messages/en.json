@@ -12,7 +12,8 @@
       "footer": {
         "brandName": "Talia Colors",
         "tagline": "Professional Hair Coloring in the Comfort of Your Home",
-        "whatsappButton": "💬 WhatsApp",
+        "serviceArea": "Proudly serving Florianópolis and surrounding areas",
+        "whatsappButton": "💬 Book Your Home Session",
         "instagramButton": "📸 Instagram"
       },
       "contact": {
@@ -29,6 +30,7 @@
   "hero": {
     "title": "Talia Colors",
     "tagline": "Professional Hair Coloring in the Comfort of Your Home",
+    "credentials": "Licensed Colorist • 8+ Years Experience • Serving Greater Floripa",
     "description": "The convenience you deserve with salon-quality service in your private space in Florianópolis.",
     "cta": {
       "bookAppointmentFull": "Book Appointment",
@@ -42,6 +44,7 @@
   "heroSection": {
     "title": "Talia Colors",
     "tagline": "Professional Hair Coloring in the Comfort of Your Home",
+    "credentials": "Licensed Colorist • 8+ Years Experience • Serving Greater Floripa",
     "description": "The convenience you deserve with salon-quality service in your private space in Florianópolis.",
     "cta": {
       "bookAppointmentFull": "Book Appointment",
@@ -58,6 +61,7 @@
   },
   "gallery": {
     "title": "Transformations",
+    "subtitle": "Salon-Quality Results in Your Private Space",
     "transformations": [
       {
         "title": "Honey Balayage",
@@ -88,7 +92,7 @@
   "aiColorPicker": {
     "intro": {
       "title": "Personal Color Consultation",
-      "description": "Talia's expert color analysis enhanced by advanced AI technology to understand your unique features, lifestyle, and style preferences for perfectly tailored recommendations.",
+      "description": "Skip the salon guesswork. Get professional color analysis powered by AI technology, then book your private in-home transformation in Florianópolis.",
       "ctaButton": "Discover Your Perfect Colors"
     },
     "workflow": {
@@ -116,7 +120,7 @@
   },
   "photoUpload": {
     "title": "Upload Your Photo",
-    "description": "Take a photo or upload one for the most accurate AI color analysis",
+    "description": "Take a photo or upload one for the most accurate AI color analysis • No salon visits required • Professional setup included",
     "dragDrop": {
       "default": "Drag & drop your photo here",
       "active": "Drop your photo here!",
@@ -417,6 +421,30 @@
   "whatsapp": {
     "appointmentBooking": "Hi! I want to book an appointment for my perfect color: {colorName}! The AI picker recommended this specifically for me.",
     "generalBooking": "Hi! I'd like to book an appointment with Talia for hair color services."
+  },
+  "trustSection": {
+    "title": "Why Choose Our Services?",
+    "benefits": [
+      {
+        "icon": "✅",
+        "text": "Licensed & Insured Professional"
+      },
+      {
+        "icon": "⏰",
+        "text": "Flexible Scheduling - Your Timeline"
+      },
+      {
+        "icon": "🏠",
+        "text": "Complete Setup & Cleanup Included"
+      },
+      {
+        "icon": "💯",
+        "text": "Satisfaction Guaranteed"
+      }
+    ],
+    "cta": {
+      "bookNow": "Book Your Home Session"
+    }
   },
   "altTexts": {
     "userPhoto": "Your photo",
