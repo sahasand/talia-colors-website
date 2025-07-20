@@ -3,6 +3,186 @@
 import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 
+// Professional SVG Icons with Glassmorphism Effects
+const ShieldIcon = () => (
+  <div className="relative">
+    <svg width="80" height="80" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className="drop-shadow-xl sm:w-20 sm:h-20 md:w-24 md:h-24">
+      <defs>
+        <linearGradient id="shield-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#8B5CF6" />
+          <stop offset="50%" stopColor="#EC4899" />
+          <stop offset="100%" stopColor="#06B6D4" />
+        </linearGradient>
+        <linearGradient id="shield-inner" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="rgba(255,255,255,0.3)" />
+          <stop offset="100%" stopColor="rgba(255,255,255,0.1)" />
+        </linearGradient>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+          <feMerge> 
+            <feMergeNode in="coloredBlur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+      
+      {/* Outer glow */}
+      <path d="M32 4L44 10C48 12 52 16 52 22V36C52 44 44 50 32 56C20 50 12 44 12 36V22C12 16 16 12 20 10L32 4Z" 
+            fill="url(#shield-gradient)" opacity="0.3" filter="url(#glow)" />
+      
+      {/* Main shield */}
+      <path d="M32 6L42 11C45 12.5 48 15.5 48 20V34C48 40 42 45 32 50C22 45 16 40 16 34V20C16 15.5 19 12.5 22 11L32 6Z" 
+            fill="url(#shield-gradient)" />
+      
+      {/* Inner glassmorphic layer */}
+      <path d="M32 8L40 12C42.5 13 45 15 45 18V32C45 36 40 40 32 44C24 40 19 36 19 32V18C19 15 21.5 13 24 12L32 8Z" 
+            fill="url(#shield-inner)" />
+      
+      {/* Checkmark */}
+      <path d="M26 30L30 34L38 26" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  </div>
+);
+
+const ClockIcon = () => (
+  <div className="relative">
+    <svg width="80" height="80" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className="drop-shadow-xl sm:w-20 sm:h-20 md:w-24 md:h-24">
+      <defs>
+        <linearGradient id="clock-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#8B5CF6" />
+          <stop offset="50%" stopColor="#EC4899" />
+          <stop offset="100%" stopColor="#06B6D4" />
+        </linearGradient>
+        <linearGradient id="clock-face" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="rgba(255,255,255,0.4)" />
+          <stop offset="100%" stopColor="rgba(255,255,255,0.1)" />
+        </linearGradient>
+        <filter id="clock-glow">
+          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+          <feMerge> 
+            <feMergeNode in="coloredBlur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+      
+      {/* Outer glow */}
+      <circle cx="32" cy="32" r="26" fill="url(#clock-gradient)" opacity="0.3" filter="url(#clock-glow)" />
+      
+      {/* Main circle */}
+      <circle cx="32" cy="32" r="24" fill="url(#clock-gradient)" />
+      
+      {/* Clock face */}
+      <circle cx="32" cy="32" r="20" fill="url(#clock-face)" />
+      
+      {/* Hour markers */}
+      <circle cx="32" cy="14" r="1.5" fill="white" />
+      <circle cx="50" cy="32" r="1.5" fill="white" />
+      <circle cx="32" cy="50" r="1.5" fill="white" />
+      <circle cx="14" cy="32" r="1.5" fill="white" />
+      
+      {/* Clock hands */}
+      <line x1="32" y1="32" x2="32" y2="20" stroke="white" strokeWidth="3" strokeLinecap="round" />
+      <line x1="32" y1="32" x2="40" y2="32" stroke="white" strokeWidth="2" strokeLinecap="round" />
+      
+      {/* Center dot */}
+      <circle cx="32" cy="32" r="2" fill="white" />
+    </svg>
+  </div>
+);
+
+const HouseIcon = () => (
+  <div className="relative">
+    <svg width="80" height="80" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className="drop-shadow-xl sm:w-20 sm:h-20 md:w-24 md:h-24">
+      <defs>
+        <linearGradient id="house-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#8B5CF6" />
+          <stop offset="50%" stopColor="#EC4899" />
+          <stop offset="100%" stopColor="#06B6D4" />
+        </linearGradient>
+        <linearGradient id="house-walls" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="rgba(255,255,255,0.3)" />
+          <stop offset="100%" stopColor="rgba(255,255,255,0.1)" />
+        </linearGradient>
+        <filter id="house-glow">
+          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+          <feMerge> 
+            <feMergeNode in="coloredBlur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+      
+      {/* Outer glow */}
+      <path d="M32 8L52 24V52H12V24L32 8Z" fill="url(#house-gradient)" opacity="0.3" filter="url(#house-glow)" />
+      
+      {/* Roof */}
+      <path d="M32 10L48 24H16L32 10Z" fill="url(#house-gradient)" />
+      
+      {/* Walls */}
+      <rect x="16" y="24" width="32" height="26" fill="url(#house-walls)" />
+      
+      {/* Door */}
+      <rect x="28" y="36" width="8" height="14" rx="1" fill="url(#house-gradient)" />
+      
+      {/* Windows */}
+      <rect x="20" y="30" width="6" height="6" rx="1" fill="rgba(255,255,255,0.8)" />
+      <rect x="38" y="30" width="6" height="6" rx="1" fill="rgba(255,255,255,0.8)" />
+      
+      {/* Door knob */}
+      <circle cx="34" cy="43" r="1" fill="white" />
+      
+      {/* Chimney */}
+      <rect x="38" y="16" width="4" height="12" fill="url(#house-gradient)" />
+    </svg>
+  </div>
+);
+
+const StarBadgeIcon = () => (
+  <div className="relative">
+    <svg width="80" height="80" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className="drop-shadow-xl sm:w-20 sm:h-20 md:w-24 md:h-24">
+      <defs>
+        <linearGradient id="star-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#8B5CF6" />
+          <stop offset="50%" stopColor="#EC4899" />
+          <stop offset="100%" stopColor="#06B6D4" />
+        </linearGradient>
+        <linearGradient id="star-inner" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="rgba(255,255,255,0.4)" />
+          <stop offset="100%" stopColor="rgba(255,255,255,0.1)" />
+        </linearGradient>
+        <filter id="star-glow">
+          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+          <feMerge> 
+            <feMergeNode in="coloredBlur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+      
+      {/* Outer glow */}
+      <path d="M32 4L36 20L52 20L40 30L44 46L32 38L20 46L24 30L12 20L28 20L32 4Z" 
+            fill="url(#star-gradient)" opacity="0.3" filter="url(#star-glow)" />
+      
+      {/* Main star */}
+      <path d="M32 6L35 18L47 18L38 26L41 42L32 36L23 42L26 26L17 18L29 18L32 6Z" 
+            fill="url(#star-gradient)" />
+      
+      {/* Inner layer */}
+      <path d="M32 10L34 16L40 16L36 20L37 26L32 23L27 26L28 20L24 16L30 16L32 10Z" 
+            fill="url(#star-inner)" />
+      
+      {/* "100" text */}
+      <text x="32" y="34" textAnchor="middle" fill="white" fontSize="8" fontWeight="bold">100</text>
+      
+      {/* Sparkles */}
+      <circle cx="46" cy="12" r="1" fill="white" opacity="0.8" />
+      <circle cx="52" cy="32" r="1.5" fill="white" opacity="0.6" />
+      <circle cx="18" cy="52" r="1" fill="white" opacity="0.8" />
+    </svg>
+  </div>
+);
+
 const TrustSection = () => {
   const t = useTranslations('trustSection');
   const tMain = useTranslations('mainPage');
@@ -33,10 +213,10 @@ const TrustSection = () => {
   };
 
   const benefitsData = [
-    { icon: "✅", text: t('benefits.0.text') },
-    { icon: "⏰", text: t('benefits.1.text') },
-    { icon: "🏠", text: t('benefits.2.text') },
-    { icon: "💯", text: t('benefits.3.text') }
+    { icon: <ShieldIcon />, text: t('benefits.0.text') },
+    { icon: <ClockIcon />, text: t('benefits.1.text') },
+    { icon: <HouseIcon />, text: t('benefits.2.text') },
+    { icon: <StarBadgeIcon />, text: t('benefits.3.text') }
   ];
 
   return (
@@ -115,15 +295,24 @@ const TrustSection = () => {
                 
                 {/* Icon */}
                 <motion.div 
-                  className="text-4xl sm:text-5xl mb-4 sm:mb-6"
+                  className="mb-4 sm:mb-6 flex justify-center"
                   variants={{
                     hover: { 
-                      scale: 1.2,
-                      rotateY: 15,
-                      rotateX: 10 
+                      scale: 1.15,
+                      rotateY: 10,
+                      rotateX: 5,
+                      y: -5
                     }
                   }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ 
+                    duration: 0.4,
+                    type: "spring",
+                    stiffness: 300,
+                    damping: 20
+                  }}
+                  style={{
+                    transformStyle: "preserve-3d"
+                  }}
                 >
                   {benefit.icon}
                 </motion.div>
