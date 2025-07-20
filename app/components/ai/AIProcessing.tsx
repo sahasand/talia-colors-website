@@ -149,7 +149,7 @@ const AIProcessing = ({ userPhoto, questionnaireData, onComplete }: AIProcessing
   // Score and filter based on questionnaire responses
   const scoredRecommendations = shuffled
     .map(rec => {
-      let score = rec.confidence;
+      const score = rec.confidence;
       let boost = 0;
       
       // Maintenance matching (strong weight)
