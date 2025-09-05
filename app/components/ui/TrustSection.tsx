@@ -253,18 +253,18 @@ const TrustSection = () => {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 md:gap-10"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 md:gap-10 items-stretch"
         >
           {benefitsData.map((benefit, index) => (
             <motion.div
               key={index}
               variants={itemVariants}
-              className="group relative"
+              className="group relative flex"
               whileHover="hover"
               whileTap="tap"
             >
               <motion.div
-                className="relative bg-white/80 backdrop-blur-sm rounded-2xl p-6 sm:p-8 shadow-lg border border-white/50 overflow-hidden"
+                className="relative bg-white/80 backdrop-blur-sm rounded-2xl p-6 sm:p-8 shadow-lg border border-white/50 overflow-hidden h-full flex flex-col justify-center min-h-[200px] sm:min-h-[220px]"
                 variants={{
                   hover: {
                     scale: 1.05,

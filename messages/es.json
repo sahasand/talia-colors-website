@@ -1,18 +1,18 @@
 {
   "metadata": {
-    "title": "Talia Colors - Coloración Profesional en la Comodidad de Tu Hogar",
-    "description": "La comodidad que mereces con calidad de salón en tu espacio privado en Florianópolis. Recomendaciones de color con IA y servicios profesionales de coloración."
+    "title": "Colorista a Domicilio Florianópolis | Balayage y Coloración - Talia Colors",
+    "description": "Colorista profesional a domicilio Gran Florianópolis. Balayage, mechas, corrección de color en tu hogar. Licenciada, 8 años experiencia. WhatsApp para citar."
   },
   "mainPage": {
     "sections": {
       "inspiration": {
-        "title": "Inspiración",
-        "description": "Inspírate con estas hermosas transformaciones de color"
+        "title": "Transformaciones en Casa - Florianópolis",
+        "description": "Resultados reales de coloración domicilio en Gran Floripa"
       },
       "footer": {
         "brandName": "Talia Colors",
-        "tagline": "Coloración Profesional en la Comodidad de Tu Hogar",
-        "serviceArea": "Sirviendo con orgullo Florianópolis y área metropolitana",
+        "tagline": "Coloración, Balayage y Corrección de Color en Casa",
+        "serviceArea": "Atendemos todos los barrios: Centro, Trindade, Lagoa, Campeche, Jurerê, Norte da Ilha, São José, Palhoça",
         "whatsappButton": "💬 Reserva Tu Sesión en Casa",
         "instagramButton": "📸 Instagram"
       },
@@ -29,9 +29,9 @@
   },
   "hero": {
     "title": "Talia Colors",
-    "tagline": "Coloración Profesional en la Comodidad de Tu Hogar",
-    "credentials": "Colorista Licenciada • 8+ Años de Experiencia • Sirviendo Gran Floripa",
-    "description": "La comodidad que mereces con calidad de salón en tu espacio privado en Florianópolis.",
+    "tagline": "Coloración Profesional a Domicilio - Florianópolis",
+    "credentials": "Colorista Licenciada • 8+ Años de Experiencia • Atendemos Toda la Región",
+    "description": "Llevamos el salón hasta ti. Horarios flexibles, atención personalizada.",
     "cta": {
       "bookAppointmentFull": "Reservar Cita",
       "bookAppointmentShort": "Reservar"
@@ -43,9 +43,9 @@
   },
   "heroSection": {
     "title": "Talia Colors",
-    "tagline": "Coloración Profesional en la Comodidad de Tu Hogar",
-    "credentials": "Colorista Licenciada • 8+ Años de Experiencia • Sirviendo Gran Floripa",
-    "description": "La comodidad que mereces con calidad de salón en tu espacio privado en Florianópolis.",
+    "tagline": "Coloración Profesional a Domicilio - Florianópolis",
+    "credentials": "Colorista Licenciada • 8+ Años de Experiencia • Atendemos Toda la Región",
+    "description": "Llevamos el salón hasta ti. Horarios flexibles, atención personalizada.",
     "cta": {
       "bookAppointmentFull": "Reservar Cita",
       "bookAppointmentShort": "Reservar"
@@ -60,8 +60,8 @@
     ]
   },
   "gallery": {
-    "title": "Transformaciones",
-    "subtitle": "Resultados de Calidad de Salón en Tu Espacio Privado",
+    "title": "Nuestro Trabajo",
+    "subtitle": "Balayage, Mechas y Corrección de Color - Atención Residencial Florianópolis",
     "transformations": [
       {
         "title": "Balayage Miel",
@@ -91,8 +91,8 @@
   },
   "aiColorPicker": {
     "intro": {
-      "title": "Consulta Personal de Colores",
-      "description": "Adiós a las conjeturas del salón. Obtén análisis profesional de color potenciado por tecnología IA y reserva tu transformación privada en casa en Florianópolis.",
+      "title": "Consulta de Coloración a Domicilio",
+      "description": "Corrección de color y errores de salón. Arreglamos cabello naranja, amarillento o manchado. Análisis con IA incluido.",
       "ctaButton": "Descubre Tus Colores Perfectos"
     },
     "workflow": {
@@ -423,19 +423,19 @@
     "generalBooking": "¡Hola! Me gustaría reservar una cita con Talia para servicios de coloración capilar."
   },
   "trustSection": {
-    "title": "¿Por Qué Elegir Nuestros Servicios?",
+    "title": "¿Por Qué Elegir Colorista a Domicilio Floripa?",
     "benefits": [
       {
         "icon": "✅",
-        "text": "Profesional Licenciada y Asegurada"
+        "text": "Colorista Licenciada y Asegurada - Florianópolis"
       },
       {
         "icon": "⏰",
-        "text": "Horarios Flexibles - Tu Agenda"
+        "text": "Atención a Domicilio - Noches y Fines de Semana"
       },
       {
         "icon": "🏠",
-        "text": "Preparación y Limpieza Completa Incluida"
+        "text": "Todo Material Incluido - Servicio Completo en Casa"
       },
       {
         "icon": "💯",
@@ -449,12 +449,12 @@
   "altTexts": {
     "userPhoto": "Tu foto",
     "transformations": [
-      "Transformación balayage miel",
-      "Reflejos rubio natural",
-      "Corte y color rubio ceniza bob",
-      "Balayage chocolate caramelo",
-      "Color castaño clásico masculino",
-      "Color creativo fantasía arcoíris"
+      "mechas miel rubio dorado colorista casa Floripa",
+      "reflejos naturales coloración sin decolorar atención residencial",
+      "rubio ceniza Chanel bob colorista domicilio Florianópolis",
+      "morena iluminada chocolate caramelo balayage casa",
+      "coloración masculina cabello canoso atención domicilio",
+      "cabello colorido fantasía arcoíris Lagoa Conceição"
     ]
   }
 }

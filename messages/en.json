@@ -1,18 +1,18 @@
 {
   "metadata": {
-    "title": "Talia Colors - Professional Hair Coloring in the Comfort of Your Home",
-    "description": "The convenience you deserve with salon-quality service in your private space in Florianópolis. AI-powered color recommendations and professional hair styling services."
+    "title": "At-Home Hair Colorist Florianópolis | Balayage & Coloring - Talia Colors",
+    "description": "Professional at-home hair colorist Greater Florianópolis. Balayage, highlights, color correction at your home. Licensed, 8 years experience. WhatsApp to book."
   },
   "mainPage": {
     "sections": {
       "inspiration": {
-        "title": "Inspiration",
-        "description": "Get inspired by these gorgeous hair color transformations"
+        "title": "At-Home Transformations - Florianópolis",
+        "description": "Real at-home coloring results in Greater Floripa"
       },
       "footer": {
         "brandName": "Talia Colors",
-        "tagline": "Professional Hair Coloring in the Comfort of Your Home",
-        "serviceArea": "Proudly serving Florianópolis and surrounding areas",
+        "tagline": "Hair Coloring, Balayage & Color Correction at Home",
+        "serviceArea": "We serve all neighborhoods: Centro, Trindade, Lagoa, Campeche, Jurerê, Norte da Ilha, São José, Palhoça",
         "whatsappButton": "💬 Book Your Home Session",
         "instagramButton": "📸 Instagram"
       },
@@ -29,9 +29,9 @@
   },
   "hero": {
     "title": "Talia Colors",
-    "tagline": "Professional Hair Coloring in the Comfort of Your Home",
-    "credentials": "Licensed Colorist • 8+ Years Experience • Serving Greater Floripa",
-    "description": "The convenience you deserve with salon-quality service in your private space in Florianópolis.",
+    "tagline": "Professional At-Home Hair Coloring - Florianópolis",
+    "credentials": "Licensed Colorist • 8+ Years Experience • We Serve the Entire Region",
+    "description": "We bring the salon to you. Flexible hours, personalized service.",
     "cta": {
       "bookAppointmentFull": "Book Appointment",
       "bookAppointmentShort": "Book Now"
@@ -43,9 +43,9 @@
   },
   "heroSection": {
     "title": "Talia Colors",
-    "tagline": "Professional Hair Coloring in the Comfort of Your Home",
-    "credentials": "Licensed Colorist • 8+ Years Experience • Serving Greater Floripa",
-    "description": "The convenience you deserve with salon-quality service in your private space in Florianópolis.",
+    "tagline": "Professional At-Home Hair Coloring - Florianópolis",
+    "credentials": "Licensed Colorist • 8+ Years Experience • We Serve the Entire Region",
+    "description": "We bring the salon to you. Flexible hours, personalized service.",
     "cta": {
       "bookAppointmentFull": "Book Appointment",
       "bookAppointmentShort": "Book Now"
@@ -60,8 +60,8 @@
     ]
   },
   "gallery": {
-    "title": "Transformations",
-    "subtitle": "Salon-Quality Results in Your Private Space",
+    "title": "Our Work",
+    "subtitle": "Balayage, Highlights & Color Correction - Residential Service Florianópolis",
     "transformations": [
       {
         "title": "Honey Balayage",
@@ -91,8 +91,8 @@
   },
   "aiColorPicker": {
     "intro": {
-      "title": "Personal Color Consultation",
-      "description": "Skip the salon guesswork. Get professional color analysis powered by AI technology, then book your private in-home transformation in Florianópolis.",
+      "title": "At-Home Color Consultation",
+      "description": "Color correction and salon mistakes fixed. We repair orange, brassy or patchy hair. AI analysis included.",
       "ctaButton": "Discover Your Perfect Colors"
     },
     "workflow": {
@@ -423,19 +423,19 @@
     "generalBooking": "Hi! I'd like to book an appointment with Talia for hair color services."
   },
   "trustSection": {
-    "title": "Why Choose Our Services?",
+    "title": "Why Choose At-Home Colorist Floripa?",
     "benefits": [
       {
         "icon": "✅",
-        "text": "Licensed & Insured Professional"
+        "text": "Licensed & Insured Colorist - Florianópolis"
       },
       {
         "icon": "⏰",
-        "text": "Flexible Scheduling - Your Timeline"
+        "text": "At-Home Service - Evenings & Weekends"
       },
       {
         "icon": "🏠",
-        "text": "Complete Setup & Cleanup Included"
+        "text": "All Materials Included - Full Home Service"
       },
       {
         "icon": "💯",
@@ -449,12 +449,12 @@
   "altTexts": {
     "userPhoto": "Your photo",
     "transformations": [
-      "Honey Balayage transformation",
-      "Natural Blonde highlights",
-      "Ash Blonde Bob cut and color",
-      "Chocolate Caramel balayage",
-      "Classic Brown men's color",
-      "Rainbow Fantasy creative color"
+      "honey highlights golden blonde colorist home Floripa",
+      "natural highlights coloring without bleaching residential service",
+      "ash blonde Chanel bob colorist at-home Florianópolis",
+      "brunette highlights chocolate caramel balayage home",
+      "men's coloring gray hair at-home service",
+      "colorful fantasy rainbow hair Lagoa Conceição"
     ]
   }
 }

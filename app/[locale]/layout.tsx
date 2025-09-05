@@ -88,6 +88,62 @@ export default async function LocaleLayout({
   
   return (
     <html lang={locale} className="overflow-x-hidden">
+      <head>
+        <script
+          type="application/ld+json"
+          suppressHydrationWarning={true}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "HairSalon",
+              "name": "Talia Colors",
+              "description": "Colorista licenciada domicilio Florianópolis. Coloração profissional em casa com 8+ anos de experiência.",
+              "telephone": "+5548991699053",
+              "areaServed": [
+                {
+                  "@type": "City",
+                  "name": "Florianópolis",
+                  "addressRegion": "SC",
+                  "addressCountry": "BR"
+                },
+                {
+                  "@type": "City", 
+                  "name": "Palhoça",
+                  "addressRegion": "SC",
+                  "addressCountry": "BR"
+                },
+                {
+                  "@type": "City",
+                  "name": "São José",
+                  "addressRegion": "SC", 
+                  "addressCountry": "BR"
+                }
+              ],
+              "serviceType": [
+                "Coloração cabelo domicilio",
+                "Balayage domicilio", 
+                "Luzes mel casa",
+                "Coloração profissional casa"
+              ],
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "telephone": "+5548991699053",
+                "contactType": "customer service",
+                "availableLanguage": ["pt", "en", "es"]
+              },
+              "founder": {
+                "@type": "Person",
+                "name": "Talia",
+                "jobTitle": "Colorista Licenciada"
+              },
+              "url": "https://www.taliacolors.com",
+              "sameAs": [
+                "https://wa.me/5548991699053"
+              ]
+            })
+          }}
+        />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden`}>
         <Analytics GTM_ID={process.env.NEXT_PUBLIC_GTM_ID} />
         {/* Google Tag Manager (noscript) */}
