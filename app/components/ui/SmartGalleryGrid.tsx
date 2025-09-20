@@ -19,15 +19,19 @@ const SmartGalleryGrid = () => {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isMobile, setIsMobile] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  
+
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  // Detect screen size for responsive layout
+  // Initialize component and detect screen size for responsive layout
   useEffect(() => {
+    setIsMounted(true);
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+      if (typeof window !== 'undefined') {
+        setIsMobile(window.innerWidth < 768);
+      }
     };
     checkMobile();
     window.addEventListener('resize', checkMobile);
@@ -120,8 +124,48 @@ const SmartGalleryGrid = () => {
     }
   ];
 
+  // SSR fallback - render static version during server rendering
+  if (!isMounted) {
+    return (
+      <div className="max-w-7xl mx-auto relative">
+        {/* Static Header */}
+        <div className="text-center mb-20 relative">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light text-gray-800 mb-4 tracking-tight relative z-10">
+            {t('title')}
+          </h2>
+          <p className="text-lg sm:text-xl md:text-2xl text-gray-600 mb-6 max-w-2xl mx-auto">
+            {t('subtitle')}
+          </p>
+          <div className="h-1 bg-gradient-to-r from-purple-500 to-pink-500 mx-auto w-24" />
+        </div>
+
+        {/* Static Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10 lg:gap-12">
+          {transformations.map((transformation, index) => (
+            <div key={transformation.id} className="group relative">
+              <div className="relative overflow-hidden rounded-2xl aspect-[3/4] mb-4 sm:mb-6 bg-gradient-to-br from-gray-100 to-gray-200">
+                <Image
+                  src={transformation.image}
+                  alt={transformation.title}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
+              </div>
+              <div className="space-y-2 sm:space-y-3">
+                <h3 className={`text-lg sm:text-xl md:text-2xl font-light tracking-tight ${transformation.textColor}`}>
+                  {transformation.title}
+                </h3>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div 
+    <div
       ref={containerRef}
       className="max-w-7xl mx-auto relative"
       onMouseMove={handleMouseMove}
@@ -181,7 +225,7 @@ const SmartGalleryGrid = () => {
         />
         
         {/* Floating Accent Particles */}
-        {[...Array(isMobile ? 3 : 6)].map((_, i) => (
+        {isMounted && [...Array(isMobile ? 3 : 6)].map((_, i) => (
           <motion.div
             key={i}
             className="absolute w-1 h-1 bg-purple-400 rounded-full"
@@ -210,14 +254,14 @@ const SmartGalleryGrid = () => {
           perspective: "1000px"
         }}
       >
-        {transformations.map((transformation, index) => {
+        {isMounted && transformations.map((transformation, index) => {
           // Calculate magnetic field effect using actual container dimensions
           let cardCenterX, cardCenterY;
-          
+
           // Get actual container dimensions
           const containerRect = containerRef.current?.getBoundingClientRect();
           const containerWidth = containerRect?.width || 800;
-          
+
           // Determine layout based on consistent breakpoints
           const isTablet = !isMobile && containerWidth < 1024;
           
@@ -391,7 +435,7 @@ const SmartGalleryGrid = () => {
                     }}
                     initial={{ opacity: 0 }}
                   >
-                    {[...Array(isMobile ? 4 : 8)].map((_, i) => (
+                    {isMounted && [...Array(isMobile ? 4 : 8)].map((_, i) => (
                       <motion.div
                         key={i}
                         className="absolute w-1 h-1 bg-white rounded-full"

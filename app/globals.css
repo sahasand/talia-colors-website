@@ -18,10 +18,20 @@
   --color-rainbow-gradient: linear-gradient(45deg, #ff0080, #ff8c00, #40e0d0, #ff00ff);
 }
 
-/* Mobile viewport height optimization */
+/* Mobile viewport height optimization - safer fallbacks */
 @supports (height: 100dvh) {
   .min-h-screen {
     min-height: 100dvh;
+  }
+  .hero-mobile-optimized {
+    min-height: 100dvh;
+  }
+}
+
+/* Fallback for older browsers */
+@supports not (height: 100dvh) {
+  .hero-mobile-optimized {
+    min-height: calc(100vh - 5rem); /* Account for mobile browser UI */
   }
 }
 
@@ -72,14 +82,18 @@ body {
 /* Mobile-specific optimizations */
 @media (max-width: 640px) {
   .hero-mobile-optimized {
-    min-height: calc(100vh - 3rem);
+    min-height: calc(100vh - 5rem); /* More conservative height */
+    max-height: calc(100vh - 2rem); /* Prevent overflow */
     padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-    overflow-x: hidden !important;
+    padding-bottom: 2rem; /* Ensure button visibility */
+    overflow: hidden !important; /* Prevent both x and y overflow */
     position: relative;
     margin: 0;
     padding-left: 0;
     padding-right: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center content vertically */
   }
   
   /* Ensure proper mobile layout without breaking 3D transforms */
@@ -92,7 +106,27 @@ body {
   /* Mobile gallery fixes */
   .hero-mobile-optimized .gallery-3d {
     max-width: calc(100vw - 2rem);
+    max-height: calc(60vh - 4rem); /* Constrain height */
     margin: 0 auto;
+    overflow: hidden; /* Prevent content overflow */
+  }
+
+  /* Ensure text content stays within viewport */
+  .hero-mobile-optimized h1 {
+    font-size: clamp(2rem, 8vw, 3rem) !important;
+    line-height: 1.2 !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  .hero-mobile-optimized p {
+    font-size: clamp(0.875rem, 4vw, 1.125rem) !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  /* Button sizing for mobile */
+  .hero-mobile-optimized button {
+    font-size: clamp(0.875rem, 4vw, 1rem) !important;
+    padding: 0.75rem 1.5rem !important;
   }
 }
 
@@ -101,14 +135,22 @@ body {
   .hero-mobile-optimized {
     padding-left: 0.5rem;
     padding-right: 0.5rem;
+    min-height: calc(100vh - 6rem); /* Even more conservative */
+    max-height: calc(100vh - 3rem);
   }
-  
+
   .gallery-3d {
     perspective: 500px;
+    max-height: calc(50vh - 2rem); /* Smaller carousel on tiny screens */
   }
-  
+
   .gallery-3d-item {
     box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Extra small text sizing */
+  .hero-mobile-optimized h1 {
+    font-size: clamp(1.75rem, 7vw, 2.5rem) !important;
   }
 }
 

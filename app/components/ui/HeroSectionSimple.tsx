@@ -25,51 +25,51 @@ const HeroSectionSimple = () => {
   const isTablet = useMemo(() => screenSize.width >= 640 && screenSize.width < 1024, [screenSize.width]);
 
   const imageSizeOffset = useMemo(() => {
-    if (isMobile) return 72; // 144px / 2 (w-36 = 9rem = 144px)
-    if (isTablet) return 112; // 224px / 2 (w-56 = 14rem = 224px)
-    return 192; // 384px / 2 (w-96 = 24rem = 384px)
+    if (isMobile) return 56; // 112px / 2 (w-28 = 7rem = 112px)
+    if (isTablet) return 96; // 192px / 2 (w-48 = 12rem = 192px)
+    return 160; // 320px / 2 (w-80 = 20rem = 320px)
   }, [isMobile, isTablet]);
 
   const heroImages = useMemo(() => [
-    { src: '/1a.png', colors: ['#8B4513', '#D2B48C'] },
-    { src: '/2a.png', colors: ['#FFD700', '#FFA500'] },
-    { src: '/3a.png', colors: ['#4B0082', '#8A2BE2'] },
-    { src: '/4a.png', colors: ['#FF6347', '#FF4500'] },
-    { src: '/5a.png', colors: ['#20B2AA', '#48D1CC'] },
-    { src: '/6a.png', colors: ['#DA70D6', '#DDA0DD'] },
-    { src: '/7a.png', colors: ['#F0E68C', '#FFE4B5'] },
-    { src: '/8a.png', colors: ['#FFA07A', '#FA8072'] },
-    { src: '/9a.png', colors: ['#98FB98', '#90EE90'] },
-    { src: '/10a.png', colors: ['#FF69B4', '#FFB6C1'] },
-    { src: '/11a.png', colors: ['#40E0D0', '#AFEEEE'] },
+    { src: '/optimized/1a-thumb.webp', fallback: '/optimized/1a.jpg', colors: ['#8B4513', '#D2B48C'] },
+    { src: '/optimized/2a-thumb.webp', fallback: '/optimized/2a.jpg', colors: ['#FFD700', '#FFA500'] },
+    { src: '/optimized/3a-thumb.webp', fallback: '/optimized/3a.jpg', colors: ['#4B0082', '#8A2BE2'] },
+    { src: '/optimized/4a-thumb.webp', fallback: '/optimized/4a.jpg', colors: ['#FF6347', '#FF4500'] },
+    { src: '/optimized/5a-thumb.webp', fallback: '/optimized/5a.jpg', colors: ['#20B2AA', '#48D1CC'] },
+    { src: '/optimized/6a-thumb.webp', fallback: '/optimized/6a.jpg', colors: ['#DA70D6', '#DDA0DD'] },
+    { src: '/optimized/7a-thumb.webp', fallback: '/optimized/7a.jpg', colors: ['#F0E68C', '#FFE4B5'] },
+    { src: '/optimized/8a-thumb.webp', fallback: '/optimized/8a.jpg', colors: ['#FFA07A', '#FA8072'] },
+    { src: '/optimized/9a-thumb.webp', fallback: '/optimized/9a.jpg', colors: ['#98FB98', '#90EE90'] },
+    { src: '/optimized/10a-thumb.webp', fallback: '/optimized/10a.jpg', colors: ['#FF69B4', '#FFB6C1'] },
+    { src: '/optimized/11a-thumb.webp', fallback: '/optimized/11a.jpg', colors: ['#40E0D0', '#AFEEEE'] },
   ], []);
 
   const calculateImagePosition = useCallback((imageIndex: number, totalImages: number, currentIndex: number) => {
     const relativeIndex = (imageIndex - currentIndex + totalImages) % totalImages;
     const angle = (relativeIndex / totalImages) * Math.PI * 2;
-    
-    // Responsive circle parameters - larger for more dramatic effect
-    const radiusX = isMobile ? 200 : isTablet ? 280 : 400;
-    const radiusZ = isMobile ? 160 : isTablet ? 210 : 300;
-    const baseScale = isMobile ? 0.55 : isTablet ? 0.85 : 1.0;
-    
+
+    // Responsive circle parameters - optimized for mobile viewport
+    const radiusX = isMobile ? 140 : isTablet ? 220 : 320;
+    const radiusZ = isMobile ? 110 : isTablet ? 170 : 240;
+    const baseScale = isMobile ? 0.45 : isTablet ? 0.75 : 0.9;
+
     // Calculate position on circle
     const x = Math.sin(angle) * radiusX;
     const z = Math.cos(angle) * radiusZ - radiusZ;
     const y = Math.sin(angle * 2) * 10; // Slight vertical variation
-    
+
     // Scale based on distance
     const distanceFromFront = Math.abs(relativeIndex - 0) / (totalImages / 2);
     const scale = baseScale + (1 - baseScale) * Math.max(0, 1 - distanceFromFront);
-    
+
     // Rotation to face center
     const rotateY = -angle * (180 / Math.PI);
-    
+
     // Calculate z-index based on position in 3D space
     // Images closer to front (higher z value) get higher z-index
     const normalizedZ = (z + radiusZ * 2) / (radiusZ * 2); // Normalize z to 0-1
     const zIndex = relativeIndex === 0 ? 25 : Math.round(normalizedZ * 10); // Active image gets z-index 25 to overlap text
-    
+
     return {
       x, y, z,
       scale,
@@ -78,6 +78,13 @@ const HeroSectionSimple = () => {
       zIndex
     };
   }, [isMobile, isTablet]);
+
+  // Memoize all image positions to prevent recalculation on every render
+  const imagePositions = useMemo(() => {
+    return heroImages.map((_, index) =>
+      calculateImagePosition(index, heroImages.length, currentImageIndex)
+    );
+  }, [heroImages, currentImageIndex, calculateImagePosition]);
 
   // Auto-rotation
   useEffect(() => {
@@ -93,16 +100,36 @@ const HeroSectionSimple = () => {
     return () => clearInterval(interval);
   }, [isPaused, prefersReducedMotion, lastInteraction, heroImages.length]);
 
-  // Initialize
+  // Preload images for smoother transitions
+  useEffect(() => {
+    const preloadImages = () => {
+      heroImages.forEach((image) => {
+        const img = new Image();
+        img.src = image.src;
+        // Also preload fallback
+        if (image.fallback) {
+          const fallbackImg = new Image();
+          fallbackImg.src = image.fallback;
+        }
+      });
+    };
+    preloadImages();
+  }, [heroImages]);
+
+  // Initialize with debounced resize handler
   useEffect(() => {
     setIsMounted(true);
-    
+
+    let resizeTimeout: NodeJS.Timeout;
     const handleResize = () => {
-      if (typeof window !== 'undefined') {
-        setScreenSize({ width: window.innerWidth, height: window.innerHeight });
-      }
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        if (typeof window !== 'undefined') {
+          setScreenSize({ width: window.innerWidth, height: window.innerHeight });
+        }
+      }, 150); // Debounce resize events
     };
-    
+
     const checkReducedMotion = () => {
       if (typeof window !== 'undefined') {
         const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -111,24 +138,25 @@ const HeroSectionSimple = () => {
       }
       return null;
     };
-    
+
     if (typeof window !== 'undefined') {
       handleResize();
       window.addEventListener('resize', handleResize);
-      
+
       const mediaQuery = checkReducedMotion();
       if (mediaQuery) {
         mediaQuery.addEventListener('change', (e) => setPrefersReducedMotion(e.matches));
       }
-      
+
       return () => {
+        clearTimeout(resizeTimeout);
         window.removeEventListener('resize', handleResize);
         if (mediaQuery) {
           mediaQuery.removeEventListener('change', (e) => setPrefersReducedMotion(e.matches));
         }
       };
     }
-  }, []);
+  }, [heroImages]);
 
   const goToPrevious = () => {
     setCurrentImageIndex(prev => (prev - 1 + heroImages.length) % heroImages.length);
@@ -167,29 +195,11 @@ const HeroSectionSimple = () => {
   }
 
   return (
-    <div ref={heroRef} className="relative w-full min-h-[calc(100vh-3rem)] sm:min-h-screen hero-mobile-optimized flex items-center justify-center overflow-hidden py-4 sm:py-8 md:py-12">
-      {/* Enhanced Dynamic Background */}
+    <div ref={heroRef} className="relative w-full min-h-[calc(100vh-5rem)] sm:min-h-screen hero-mobile-optimized flex items-center justify-center overflow-hidden py-2 sm:py-4 md:py-8">
+      {/* Simplified Background - removed dynamic elements for performance */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Base gradient */}
+        {/* Static gradient only */}
         <div className="absolute inset-0 bg-gradient-to-br from-violet-600/15 via-purple-600/20 to-pink-600/15" />
-        
-        {/* Dynamic ambient light following active image */}
-        <motion.div
-          className="absolute w-96 h-96 rounded-full"
-          style={{
-            background: `radial-gradient(circle, ${heroImages[currentImageIndex]?.colors[0]}20 0%, ${heroImages[currentImageIndex]?.colors[1]}10 50%, transparent 70%)`,
-            filter: 'blur(60px)',
-          }}
-          animate={{
-            x: isMobile ? '20%' : '40%',
-            y: isMobile ? '30%' : '35%',
-          }}
-          transition={{ duration: 2, ease: 'easeInOut' }}
-        />
-        
-        {/* Floating orbs for depth */}
-        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-gradient-to-br from-cyan-400/20 to-blue-600/20 rounded-full blur-xl animate-pulse" />
-        <div className="absolute bottom-1/3 right-1/4 w-24 h-24 bg-gradient-to-br from-pink-400/20 to-purple-600/20 rounded-full blur-lg animate-pulse" style={{ animationDelay: '1s' }} />
       </div>
       
       {/* Navigation Arrows */}
@@ -268,8 +278,8 @@ const HeroSectionSimple = () => {
           {t('description')}
         </motion.p>
 
-        {/* 3D Image Gallery - Larger and Overlapping */}
-        <div className="relative w-full h-72 sm:h-80 md:h-[28rem] lg:h-[34rem] xl:h-[40rem] -mt-12 sm:-mt-12 md:-mt-8 lg:-mt-4 xl:mt-0 mb-0">
+        {/* 3D Image Gallery - Mobile Optimized Heights */}
+        <div className="relative w-full h-60 sm:h-72 md:h-[24rem] lg:h-[28rem] xl:h-[32rem] -mt-8 sm:-mt-10 md:-mt-6 lg:-mt-4 xl:mt-0 mb-2 sm:mb-0">
           <motion.div
             className="relative w-full h-full gallery-3d"
             style={{
@@ -281,12 +291,12 @@ const HeroSectionSimple = () => {
             transition={{ duration: 1, delay: 0.8 }}
           >
             {heroImages.map((image, index) => {
-              const pos = calculateImagePosition(index, heroImages.length, currentImageIndex);
-              
+              const pos = imagePositions[index];
+
               return (
                 <motion.div
                   key={index}
-                  className="absolute w-36 h-36 sm:w-56 sm:h-56 md:w-72 md:h-72 lg:w-80 lg:h-80 xl:w-96 xl:h-96 rounded-3xl overflow-hidden cursor-pointer group"
+                  className="absolute w-28 h-28 sm:w-48 sm:h-48 md:w-64 md:h-64 lg:w-72 lg:h-72 xl:w-80 xl:h-80 rounded-3xl overflow-hidden cursor-pointer group"
                   style={{
                     left: '50%',
                     top: '50%',
@@ -294,33 +304,18 @@ const HeroSectionSimple = () => {
                     backgroundImage: `url(${image.src})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
-                    boxShadow: index === currentImageIndex 
-                      ? `0 35px 70px -15px rgba(0,0,0,0.5), 0 0 100px ${image.colors[0]}50, inset 0 0 0 3px rgba(255,255,255,0.15)` 
-                      : '0 20px 40px -15px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(255,255,255,0.05)',
-                    border: index === currentImageIndex 
-                      ? `2px solid ${image.colors[0]}60` 
+                    // Simplified shadow - single layer instead of multiple
+                    boxShadow: index === currentImageIndex
+                      ? `0 25px 60px -12px rgba(0,0,0,0.5)`
+                      : '0 15px 35px -10px rgba(0,0,0,0.3)',
+                    border: index === currentImageIndex
+                      ? `3px solid ${image.colors[0]}70`
                       : '1px solid rgba(255,255,255,0.1)',
-                    backdropFilter: 'blur(10px)',
+                    // Removed backdrop filter for better performance
                     zIndex: pos.zIndex,
+                    // Add will-change for smoother transitions
+                    willChange: 'transform, opacity',
                   }}
-                  
-                  // Enhanced ring glow for active image
-                  {...(index === currentImageIndex && {
-                    style: {
-                      ...{
-                        left: '50%',
-                        top: '50%',
-                        transformStyle: 'preserve-3d',
-                        backgroundImage: `url(${image.src})`,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                        zIndex: pos.zIndex,
-                      },
-                      boxShadow: `0 40px 80px -20px rgba(0,0,0,0.6), 0 0 120px ${image.colors[0]}60, 0 0 180px ${image.colors[1]}40, inset 0 0 0 4px rgba(255,255,255,0.2)`,
-                      border: `4px solid ${image.colors[0]}90`,
-                      backdropFilter: 'blur(10px)',
-                    }
-                  })}
                   initial={{
                     opacity: 0,
                     x: pos.x - imageSizeOffset,
@@ -330,15 +325,17 @@ const HeroSectionSimple = () => {
                     scale: pos.scale
                   }}
                   animate={{
-                    opacity: touchingImage === index ? pos.opacity * 0.8 : pos.opacity,
-                    filter: index === currentImageIndex 
-                      ? 'brightness(1.25) contrast(1.2) saturate(1.3)' 
-                      : 'brightness(0.7) contrast(0.9) saturate(0.8) blur(2px)',
+                    opacity: touchingImage === index ? pos.opacity * 0.9 : pos.opacity,
+                    // Simplified filter - removed blur for performance
+                    filter: index === currentImageIndex
+                      ? 'brightness(1.1) saturate(1.15)'
+                      : 'brightness(0.85)',
                     x: pos.x - imageSizeOffset,
                     y: pos.y - imageSizeOffset,
                     translateZ: pos.z,
                     rotateY: pos.rotateY,
-                    scale: index === currentImageIndex ? pos.scale * 1.3 : pos.scale
+                    // Reduced scale factor for better performance
+                    scale: index === currentImageIndex ? pos.scale * 1.15 : pos.scale
                   }}
                   transition={{
                     type: "spring",
@@ -365,12 +362,12 @@ const HeroSectionSimple = () => {
           </motion.div>
         </div>
 
-        {/* CTA Button - Overlapping with Carousel */}
+        {/* CTA Button - Mobile Safe Positioning */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 1.2 }}
-          className="relative group -mt-16 sm:-mt-16 md:-mt-12 lg:-mt-8 xl:-mt-4 z-30"
+          className="relative group -mt-8 sm:-mt-12 md:-mt-10 lg:-mt-6 xl:-mt-4 mb-4 sm:mb-2 z-30"
           whileHover="hover"
           whileTap="tap"
         >
@@ -427,7 +424,7 @@ const HeroSectionSimple = () => {
               }}
             />
             
-            {/* Sparkle Effects */}
+            {/* Sparkle Effects - Reduced from 6 to 3 */}
             <motion.div
               className="absolute inset-0 pointer-events-none"
               variants={{
@@ -435,13 +432,13 @@ const HeroSectionSimple = () => {
               }}
               initial={{ opacity: 0 }}
             >
-              {[...Array(6)].map((_, i) => (
+              {[...Array(3)].map((_, i) => (
                 <motion.div
                   key={i}
                   className="absolute w-1 h-1 bg-white rounded-full"
                   style={{
-                    top: `${20 + (i * 10)}%`,
-                    left: `${15 + (i * 12)}%`,
+                    top: `${25 + (i * 20)}%`,
+                    left: `${20 + (i * 25)}%`,
                   }}
                   variants={{
                     hover: {
@@ -452,7 +449,7 @@ const HeroSectionSimple = () => {
                   }}
                   transition={{
                     duration: 1.5,
-                    delay: i * 0.1,
+                    delay: i * 0.2,
                     repeat: Infinity,
                     ease: "easeInOut"
                   }}
