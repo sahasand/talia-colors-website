@@ -141,7 +141,7 @@ const SmartGalleryGrid = () => {
 
         {/* Static Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10 lg:gap-12">
-          {transformations.map((transformation, index) => (
+          {transformations.map((transformation) => (
             <div key={transformation.id} className="group relative">
               <div className="relative overflow-hidden rounded-2xl aspect-[3/4] mb-4 sm:mb-6 bg-gradient-to-br from-gray-100 to-gray-200">
                 <Image
