@@ -259,12 +259,12 @@ const TrustSection = () => {
             <motion.div
               key={index}
               variants={itemVariants}
-              className="group relative flex"
+              className="group relative flex w-full h-full"
               whileHover="hover"
               whileTap="tap"
             >
               <motion.div
-                className="relative bg-white/80 backdrop-blur-sm rounded-2xl p-6 sm:p-8 shadow-lg border border-white/50 overflow-hidden h-full flex flex-col justify-center min-h-[200px] sm:min-h-[220px]"
+                className="relative bg-white/80 backdrop-blur-sm rounded-2xl p-6 sm:p-8 shadow-lg border border-white/50 overflow-hidden w-full h-full flex flex-col justify-center min-h-[200px] sm:min-h-[220px]"
                 variants={{
                   hover: {
                     scale: 1.05,
