@@ -81,3 +81,8 @@ Professional at-home hair coloring service website for Florianópolis, Brazil. C
 - SEO optimized
 - Full mobile responsiveness
 - Three language support active
+
+## Deployment
+
+- GitHub repository: https://github.com/sahasand/talia-colors-website
+- Auto-deployed to Vercel: https://vercel.com/sahasands-projects/talia-colors-website
